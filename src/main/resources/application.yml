@@ -1,5 +1,5 @@
-# ??? ???? DB ??? ? ? yml(properties)?? ??? ??.
 spring:
+  # h2 DB ?? - ???? ??
   h2:
     console:
       enabled: true
@@ -9,3 +9,9 @@ spring:
     url: jdbc:h2:~/test
     username: sa
     password:
+  # jpa query console? ???? ??
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

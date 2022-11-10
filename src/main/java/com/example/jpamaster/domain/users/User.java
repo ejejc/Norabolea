@@ -1,4 +1,4 @@
-package com.example.jpamaster.users;
+package com.example.jpamaster.domain.users;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -33,4 +33,3 @@ public class User {
     @Column(name = "update_date")
     private Date updateDate;
 }
-z
