@@ -1,4 +1,10 @@
+server:
+  port: 8080
+
 spring:
+  application:
+    name: jpa-master
+
   # h2 DB ?? - ???? ??
   h2:
     console:
@@ -6,11 +12,15 @@ spring:
       path: /h2-console
   datasource:
     driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:test-jpa-master  # in-memory db 설정
     url: jdbc:h2:~/test
     username: sa
     password:
+
   # jpa query console? ???? ??
   jpa:
+    hibernate:
+      ddl-auto: create
     show-sql: true
     properties:
       hibernate:
