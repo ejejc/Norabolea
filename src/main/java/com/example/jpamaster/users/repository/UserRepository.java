@@ -1,6 +1,6 @@
-package com.example.jpamaster.repository;
+package com.example.jpamaster.users.repository;
 
-import com.example.jpamaster.domain.users.User;
+import com.example.jpamaster.users.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {

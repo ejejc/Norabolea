@@ -1,9 +1,13 @@
-package com.example.jpamaster.domain.users;
+package com.example.jpamaster.users.domain;
+
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@NoArgsConstructor
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
