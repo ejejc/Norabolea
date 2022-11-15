@@ -1,5 +1,6 @@
 package com.example.jpamaster.accommodations.domain;
 
+import com.example.jpamaster.accommodations.enums.AccomodationsEnum;
 import lombok.Getter;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -32,12 +33,11 @@ public class Accommodations {
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "accommodations_type") // 숙박 종류 - enum 호텔 / 모텔 / 등
-    private AccommodationsType accommodationsType;
+    private AccomodationsEnum.Type accommodationsType;
 
     // 기본 숙박 금액
     @Column(name = "base_cost")
     @ColumnDefault(value = "0.00")
     private double baseCost;
-
 
 }
