@@ -21,4 +21,14 @@ public class AccomodationsEnum {
         private final String enValue;
         private final String koValue;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public enum SellerStatus {
+        NORMAL("일반")
+        , BLACK("블랙")
+        , HUMAN("휴먼");
+
+        private String desc;
+    }
 }

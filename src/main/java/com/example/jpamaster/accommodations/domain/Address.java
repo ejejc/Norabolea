@@ -5,15 +5,12 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class Address {
-    @Column(name = "zip_code")
-    private String zipcode;
+    @Column(name = "delivery_address")
+    private String deliveryAddress;
 
-    @Column(name = "city")
-    private String city;
+    @Column(name = "delivery_address_detail")
+    private String deliveyAddressDetail;
 
-    @Column(name = "base_address")
-    private String baseAddress;
-
-    @Column(name = "detail_address")
-    private String detailAddress;
+    @Column(name = "delivery_post_no")
+    private String deliveryPostNo;
 }
