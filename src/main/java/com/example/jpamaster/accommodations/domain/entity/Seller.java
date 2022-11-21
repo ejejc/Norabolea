@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -54,4 +56,7 @@ public class Seller {
     @Column(name = "seller_status")
     @Enumerated(value = EnumType.STRING)
     private AccomodationsEnum.SellerStatus status;
+
+    @OneToMany(mappedBy = "seller")
+    private List<Accommodations> accommodations = new ArrayList<>();
 }

@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,4 +25,7 @@ public class Category {
     @Comment("카테고리 부모 seq")
     @Column(name = "category_parent_seq")
     private Long parentSeq;
+
+    @OneToMany(mappedBy = "category")
+    private List<Room> rooms = new ArrayList<>();
 }

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity  // 기본키 설정이 안되어 있으면 ide 에서 컴파일 에러
@@ -43,6 +45,12 @@ public class Accommodations {
     @Comment("숙박 종류")
     private AccomodationsEnum.Type accommodationsType;
 
+    @OneToMany(mappedBy = "accommodations")
+    private List<Room> rooms = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "accommodation_seller_seq")
+    private Seller seller;
     // 기본 숙박 금액
     /*@Column(name = "base_cost")
     @ColumnDefault(value = "0.00")

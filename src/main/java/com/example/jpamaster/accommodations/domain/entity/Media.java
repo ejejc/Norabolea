@@ -29,4 +29,8 @@ public class Media {
     @Comment("미디어 사용 여부")
     @Column(name = "use_yn")
     private boolean useYn;
+
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
 }

@@ -5,6 +5,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "room")
@@ -13,7 +15,7 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Comment("객실 Seq")
-    @Column(name = "room_seq")
+    @Column(name = "room_id")
     private Long roomSeq;
 
     @Comment("숙박 Seq")
@@ -46,4 +48,15 @@ public class Room {
     @Comment("사용 여부")
     @Column(name = "use_yn")
     private boolean useYn;
+
+    @ManyToOne
+    @JoinColumn(name = "accommodations_seq")
+    private Accommodations accommodations;
+
+    @OneToMany(mappedBy = "room")
+    private List<Media> rooms = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "category_seq")
+    private Category category;
 }
