@@ -16,8 +16,6 @@ public class Media {
     @Column(name = "room_media_seq")
     private Long seq;
 
-    private Long roomSeq;
-
     @Comment("미디어 url")
     @Column(name = "room_media_url")
     private String mediaUrl;

@@ -29,10 +29,12 @@ public class Accommodations {
     @Comment("숙박 전화번호")
     private String contact;
 
-    @Column(name = "lat")  // 위도  // TODO: 컬럼의 기본 설명 추가하는 법 찾아보기
+    @Column(name = "lat")
+    @Comment("위도")
     private String lat;
 
-    @Column(name = "lon")  // 경도
+    @Column(name = "lon")
+    @Comment("경도")
     private String lon;
 
     // TODO: 값 타입 jpa 학습하기
