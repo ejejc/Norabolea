@@ -2,9 +2,7 @@ package com.example.jpamaster.accommodations.domain.entity;
 
 import com.example.jpamaster.accommodations.domain.Address;
 import com.example.jpamaster.accommodations.enums.AccomodationsEnum;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
@@ -12,10 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @Entity  // 기본키 설정이 안되어 있으면 ide 에서 컴파일 에러
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "accommodations")  // 숙박 업소
 public class Accommodations {
+
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)  // TODO: generated value 의 4가지 전략에 대해 학습하기
     @Column(name = "accommodations_seq")
@@ -48,14 +50,13 @@ public class Accommodations {
     private AccomodationsEnum.Type accommodationsType;
 
     @OneToMany(mappedBy = "accommodations")
-    private List<Room> rooms = new ArrayList<>();
+    private List<Room> rooms;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "accommodation_seller_seq")
     private Seller seller;
-    // 기본 숙박 금액
-    /*@Column(name = "base_cost")
-    @ColumnDefault(value = "0.00")
-    private double baseCost;*/
 
+    @ManyToOne
+    @JoinColumn(name = "category_seq")
+    private Category category;
 }

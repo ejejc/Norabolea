@@ -1,8 +1,7 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
 import com.example.jpamaster.accommodations.enums.AccomodationsEnum;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
@@ -10,7 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Setter
+@Getter
 @Table(name = "accommodation_seller")
 public class Seller {
 
@@ -58,5 +61,5 @@ public class Seller {
     private AccomodationsEnum.SellerStatus status;
 
     @OneToMany(mappedBy = "seller")
-    private List<Accommodations> accommodations = new ArrayList<>();
+    private List<Accommodations> accommodations;
 }

@@ -27,5 +27,5 @@ public class Category {
     private Long parentSeq;
 
     @OneToMany(mappedBy = "category")
-    private List<Room> rooms = new ArrayList<>();
+    private List<Accommodations> accommodations;
 }
