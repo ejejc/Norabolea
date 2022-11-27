@@ -1,6 +1,8 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
@@ -9,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "accommodation_category")
 public class Category {
 
@@ -25,7 +29,4 @@ public class Category {
     @Comment("카테고리 부모 seq")
     @Column(name = "category_parent_seq")
     private Long parentSeq;
-
-    @OneToMany(mappedBy = "category")
-    private List<Accommodations> accommodations;
 }

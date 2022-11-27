@@ -1,6 +1,8 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
@@ -10,7 +12,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "room")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,12 +22,9 @@ public class Room {
     @Column(name = "room_id")
     private Long roomSeq;
 
-    @Comment("숙박 Seq")
-    private Long accommodationSeq;
-
     @Comment("객실 가격")
     @Column(name = "room_price")
-    private Integer roomPrice;
+    private Long roomPrice;
 
     @Comment("기준 인원")
     @Column(name = "room_standard_person")
@@ -41,10 +42,6 @@ public class Room {
     @Column(name = "check_out_time")
     private String checkOutTime;
 
-    @Comment("대실 여부")
-    @Column(name = "borrow_yn")
-    private boolean borrowYn;
-
     @Comment("사용 여부")
     @Column(name = "use_yn")
     private boolean useYn;
@@ -56,7 +53,7 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private List<Media> rooms = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "category_seq")
-    private Category category;
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "borrow_room_seq")
+    private BorrowRoom borrowRoom;
 }

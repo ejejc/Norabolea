@@ -31,14 +31,6 @@ public class Accommodations {
     @Comment("숙박 전화번호")
     private String contact;
 
-    @Column(name = "lat")
-    @Comment("위도")
-    private String lat;
-
-    @Column(name = "lon")
-    @Comment("경도")
-    private String lon;
-
     // TODO: 값 타입 jpa 학습하기
     @Embedded
     @Comment("배송지 정보")
@@ -55,8 +47,4 @@ public class Accommodations {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "accommodation_seller_seq")
     private Seller seller;
-
-    @ManyToOne
-    @JoinColumn(name = "category_seq")
-    private Category category;
 }
