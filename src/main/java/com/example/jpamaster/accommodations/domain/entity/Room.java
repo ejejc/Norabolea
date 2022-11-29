@@ -1,13 +1,11 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -50,8 +48,8 @@ public class Room {
     @JoinColumn(name = "accommodations_seq")
     private Accommodations accommodations;
 
-    @OneToMany(mappedBy = "room")
-    private List<Media> rooms = new ArrayList<>();
+    @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST)
+    private List<Media> media;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "borrow_room_seq")

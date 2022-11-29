@@ -18,7 +18,6 @@ import java.util.List;
 @Table(name = "accommodations")  // 숙박 업소
 public class Accommodations {
 
-
     @Id @GeneratedValue(strategy = GenerationType.AUTO)  // TODO: generated value 의 4가지 전략에 대해 학습하기
     @Column(name = "accommodations_seq")
     private Long accommodationSeq;
@@ -41,7 +40,7 @@ public class Accommodations {
     @Comment("숙박 종류")
     private AccomodationsEnum.Type accommodationsType;
 
-    @OneToMany(mappedBy = "accommodations")
+    @OneToMany(mappedBy = "accommodations", cascade = CascadeType.PERSIST)
     private List<Room> rooms;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
