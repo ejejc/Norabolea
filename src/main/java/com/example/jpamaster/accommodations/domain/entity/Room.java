@@ -3,16 +3,17 @@ package com.example.jpamaster.accommodations.domain.entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Comment;
-
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "room")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Setter
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -54,4 +55,21 @@ public class Room {
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "borrow_room_seq")
     private BorrowRoom borrowRoom;
+
+    @Builder
+    public Room(Long roomPrice, int standardPerson, int maxPerson, String checkInTime, String checkOutTime, boolean useYn, BorrowRoom borrowRoom) {
+        this.roomPrice = roomPrice;
+        this.standardPerson = standardPerson;
+        this.maxPerson = maxPerson;
+        this.checkInTime = checkInTime;
+        this.checkOutTime = checkOutTime;
+        this.useYn = useYn;
+        this.media = new ArrayList<>();
+        this.borrowRoom = borrowRoom;
+    }
+
+    public void add(Media media) {
+        this.media.add(media);
+        media.setRoom(this);
+    }
 }

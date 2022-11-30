@@ -6,7 +6,6 @@ import com.example.jpamaster.accommodations.domain.entity.Room;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Setter
 public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
@@ -51,16 +50,18 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
     }
 
     public Room changeEntity() {
-        return Room.builder()
-                .roomPrice(this.roomPrice)
-                .standardPerson(this.standardPerson)
-                .checkInTime(this.checkInTime)
-                .checkOutTime(this.checkOutTime)
-                .useYn(this.useYn)
-                .borrowRoom(this.borrow.changeEntity())
-                .media(this.mediaList.stream()
-                        .map(RoomMedia::changeEntity)
-                        .collect(Collectors.toList()))
-                .build();
+        Room room = Room.builder()
+                      .roomPrice(this.roomPrice)
+                      .standardPerson(this.standardPerson)
+                      .checkInTime(this.checkInTime)
+                      .checkOutTime(this.checkOutTime)
+                      .useYn(this.useYn)
+                      // BorrowRoom과 Room의 연관관계 주인은 room이므로 이렇게만 저장해주면 외래키가 저장된다,
+                      .borrowRoom(this.borrow.changeEntity())
+                      .build();
+        for (RoomMedia vo : mediaList) {
+            room.add(vo.changeEntity());
+        }
+        return room;
     }
 }

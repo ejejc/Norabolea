@@ -3,9 +3,7 @@ package com.example.jpamaster.accommodations.domain.entity;
 import com.example.jpamaster.accommodations.enums.AccomodationsEnum;
 import lombok.*;
 import org.hibernate.annotations.Comment;
-
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

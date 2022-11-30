@@ -2,13 +2,10 @@ package com.example.jpamaster.accommodations.dto;
 
 import com.example.jpamaster.accommodations.domain.Address;
 import com.example.jpamaster.accommodations.domain.entity.Accommodations;
-import com.example.jpamaster.accommodations.domain.entity.Room;
 import com.example.jpamaster.accommodations.enums.AccomodationsEnum;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -20,14 +17,15 @@ public class AccommodationDto {
     private List<RoomDto> rooms;
 
     public Accommodations changeToEntity() {
-        return Accommodations.builder()
+        Accommodations accommodations = Accommodations.builder()
                 .accommodationTitle(this.accommodationTitle)
                 .contact(this.contact)
                 .address(this.address)
                 .accommodationsType(this.accommodationsType)
-                .rooms(this.rooms.stream()
-                        .map(RoomDto::changeEntity)
-                        .collect(Collectors.toList()))
                 .build();
+        for (RoomDto dto : rooms) {
+            accommodations.addRoom(dto.changeEntity());
+        }
+        return accommodations;
     }
 }

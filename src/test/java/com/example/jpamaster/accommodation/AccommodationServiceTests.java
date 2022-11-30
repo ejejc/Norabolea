@@ -50,7 +50,7 @@ public class AccommodationServiceTests {
                 .accommodationTitle("역삼 컬리넌")
                 .contact("050350524475")
                 .accommodationsType(AccomodationsEnum.Type.MOTEL)
-                .seller(seller)
+                /*.seller(seller)*/
                 .address(address).build();
         accommodationsRepository.save(accommodations);
 
@@ -67,7 +67,7 @@ public class AccommodationServiceTests {
                 .checkOutTime("11:00")
                 .borrowRoom(borrowRoom)
                 .useYn(true)
-                .accommodations(accommodations)
+                /*.accommodations(accommodations)*/
                 .build();
         roomReposittory.save(room);
 

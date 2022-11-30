@@ -14,7 +14,6 @@ import java.util.List;
 @Entity  // 기본키 설정이 안되어 있으면 ide 에서 컴파일 에러
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Table(name = "accommodations")  // 숙박 업소
 public class Accommodations {
 
@@ -40,10 +39,24 @@ public class Accommodations {
     @Comment("숙박 종류")
     private AccomodationsEnum.Type accommodationsType;
 
-    @OneToMany(mappedBy = "accommodations", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "accommodations", cascade = CascadeType.ALL)
     private List<Room> rooms;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne()
     @JoinColumn(name = "accommodation_seller_seq")
     private Seller seller;
+
+    public void addRoom(Room room) {
+        this.rooms.add(room);
+        room.setAccommodations(this);
+    }
+
+    @Builder
+    public Accommodations(String accommodationTitle, String contact, Address address, AccomodationsEnum.Type accommodationsType) {
+        this.accommodationTitle = accommodationTitle;
+        this.contact = contact;
+        this.address = address;
+        this.accommodationsType = accommodationsType;
+        this.rooms = new ArrayList<>();
+    }
 }
