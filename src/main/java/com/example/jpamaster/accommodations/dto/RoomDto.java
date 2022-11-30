@@ -53,6 +53,7 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
         Room room = Room.builder()
                       .roomPrice(this.roomPrice)
                       .standardPerson(this.standardPerson)
+                      .maxPerson(this.maxPerson)
                       .checkInTime(this.checkInTime)
                       .checkOutTime(this.checkOutTime)
                       .useYn(this.useYn)

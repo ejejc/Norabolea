@@ -15,7 +15,7 @@ public class AccommodationController {
 
     private final AccommodationService accommodationService;
 
-    @PostMapping
+    @PostMapping // TODO: 비즈니스 로직이 점점 늘어나겠지?
     public void add(@RequestBody AccommodationDto param) {
         accommodationService.addAccommodation(param.changeToEntity());
     }
