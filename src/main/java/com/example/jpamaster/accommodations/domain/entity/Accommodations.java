@@ -39,10 +39,11 @@ public class Accommodations {
     @Comment("숙박 종류")
     private AccomodationsEnum.Type accommodationsType;
 
+    // TODO: @Builder.Default
     @OneToMany(mappedBy = "accommodations", cascade = CascadeType.ALL)
     private List<Room> rooms;
 
-    @ManyToOne()
+    @ManyToOne() // TODO: fetchType 공부해서 넣어주기
     @JoinColumn(name = "accommodation_seller_seq")
     private Seller seller;
 

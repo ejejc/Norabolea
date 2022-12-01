@@ -68,7 +68,7 @@ public class Room {
         this.borrowRoom = borrowRoom;
     }
 
-    public void add(Media media) {
+    public void add(Media media) { // TODO: 메소드 명 수정
         this.media.add(media);
         media.setRoom(this);
     }
