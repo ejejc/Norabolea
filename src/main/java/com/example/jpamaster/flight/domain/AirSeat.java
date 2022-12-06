@@ -1,5 +1,6 @@
 package com.example.jpamaster.flight.domain;
 
+import com.example.jpamaster.flight.enums.FlightEnums;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,22 @@ public class AirSeat {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long airSeatSeq;
 
+
+    @Comment("좌석 유형")
+    @Column(name = "seat_type")
+    @Enumerated(EnumType.STRING)
+    private FlightEnums.SeatType seatType;
+
+
+    @Embedded
+    private SeatRowAndColumn seatRowAndColumn;
+
+    @Comment("좌석 이용 가능 여부")
+    @Column(name = "seat_usable")
+    private Boolean seatUsable;
+
+    @Comment(value = "항공기")
     @ManyToOne(fetch = FetchType.LAZY, cascade = ALL)
     @JoinColumn(name = "airplane_seq")
-    @Comment(value = "항공기 시퀀스")
     private Airplane airplane;
 }
