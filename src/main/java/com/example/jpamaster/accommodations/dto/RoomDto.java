@@ -61,7 +61,7 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
                       .borrowRoom(this.borrow.changeEntity())
                       .build();
         for (RoomMedia vo : mediaList) {
-            room.add(vo.changeEntity());
+            room.addMedia(vo.changeEntity());
         }
         return room;
     }
