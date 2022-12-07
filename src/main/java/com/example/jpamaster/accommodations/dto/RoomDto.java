@@ -3,11 +3,13 @@ package com.example.jpamaster.accommodations.dto;
 import com.example.jpamaster.accommodations.domain.entity.BorrowRoom;
 import com.example.jpamaster.accommodations.domain.entity.Media;
 import com.example.jpamaster.accommodations.domain.entity.Room;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
 
 @Setter
+@Getter
 public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
 
     private Long roomPrice;
@@ -20,6 +22,7 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
     private Borrow borrow;
 
     @Setter
+    @Getter
     private static class RoomMedia {
         private String mediaUrl;
         private boolean mainFlag;
@@ -35,6 +38,7 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
     }
 
     @Setter
+    @Getter
     private static class Borrow {
         private int borrowTime;
         private long borrowPrice;
