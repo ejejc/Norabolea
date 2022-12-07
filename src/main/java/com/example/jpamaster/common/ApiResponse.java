@@ -30,6 +30,12 @@ public class ApiResponse<T> {
         this.meta = new Meta(code, code.getMsg());
     }
 
+    /**
+     * API 성공 시, 공통 Response 정의
+     * @param data
+     * @return
+     * @param <T>
+     */
     public static<T> ApiResponse<T> createOk(T data) {
         return new ApiResponse<>(data);
     }
