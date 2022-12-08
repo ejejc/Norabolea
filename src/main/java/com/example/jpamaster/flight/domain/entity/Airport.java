@@ -1,4 +1,4 @@
-package com.example.jpamaster.flight.domain;
+package com.example.jpamaster.flight.domain.entity;
 
 import lombok.*;
 import org.modelmapper.internal.util.Assert;

@@ -1,11 +1,9 @@
 package com.example.jpamaster.flight.web.dto.res;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Column;
-
-@Getter
+@Getter @Setter
 public class AirportDto {
     private String nameEn;
 

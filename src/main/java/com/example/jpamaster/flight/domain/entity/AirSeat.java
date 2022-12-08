@@ -1,4 +1,4 @@
-package com.example.jpamaster.flight.domain;
+package com.example.jpamaster.flight.domain.entity;
 
 import com.example.jpamaster.flight.enums.FlightEnums;
 import lombok.AccessLevel;

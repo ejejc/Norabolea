@@ -1,5 +1,8 @@
 server:
   port: 8080
+  servlet:
+    application-display-name: jpa-master
+    context-path: /api  # 전역 api path 설정
 
 spring:
   application:
@@ -34,6 +37,9 @@ logging:
           client: DEBUG
 
 open-api:
-  country-code:
-    request-uri: "http://apis.data.go.kr/1262000/CountryCodeService2/getCountryCodeList2"
+#  country-code:
+#    request-uri: "http://apis.data.go.kr/1262000/CountryCodeService2/getCountryCodeList2"
+#    api-key: "eMnMvGML1ccLs2K4gEVX5m8Ld8HkzUBHdgw2Kzo9tt5J8F8rHhikcX6aUWTvn0FXcOCnWdLpqXv8ZVRVd8G1/w=="
+  airline:
+    request-uri: "http://apis.data.go.kr/B551177/StatusOfSrvAirlines/getServiceAirlineInfo"
     api-key: "eMnMvGML1ccLs2K4gEVX5m8Ld8HkzUBHdgw2Kzo9tt5J8F8rHhikcX6aUWTvn0FXcOCnWdLpqXv8ZVRVd8G1/w=="
