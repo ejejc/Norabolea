@@ -9,6 +9,11 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class AccommodationService {
     private final AccommodationsRepository accommodationsRepository;
+
+    /**
+     * 숙소 추가
+     * @param entity
+     */
     public void addAccommodation(Accommodations entity) {
         accommodationsRepository.save(entity);
     }
