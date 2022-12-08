@@ -7,7 +7,9 @@ server:
 spring:
   application:
     name: jpa-master
-
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   h2:
     console:
       enabled: true

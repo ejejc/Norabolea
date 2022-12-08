@@ -68,7 +68,7 @@ public class Room {
         this.borrowRoom = borrowRoom;
     }
 
-    public void add(Media media) {
+    public void addMedia(Media media) {
         this.media.add(media);
         media.setRoom(this);
     }
