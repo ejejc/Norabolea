@@ -1,5 +1,6 @@
 package com.example.jpamaster.flight.web;
 
+import com.example.jpamaster.common.ApiResponse;
 import com.example.jpamaster.flight.service.AirlineService;
 import com.example.jpamaster.flight.web.dto.req.AirlineRequestDto;
 import com.example.jpamaster.flight.web.dto.req.KeywordSearchConditionDto;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RequestMapping("/v1/airline")
 @RequiredArgsConstructor
@@ -18,30 +20,28 @@ public class AirlineController {
     private final AirlineService airlineService;
 
     @DeleteMapping("/{airlineSeq}")
-    public ResponseEntity<Void> deleteAirline(
+    public ApiResponse<Void> deleteAirline(
             @PathVariable("airlineSeq") Long airlineSeq
     ) {
         airlineService.deleteAirline(airlineSeq);
-        return ResponseEntity.noContent().build();
+        return ApiResponse.createOk(null);
     }
 
     @PutMapping("/{airlineSeq}")
-    public ResponseEntity<Long> updateAirlineInfo(
+    public ApiResponse<Long> updateAirlineInfo(
             @PathVariable("airlineSeq") Long airlineSeq,
-            @RequestBody AirlineRequestDto dto
+            @RequestBody AirlineRequestDto dto,
+            @RequestPart(name = "airlineImage", required = false) MultipartFile airlineImage
     ) {
-        return ResponseEntity.ok().body(airlineService.updateAirlineInfo(airlineSeq, dto));
+        return ApiResponse.createOk(airlineService.updateAirlineInfo(airlineSeq, dto, airlineImage));
     }
 
     @GetMapping
-    public ResponseEntity<Page<AirlineDto>> getAirlineList(
+    public ApiResponse<Page<AirlineDto>> getAirlineList(
             KeywordSearchConditionDto airlineSearchCondition,
             Pageable pageable
     ) {
         Page<AirlineDto> pagedAirline = airlineService.getAirlineListByCondition(airlineSearchCondition, pageable);
-        return ResponseEntity.ok().body(pagedAirline);
+        return ApiResponse.createOk(pagedAirline);
     }
-
-
-
 }

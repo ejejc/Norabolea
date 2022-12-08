@@ -15,10 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -39,17 +41,22 @@ public class AirlineService {
     }
 
     @Transactional
-    public Long updateAirlineInfo(Long airlineSeq, AirlineRequestDto dto) {
-//        airlineRepository.findById(airlineSeq)
-//                .ifPresent(airline -> airline.updateAirlineName(dto.getKrName(), dto.getEnName()));
-//        return airlineSeq;
-        return null;
+    public Long updateAirlineInfo(Long airlineSeq, AirlineRequestDto dto, MultipartFile airlineImage) {
+
+        Optional<Airline> optionalAirline = airlineRepository.findById(airlineSeq);
+
+        if (optionalAirline.isPresent()) {
+            // TODO storage 에 파일 저장 후 url 저장
+            Airline airline = optionalAirline.get();
+
+            airline.updateAirlineInfo(dto.getAirlineName(), dto.getAirlineTel(), dto.getAirlineIcTel());
+        }
+        return airlineSeq;
     }
 
     public Page<AirlineDto> getAirlineListByCondition(KeywordSearchConditionDto searchCondition, Pageable pageable) {
-//        return airlineRepository.findAllByKeyword(searchCondition.getKeyword(), pageable)
-//                .map(airline -> new AirlineDto(airline.getAirlineSeq(), airline.getKrName(), airline.getEnName()));
-        return null;
+        return airlineRepository.findAllByKeyword(searchCondition.getKeyword(), pageable)
+                .map(airline -> new AirlineDto(airline.getAirlineSeq(), airline.getAirlineImage(), airline.getAirlineName(), airline.getAirlineTel(), airline.getAirlineIcTel(), airline.getAirlineIata(), airline.getAirlineIcao()));
     }
 
 

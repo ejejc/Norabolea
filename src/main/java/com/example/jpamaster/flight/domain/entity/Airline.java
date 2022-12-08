@@ -58,4 +58,10 @@ public class Airline {
         this.airlineIcao = airlineIcao;
         this.deleted = false;
     }
+
+    public void updateAirlineInfo(String airlineName, String airlineTel, String airlineIcTel) {
+        this.airlineName = airlineName;
+        this.airlineTel = airlineTel;
+        this.airlineIcTel = airlineIcTel;
+    }
 }

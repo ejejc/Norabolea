@@ -1,5 +1,6 @@
 package com.example.jpamaster.flight.web;
 
+import com.example.jpamaster.common.ApiResponse;
 import com.example.jpamaster.flight.service.AirportService;
 import com.example.jpamaster.flight.web.dto.req.KeywordSearchConditionDto;
 import com.example.jpamaster.flight.web.dto.res.AirportDto;
@@ -18,9 +19,9 @@ public class AirportController {
     private final AirportService airportService;
 
     @GetMapping
-    public List<AirportDto> getAirportBySearchCondition(
+    public ApiResponse<List<AirportDto>> getAirportBySearchCondition(
             KeywordSearchConditionDto airportSearchConditionDto
     ) {
-        return airportService.getAirportBySearchCondition(airportSearchConditionDto);
+        return ApiResponse.createOk(airportService.getAirportBySearchCondition(airportSearchConditionDto));
     }
 }
