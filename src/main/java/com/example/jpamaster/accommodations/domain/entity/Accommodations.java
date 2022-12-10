@@ -42,6 +42,9 @@ public class Accommodations {
     @OneToMany(mappedBy = "accommodations", cascade = CascadeType.ALL)
     private List<Room> rooms;
 
+    @OneToMany(mappedBy = "accommodation")
+    private List<AccommoFacilityInfo> accommoFacilityInfos;
+
     @ManyToOne() // TODO: fetchType 공부해서 넣어주기
     @JoinColumn(name = "accommodation_seller_seq")
     private Seller seller;

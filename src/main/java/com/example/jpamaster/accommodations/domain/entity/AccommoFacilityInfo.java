@@ -11,11 +11,13 @@ public class AccommoFacilityInfo {
     @Id
     private Long seq;
 
-    @Column(name = "accommodation_seq")
-    private Long accommodationSeq;
+    @JoinColumn(name = "accommodations_seq")
+    @ManyToOne
+    private Accommodations accommodation;
 
-    @Column(name = "popular_facility_seq")
-    private Long popularFacilitySeq;
+    @JoinColumn(name = "popular_facility_seq")
+    @ManyToOne
+    private PopularFacility popularFacility;
 
     private int sort;
 }
