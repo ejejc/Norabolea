@@ -1,5 +1,6 @@
 package com.example.jpamaster.flight.domain.entity;
 
+import com.example.jpamaster.common.domain.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "air_schedule")
 @Entity
-public class AirSchedule {
+public class AirSchedule extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

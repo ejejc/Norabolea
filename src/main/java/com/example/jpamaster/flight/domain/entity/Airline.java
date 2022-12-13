@@ -1,5 +1,6 @@
 package com.example.jpamaster.flight.domain.entity;
 
+import com.example.jpamaster.common.domain.BaseEntity;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicUpdate;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Where(clause = " deleted = false ")
 @Table(name = "airline")
 @Entity
-public class Airline {
+public class Airline extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

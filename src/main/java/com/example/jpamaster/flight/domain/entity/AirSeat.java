@@ -1,5 +1,6 @@
 package com.example.jpamaster.flight.domain.entity;
 
+import com.example.jpamaster.common.domain.BaseEntity;
 import com.example.jpamaster.flight.enums.FlightEnums;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import static javax.persistence.CascadeType.ALL;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "air_seat")
 @Entity
-public class AirSeat {
+public class AirSeat extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

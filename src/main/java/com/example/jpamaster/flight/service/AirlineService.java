@@ -77,7 +77,9 @@ public class AirlineService {
 
                 for (AirlineInfoVo.Response.Body.Item item : airlineInfoVo.getResponse().getBody().getItems()) {
 
-                    if (!airlineRepository.existsByAirlineIataAndAirlineIcao(item.getAirlineIata(), item.getAirlineIcao())) {
+                    Optional<Airline> optionalAirline = airlineRepository.findByAirlineIataAndAirlineIcao(item.getAirlineIata(), item.getAirlineIcao());
+
+                    if (optionalAirline.isEmpty()) {
                         Airline airline = Airline.builder()
                                 .airlineImage(item.getAirlineImage())
                                 .airlineName(item.getAirlineName())
@@ -88,6 +90,9 @@ public class AirlineService {
                                 .build();
 
                         airlines.add(airline);
+                    } else {
+                        Airline airline = optionalAirline.get();
+                        airline.updateAirlineInfo(item.getAirlineName(), item.getAirlineTel(), item.getAirlineIcTel());
                     }
                 }
                 airlineRepository.saveAll(airlines);

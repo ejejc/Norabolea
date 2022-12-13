@@ -1,6 +1,7 @@
 package com.example.jpamaster.flight.domain.repository;
 
 import com.example.jpamaster.flight.domain.entity.Airline;
+import org.hibernate.LockMode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,14 +9,16 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.LockModeType;
 import java.util.Optional;
 
 public interface AirlineRepository extends JpaRepository<Airline, Long> {
 
+    @Transactional
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    boolean existsByAirlineIataAndAirlineIcao(String airlineIata, String airlineIcao);
+    Optional<Airline> findByAirlineIataAndAirlineIcao(String airlineIata, String airlineIcao);
 
 
     @Modifying( flushAutomatically = true, clearAutomatically = true)

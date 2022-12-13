@@ -1,5 +1,6 @@
 package com.example.jpamaster.flight.domain.entity;
 
+import com.example.jpamaster.common.domain.BaseEntity;
 import lombok.*;
 import org.modelmapper.internal.util.Assert;
 
@@ -11,7 +12,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Table(name = "airport")
 @Entity
-public class Airport {
+public class Airport extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
