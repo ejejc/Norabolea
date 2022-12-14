@@ -8,6 +8,7 @@ import com.example.jpamaster.accommodations.dto.AccommodationDto;
 import com.example.jpamaster.accommodations.repository.AccommodationsRepository;
 import com.example.jpamaster.accommodations.repository.AcommoFacilityInfoRepository;
 import com.example.jpamaster.accommodations.repository.PopularFacilityRepository;
+import com.example.jpamaster.common.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +29,11 @@ public class AccommodationService {
     public void addAccommodation(AccommodationDto param) {
         Accommodations accommodations = param.changeToEntity();
         accommodationsRepository.save(accommodations);
-        // 파라미터로 받은 인기시설 엔티티 조회
+        // 파라미터로 받은 Seq를 통해 인기시설 엔티티 조회
         List<PopularFacility> popularFacilityList
                 = popularFacilityRepository.findAllById(
-                param.getPopularFacilitySeqs().stream()
-                        .map(AccommoFacilityInfoDto::getFacilitySeq)
+                param.getFacilityInfoReq().stream()
+                        .map(AccommoFacilityInfoDto.Req::getFacilitySeq)
                         .collect(Collectors.toList()));
         // 인기시설 엔티티를 통해, 숙소와 인기시설의 중간테이블 저장
         List<AccommoFacilityInfo> collect = popularFacilityList.stream()
@@ -62,10 +63,10 @@ public class AccommodationService {
         accommodationsRepository.save(accommodations);*/
     }
 
-    public void findAccommodation(Long accommodationSeq) {
-        Accommodations ac = accommodationsRepository.findById(accommodationSeq).orElse(null);
-
-        //AccommoFacilityInfo info = ac.getAccommoFacilityInfos().get(0);
-        System.out.println("hi");
+    public AccommodationDto findAccommodation(Long accommodationSeq) {
+        // TODO: 유효성 체크 로직 추가
+        Accommodations entity = accommodationsRepository.findById(accommodationSeq).orElse(null);
+        AccommodationDto dto = AccommodationDto.changeToDto(entity);
+        return dto;
     }
 }

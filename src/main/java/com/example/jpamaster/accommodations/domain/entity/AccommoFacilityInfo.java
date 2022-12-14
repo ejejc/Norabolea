@@ -12,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "accommodation_facility_info")
+@Getter
 public class AccommoFacilityInfo {
 
     @Column(name = "accommo_facility_seq")

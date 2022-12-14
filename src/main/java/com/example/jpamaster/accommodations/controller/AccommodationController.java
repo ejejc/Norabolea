@@ -34,8 +34,7 @@ public class AccommodationController {
 
     @GetMapping()
     public ApiResponse<AccommodationDto> find (@RequestParam Long accommodationSeq) {
-        accommodationService.findAccommodation(accommodationSeq);
-        return null;
+        return ApiResponse.createOk(accommodationService.findAccommodation(accommodationSeq));
     }
 
 
