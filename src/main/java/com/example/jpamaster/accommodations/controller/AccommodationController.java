@@ -7,10 +7,7 @@ import com.example.jpamaster.common.enums.Status;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -23,7 +20,7 @@ public class AccommodationController {
     @PostMapping // TODO: 비즈니스 로직이 점점 늘어나겠지?, 추후 로그인 기능 넣어지면 토근 파싱해서 seller 객체 넣쟈 ㅎㅎ
     @ApiOperation(value = "숙박 정보 저장 API")
     public ApiResponse<Void> add(@RequestBody AccommodationDto param) {
-        accommodationService.addAccommodation(param.changeToEntity());
+        accommodationService.addAccommodation(param);
         // 이렇게 생성할 경우, controller 단에서 객체 생성 코드가 반복적으로 일어남.. > 개선해야 할 것 같다.
         //return new ApiResponse<AccommodationDto>(param);
         /**
@@ -33,6 +30,12 @@ public class AccommodationController {
          * 그래서 static 키워드 뒤에 제네릭을 붙임으로써 제네릭 메소드를 만들어준다.
          */
         return ApiResponse.createOk(null);
+    }
+
+    @GetMapping()
+    public ApiResponse<AccommodationDto> find (@RequestParam Long accommodationSeq) {
+        accommodationService.findAccommodation(accommodationSeq);
+        return null;
     }
 
 

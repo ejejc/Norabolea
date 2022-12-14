@@ -42,7 +42,7 @@ public class Accommodations {
     @OneToMany(mappedBy = "accommodations", cascade = CascadeType.ALL)
     private List<Room> rooms;
 
-    @OneToMany(mappedBy = "accommodation")
+    @OneToMany(mappedBy = "accommodation"/*, cascade = CascadeType.ALL*/ , fetch = FetchType.LAZY)
     private List<AccommoFacilityInfo> accommoFacilityInfos;
 
     @ManyToOne() // TODO: fetchType 공부해서 넣어주기

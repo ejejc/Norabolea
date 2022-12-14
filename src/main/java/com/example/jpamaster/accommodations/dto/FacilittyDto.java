@@ -3,10 +3,14 @@ package com.example.jpamaster.accommodations.dto;
 import com.example.jpamaster.accommodations.domain.entity.PopularFacility;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @ApiModel(value = "인기 시설")
+@Getter
+@Setter
 public class FacilittyDto {
 
     @ApiModelProperty(value = "인기시설 이름")

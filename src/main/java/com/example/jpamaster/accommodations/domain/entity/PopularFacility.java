@@ -2,6 +2,7 @@ package com.example.jpamaster.accommodations.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Table(name = "popular_facility")
 public class PopularFacility {
     @Id
@@ -24,4 +26,5 @@ public class PopularFacility {
     private String logoUrl;
 
     // TODO: 등록, 수정일지 공통으로 되면 넣기
+
 }

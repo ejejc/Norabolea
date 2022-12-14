@@ -1,8 +1,16 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "accommodation_facility_info")
 public class AccommoFacilityInfo {
 
@@ -19,5 +27,5 @@ public class AccommoFacilityInfo {
     @ManyToOne
     private PopularFacility popularFacility;
 
-    private int sort;
+    private Integer sort;
 }
