@@ -25,6 +25,7 @@ public class FlightEnums {
         SEAT_REAR_SCREEN("seat rear screen", "좌석 뒤 스크린"),
         PERSONAL_MONITOR_ON_DEMAND_VIDEO("personal monitor on-demand video", "개인 모니터 주문형 비디오"),
         PERSONAL_DEVICE("personal device", "개인 단말기"),
+        NOT_SUPPORT("not support", "제공 안함")
         ;
         private final String enName;
         private final String krName;
@@ -35,6 +36,7 @@ public class FlightEnums {
     public enum FoodSupplyType {
         IN_FLIGHT_MEAL("in-flight meal", "기내식"),
         SNACK("snack", "스낵"),
+        NOT_SUPPORT("not support", "제공 안함")
         ;
 
         private final String enName;

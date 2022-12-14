@@ -3,6 +3,7 @@ package com.example.jpamaster.flight.domain.entity;
 import com.example.jpamaster.common.domain.BaseEntity;
 import com.example.jpamaster.flight.enums.FlightEnums;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
@@ -65,11 +66,18 @@ public class Airplane extends BaseEntity {
     @JoinColumn(name = "airline_seq")
     private Airline airline;
 
-
-
-
-
-
-
-
+    @Builder
+    public Airplane(String code, String manufacturer, String type, Integer standardSeatCount, Integer maxSeatCount, Boolean wifiUsable, Boolean powerConsentUsable, Boolean usbUsable, FlightEnums.VideoType videoType, FlightEnums.FoodSupplyType foodSupplyType, Airline airline) {
+        this.code = code;
+        this.manufacturer = manufacturer;
+        this.type = type;
+        this.standardSeatCount = standardSeatCount;
+        this.maxSeatCount = maxSeatCount;
+        this.wifiUsable = wifiUsable;
+        this.powerConsentUsable = powerConsentUsable;
+        this.usbUsable = usbUsable;
+        this.videoType = videoType;
+        this.foodSupplyType = foodSupplyType;
+        this.airline = airline;
+    }
 }

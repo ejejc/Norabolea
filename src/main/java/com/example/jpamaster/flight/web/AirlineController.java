@@ -2,13 +2,12 @@ package com.example.jpamaster.flight.web;
 
 import com.example.jpamaster.common.ApiResponse;
 import com.example.jpamaster.flight.service.AirlineService;
-import com.example.jpamaster.flight.web.dto.req.AirlineRequestDto;
+import com.example.jpamaster.flight.web.dto.req.AirlineUpdateRequestDto;
 import com.example.jpamaster.flight.web.dto.req.KeywordSearchConditionDto;
 import com.example.jpamaster.flight.web.dto.res.AirlineDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +29,7 @@ public class AirlineController {
     @PutMapping("/{airlineSeq}")
     public ApiResponse<Long> updateAirlineInfo(
             @PathVariable("airlineSeq") Long airlineSeq,
-            @RequestBody AirlineRequestDto dto,
+            @RequestBody AirlineUpdateRequestDto dto,
             @RequestPart(name = "airlineImage", required = false) MultipartFile airlineImage
     ) {
         return ApiResponse.createOk(airlineService.updateAirlineInfo(airlineSeq, dto, airlineImage));

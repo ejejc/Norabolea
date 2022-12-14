@@ -2,11 +2,12 @@ package com.example.jpamaster.flight.service;
 
 import com.example.jpamaster.flight.domain.entity.Airline;
 import com.example.jpamaster.flight.domain.repository.AirlineRepository;
-import com.example.jpamaster.flight.web.dto.req.AirlineRequestDto;
+import com.example.jpamaster.flight.web.dto.req.AirlineUpdateRequestDto;
 import com.example.jpamaster.flight.web.dto.req.KeywordSearchConditionDto;
 import com.example.jpamaster.flight.web.dto.res.AirlineDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -41,7 +42,7 @@ public class AirlineService {
     }
 
     @Transactional
-    public Long updateAirlineInfo(Long airlineSeq, AirlineRequestDto dto, MultipartFile airlineImage) {
+    public Long updateAirlineInfo(Long airlineSeq, AirlineUpdateRequestDto dto, MultipartFile airlineImage) {
 
         Optional<Airline> optionalAirline = airlineRepository.findById(airlineSeq);
 
@@ -99,6 +100,38 @@ public class AirlineService {
             }
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * 로컬 (익명) 클래스로 정의하는 경우 잭슨에서 바인딩을 할 수 없다.
+     * 잭슨 패키지에서 해당 클래스의 기본 생성자로 접근할 수 없기 때문에.
+     * 내부 클래스로 선언하는 경우 static class 가 아닌 경우
+     */
+    @Getter
+    static class AirlineInfoVo {
+
+        private AirlineInfoVo.Response response;
+
+        @Getter
+        static class Response {
+            private Object header;
+            private AirlineInfoVo.Response.Body body;
+
+            @Getter
+            static class Body {
+                private List<AirlineInfoVo.Response.Body.Item> items;
+
+                @Getter
+                static class Item {
+                    private String airlineImage;
+                    private String airlineName;
+                    private String airlineTel;
+                    private String airlineIcTel;
+                    private String airlineIata;
+                    private String airlineIcao;
+                }
+            }
         }
     }
 }
