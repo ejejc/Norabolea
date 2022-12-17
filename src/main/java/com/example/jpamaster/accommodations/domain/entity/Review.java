@@ -1,22 +1,14 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
+import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "review")
 public class Review {
@@ -45,8 +37,25 @@ public class Review {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review" ,cascade = CascadeType.PERSIST)
+    //@Builder.Default TODO: 이거 사용할때 @Builder에 컴파일 오류 발생 이유 확인해보기
     private List<ReviewMedia> reviewMedias;
+
+    public void add(ReviewMedia mediaEntity) {
+        reviewMedias.add(mediaEntity);
+        mediaEntity.setReview(this);
+    }
+
+    @Builder
+    public Review(String content, int kindnessStarScore, int cleanlinessStarScore, int convenienceStarScore, int locationStarScore, Room room) {
+        this.content = content;
+        this.kindnessStarScore = kindnessStarScore;
+        this.cleanlinessStarScore = cleanlinessStarScore;
+        this.convenienceStarScore = convenienceStarScore;
+        this.locationStarScore = locationStarScore;
+        this.room = room;
+        this.reviewMedias = new ArrayList<>();
+    }
 
     // private User user; TODO: 추후 추가 예정
     // TODO: 등록, 수정일지 공통으로 되면 넣기
