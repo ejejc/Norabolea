@@ -54,6 +54,9 @@ public class Room {
     @JoinColumn(name = "borrow_room_seq")
     private BorrowRoom borrowRoom;
 
+    @OneToMany(mappedBy = "room")
+    private List<Review> review;
+
     @Builder
     public Room(Long roomPrice, int standardPerson, int maxPerson, String checkInTime, String checkOutTime, boolean useYn, BorrowRoom borrowRoom) {
         this.roomPrice = roomPrice;

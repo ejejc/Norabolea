@@ -33,6 +33,7 @@ public class AccommodationController {
     }
 
     @GetMapping()
+    @ApiOperation(value = "숙박 정보 조회 API")
     public ApiResponse<AccommodationDto> find (@RequestParam Long accommodationSeq) {
         return ApiResponse.createOk(accommodationService.findAccommodation(accommodationSeq));
     }
