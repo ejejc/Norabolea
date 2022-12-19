@@ -42,6 +42,9 @@ public class Airport extends BaseEntity {
     @Column(name = "city_en")
     private String cityEn;
 
+    @Column(name = "available_airplane_cnt")
+    private Integer availableAirplaneCnt;
+
     @Column(name = "search_count")
     private Long searchCount;
 
@@ -71,6 +74,7 @@ public class Airport extends BaseEntity {
         this.countryKr = countryKr;
         this.cityEn = cityEn;
         this.searchCount = 0L;
+        this.availableAirplaneCnt = 0;
     }
 
     @Override

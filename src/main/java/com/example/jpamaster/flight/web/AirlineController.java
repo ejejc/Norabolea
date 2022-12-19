@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@RequestMapping("/v1/airline")
+@RequestMapping("/v1/admin/airline")
 @RequiredArgsConstructor
 @RestController
 public class AirlineController {

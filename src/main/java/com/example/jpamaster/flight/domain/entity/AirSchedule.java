@@ -30,10 +30,16 @@ public class AirSchedule extends BaseEntity {
     @JoinColumn(name = "arr_airport_seq")
     private Airport arrAirport;
 
-    @Column
+    @Column(name = "expected_takeoff_at")
+    private LocalDateTime expectedTakeoffAt;
+
+    @Column(name = "takeoff_at")
     private LocalDateTime takeoffAt;
 
-    @Column
+    @Column(name = "expected_landing_at")
+    private LocalDateTime expectedLandingAt;
+
+    @Column(name = "landing_at")
     private LocalDateTime landingAt;
 
 }

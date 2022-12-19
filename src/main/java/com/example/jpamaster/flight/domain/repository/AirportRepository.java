@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AirportRepository extends JpaRepository<Airport, Long> {
 
@@ -24,5 +25,7 @@ public interface AirportRepository extends JpaRepository<Airport, Long> {
                     " order by a.searchCount desc "
     )
     List<Airport> findTop3BySearchCondition(@Param("keyword") String keyword, Pageable pageable);
+
+    Optional<Airport> findByAirportSeq(Long fromAirportSeq);
 
 }
