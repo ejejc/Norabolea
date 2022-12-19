@@ -3,16 +3,19 @@ package com.example.jpamaster.accommodations.service;
 import com.example.jpamaster.accommodations.domain.entity.AccommoFacilityInfo;
 import com.example.jpamaster.accommodations.domain.entity.Accommodations;
 import com.example.jpamaster.accommodations.domain.entity.PopularFacility;
+import com.example.jpamaster.accommodations.domain.entity.Review;
 import com.example.jpamaster.accommodations.dto.AccommoFacilityInfoDto;
 import com.example.jpamaster.accommodations.dto.AccommodationDto;
 import com.example.jpamaster.accommodations.repository.AccommodationsRepository;
 import com.example.jpamaster.accommodations.repository.AcommoFacilityInfoRepository;
 import com.example.jpamaster.accommodations.repository.PopularFacilityRepository;
+import com.example.jpamaster.accommodations.repository.ReviewRepository;
 import com.example.jpamaster.common.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,7 +24,7 @@ public class AccommodationService {
     private final AccommodationsRepository accommodationsRepository;
     private final PopularFacilityRepository popularFacilityRepository;
     private final AcommoFacilityInfoRepository acommoFacilityInfoRepository;
-
+    private final ReviewRepository reviewRepository;
     /**
      * 숙소 추가
      * @param param
@@ -67,6 +70,13 @@ public class AccommodationService {
         // TODO: 유효성 체크 로직 추가
         Accommodations entity = accommodationsRepository.findById(accommodationSeq).orElse(null);
         AccommodationDto dto = AccommodationDto.changeToDto(entity);
+        this.setReviewCntAndReviewScore(dto);
         return dto;
+    }
+
+    private void setReviewCntAndReviewScore(AccommodationDto dto) {
+
+        if (Objects.nonNull(dto.getRooms())) {
+        }
     }
 }

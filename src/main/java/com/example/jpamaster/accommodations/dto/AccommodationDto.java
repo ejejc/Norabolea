@@ -30,10 +30,13 @@ public class AccommodationDto {
     private AccomodationsEnum.Type accommodationsType;
     @ApiModelProperty(value = "방")
     private List<RoomDto> rooms;
-
     private List<AccommoFacilityInfoDto.Req> facilityInfoReq;
 
     private List<AccommoFacilityInfoDto.Res> facilityInfoRes;
+    @ApiModelProperty(value = "평균 별점")
+    private int avgStarScore;
+    @ApiModelProperty(value = "리뷰 총 갯수")
+    private int tatalReviewCnt;
 
     public Accommodations changeToEntity() {
         Accommodations accommodations = Accommodations.builder()
