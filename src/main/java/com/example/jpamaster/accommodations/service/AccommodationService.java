@@ -6,14 +6,15 @@ import com.example.jpamaster.accommodations.domain.entity.PopularFacility;
 import com.example.jpamaster.accommodations.domain.entity.Review;
 import com.example.jpamaster.accommodations.dto.AccommoFacilityInfoDto;
 import com.example.jpamaster.accommodations.dto.AccommodationDto;
+import com.example.jpamaster.accommodations.dto.RoomDto;
 import com.example.jpamaster.accommodations.repository.AccommodationsRepository;
 import com.example.jpamaster.accommodations.repository.AcommoFacilityInfoRepository;
 import com.example.jpamaster.accommodations.repository.PopularFacilityRepository;
-import com.example.jpamaster.accommodations.repository.ReviewRepository;
-import com.example.jpamaster.common.ApiResponse;
+import com.example.jpamaster.accommodations.repository.review.ReviewRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -74,9 +75,14 @@ public class AccommodationService {
         return dto;
     }
 
-    private void setReviewCntAndReviewScore(AccommodationDto dto) {
-
+    private List<Review>  setReviewCntAndReviewScore(AccommodationDto dto) {
+        List<Review> totalReviewList = null;
         if (Objects.nonNull(dto.getRooms())) {
+            totalReviewList = new ArrayList<>();
+            for (RoomDto roomDto : dto.getRooms()) {
+                totalReviewList.addAll(reviewRepository.findAllReviewByRoomSeq(roomDto.getSeq()));
+            }
         }
+        return totalReviewList;
     }
 }

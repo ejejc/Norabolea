@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/accommodation")
+@RequestMapping("/accommodation")
 @Api(tags = {"숙박 Controller"})
 public class AccommodationController {
 

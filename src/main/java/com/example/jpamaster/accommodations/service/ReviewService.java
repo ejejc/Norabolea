@@ -3,7 +3,7 @@ package com.example.jpamaster.accommodations.service;
 import com.example.jpamaster.accommodations.domain.entity.Review;
 import com.example.jpamaster.accommodations.domain.entity.Room;
 import com.example.jpamaster.accommodations.dto.ReviewDto.Req;
-import com.example.jpamaster.accommodations.repository.ReviewRepository;
+import com.example.jpamaster.accommodations.repository.review.ReviewRepository;
 import com.example.jpamaster.accommodations.repository.RoomReposittory;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @ApiModel(value = "룸")
 public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
 
+    private Long seq;
     @ApiModelProperty(value = "방 가격")
     private Long roomPrice;
     @ApiModelProperty(value = "기준 인원")
@@ -111,6 +112,7 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
     public static RoomDto changeToDto(Room entity) {
         RoomDto roomDto
          = RoomDto.builder()
+                .seq(entity.getRoomSeq())
                 .roomPrice(entity.getRoomPrice())
                 .standardPerson(entity.getStandardPerson())
                 .maxPerson(entity.getMaxPerson())

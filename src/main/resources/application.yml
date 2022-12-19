@@ -2,7 +2,7 @@ server:
   port: 8080
   servlet:
     application-display-name: jpa-master
-    context-path: /api  # 전역 api path 설정
+    #context-path: /api  # 전역 api path 설정
 
 spring:
   application:

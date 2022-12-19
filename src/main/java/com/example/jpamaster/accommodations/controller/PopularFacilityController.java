@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/facility")
+@RequestMapping("/facility")
 @Api(tags = {"인기 시설 Controller"})
 public class PopularFacilityController {
 
