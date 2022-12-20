@@ -3,8 +3,6 @@ package com.example.jpamaster.accommodations.dto;
 import com.example.jpamaster.accommodations.domain.Address;
 import com.example.jpamaster.accommodations.domain.entity.Accommodations;
 import com.example.jpamaster.accommodations.enums.AccomodationsEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -31,12 +29,11 @@ public class AccommodationDto {
     @ApiModelProperty(value = "방")
     private List<RoomDto> rooms;
     private List<AccommoFacilityInfoDto.Req> facilityInfoReq;
-
     private List<AccommoFacilityInfoDto.Res> facilityInfoRes;
     @ApiModelProperty(value = "평균 별점")
-    private int avgStarScore;
+    private double avgStarScore;
     @ApiModelProperty(value = "리뷰 총 갯수")
-    private int tatalReviewCnt;
+    private int totalReviewCnt;
 
     public Accommodations changeToEntity() {
         Accommodations accommodations = Accommodations.builder()

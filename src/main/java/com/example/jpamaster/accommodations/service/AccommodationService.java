@@ -6,6 +6,7 @@ import com.example.jpamaster.accommodations.domain.entity.PopularFacility;
 import com.example.jpamaster.accommodations.domain.entity.Review;
 import com.example.jpamaster.accommodations.dto.AccommoFacilityInfoDto;
 import com.example.jpamaster.accommodations.dto.AccommodationDto;
+import com.example.jpamaster.accommodations.dto.ReviewDto;
 import com.example.jpamaster.accommodations.dto.RoomDto;
 import com.example.jpamaster.accommodations.repository.AccommodationsRepository;
 import com.example.jpamaster.accommodations.repository.AcommoFacilityInfoRepository;
@@ -13,6 +14,7 @@ import com.example.jpamaster.accommodations.repository.PopularFacilityRepository
 import com.example.jpamaster.accommodations.repository.review.ReviewRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +77,12 @@ public class AccommodationService {
         return dto;
     }
 
-    private List<Review>  setReviewCntAndReviewScore(AccommodationDto dto) {
+    /**
+     * 숙소 평균 리뷰 점수 및 리뷰 개수 구하기
+     * // TODO: 리팩토링하기
+     * @param dto
+     */
+    private void setReviewCntAndReviewScore(AccommodationDto dto) {
         List<Review> totalReviewList = null;
         if (Objects.nonNull(dto.getRooms())) {
             totalReviewList = new ArrayList<>();
@@ -83,6 +90,22 @@ public class AccommodationService {
                 totalReviewList.addAll(reviewRepository.findAllReviewByRoomSeq(roomDto.getSeq()));
             }
         }
-        return totalReviewList;
+        List<ReviewDto.Req> totalReviewDtoList = null;
+        if (Objects.nonNull(totalReviewList)) {
+            totalReviewDtoList = totalReviewList.stream()
+                    .map(vo -> ReviewDto.Req.builder()
+                            .cleanlinessStarScore(vo.getCleanlinessStarScore())
+                            .kindnessStarScore(vo.getKindnessStarScore())
+                            .locationStarScore(vo.getLocationStarScore())
+                            .convenienceStarScore(vo.getConvenienceStarScore()).build())
+                    .collect(Collectors.toList());
+        }
+
+        if (!CollectionUtils.isEmpty(totalReviewDtoList)) {
+            dto.setTotalReviewCnt(totalReviewList.size());
+            double score = totalReviewDtoList.stream()
+                    .mapToDouble(ReviewDto.Req::getTotalStarScore).sum();
+            dto.setAvgStarScore(score / dto.getTotalReviewCnt());
+        }
     }
 }
