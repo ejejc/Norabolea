@@ -3,7 +3,6 @@ package com.example.jpamaster.accommodations.controller;
 import com.example.jpamaster.accommodations.dto.AccommodationDto;
 import com.example.jpamaster.accommodations.service.AccommodationService;
 import com.example.jpamaster.common.ApiResponse;
-import com.example.jpamaster.common.enums.Status;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -36,6 +35,12 @@ public class AccommodationController {
     @ApiOperation(value = "숙박 정보 조회 API")
     public ApiResponse<AccommodationDto> find (@RequestParam Long accommodationSeq) {
         return ApiResponse.createOk(accommodationService.findAccommodation(accommodationSeq));
+    }
+
+    @GetMapping("/location")
+    @ApiOperation(value = "숙박 위치 정보 조회 API")
+    public ApiResponse<Void> findLocation() {
+        return ApiResponse.createOk(null);
     }
 
 

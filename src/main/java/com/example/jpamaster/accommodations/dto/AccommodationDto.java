@@ -28,10 +28,15 @@ public class AccommodationDto {
     private AccomodationsEnum.Type accommodationsType;
     @ApiModelProperty(value = "방")
     private List<RoomDto> rooms;
+    @ApiModelProperty(value = "인기시설 정보 - 요청 객체")
     private List<AccommoFacilityInfoDto.Req> facilityInfoReq;
+
+    @ApiModelProperty(value = "인기시설 정보 - 응답 객체")
     private List<AccommoFacilityInfoDto.Res> facilityInfoRes;
+
     @ApiModelProperty(value = "평균 별점")
     private double avgStarScore;
+
     @ApiModelProperty(value = "리뷰 총 갯수")
     private int totalReviewCnt;
 
