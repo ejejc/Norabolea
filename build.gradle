@@ -10,6 +10,10 @@ plugins {
     id 'java'
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
+// feign client 사용을 위해 버전 명시
+ext {
+    set('springCloudVersion', "2021.0.3")
+}
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
@@ -32,8 +36,15 @@ dependencies {
     // queryDsl 의존성 추가
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+    // feign-client 의존성 추가
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 }
-
+// feign client 사용을 위해 spring
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
 tasks.named('test') {
     useJUnitPlatform()
 }
