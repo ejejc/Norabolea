@@ -40,6 +40,7 @@ public class AccommodationController {
     @GetMapping("/location")
     @ApiOperation(value = "숙박 위치 정보 조회 API")
     public ApiResponse<Void> findLocation() {
+        accommodationService.findLocationToAccommodation();
         return ApiResponse.createOk(null);
     }
 

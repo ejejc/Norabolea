@@ -8,11 +8,13 @@ import com.example.jpamaster.accommodations.dto.AccommoFacilityInfoDto;
 import com.example.jpamaster.accommodations.dto.AccommodationDto;
 import com.example.jpamaster.accommodations.dto.ReviewDto;
 import com.example.jpamaster.accommodations.dto.RoomDto;
+import com.example.jpamaster.accommodations.feign.KakaoFeignClient;
 import com.example.jpamaster.accommodations.repository.AccommodationsRepository;
 import com.example.jpamaster.accommodations.repository.AcommoFacilityInfoRepository;
 import com.example.jpamaster.accommodations.repository.PopularFacilityRepository;
 import com.example.jpamaster.accommodations.repository.review.ReviewRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -23,11 +25,13 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AccommodationService {
     private final AccommodationsRepository accommodationsRepository;
     private final PopularFacilityRepository popularFacilityRepository;
     private final AcommoFacilityInfoRepository acommoFacilityInfoRepository;
     private final ReviewRepository reviewRepository;
+    private final KakaoFeignClient kakaoFeignClient;
     /**
      * 숙소 추가
      * @param param
@@ -107,5 +111,10 @@ public class AccommodationService {
                     .mapToDouble(ReviewDto.Req::getTotalStarScore).sum();
             dto.setAvgStarScore(score / dto.getTotalReviewCnt());
         }
+    }
+
+    public void findLocationToAccommodation() {
+     Object ob = kakaoFeignClient.searchLocation("경기도 안양시 만안구 안양천서로 177");
+     log.info("hi");
     }
 }
