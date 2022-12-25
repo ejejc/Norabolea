@@ -22,6 +22,8 @@ dependencies {
     implementation 'org.modelmapper:modelmapper:3.1.0'
     // swagger 설정
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+    // validation
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
 }
 
 tasks.named('test') {

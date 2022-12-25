@@ -1,9 +1,11 @@
 package com.example.jpamaster.common;
 
-import com.example.jpamaster.common.enums.Status;
+import com.example.jpamaster.common.enums.HttpStatusCode;
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 //@JsonInclude(value = Include.NON_NULL)
@@ -17,17 +19,30 @@ public class ApiResponse<T> {
    @Getter
    @ApiModel(value = "META SPEC")
    public static class Meta {
-       private Status code;
-       private String msg;
+       private int status;
+       private String code;
+       private String message;
+       private LocalDateTime createdAt;
+
    }
 
-    public ApiResponse(T data) {
+    private ApiResponse(final T data, final HttpStatusCode code) {
         this.data = data;
-        this.meta = new Meta(Status.OK, Status.OK.getMsg());
+        this.meta = new Meta(
+                code.getStatus(),
+                code.getCode(),
+                code.getDefaultMessage(),
+                LocalDateTime.now()
+        );
     }
 
-    public ApiResponse(Status code) {
-        this.meta = new Meta(code, code.getMsg());
+    private ApiResponse(final HttpStatusCode code, final String message, final LocalDateTime createdAt) {
+        this.meta = new Meta(
+                code.getStatus(),
+                code.getCode(),
+                message,
+                createdAt
+        );
     }
 
     /**
@@ -36,7 +51,11 @@ public class ApiResponse<T> {
      * @return
      * @param <T>
      */
-    public static<T> ApiResponse<T> createOk(T data) {
-        return new ApiResponse<>(data);
+    public static<T> ApiResponse<T> createOk(final T data) {
+        return new ApiResponse<>(data, HttpStatusCode.OK);
+    }
+
+    public static<T> ApiResponse<T> createError(final HttpStatusCode code, final String message, final LocalDateTime createdAt) {
+        return new ApiResponse<>(code, message, createdAt);
     }
 }

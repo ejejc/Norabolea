@@ -66,8 +66,17 @@ public class Airplane extends BaseEntity {
     @JoinColumn(name = "airline_seq")
     private Airline airline;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "current_airport_seq")
+    private Airport currentAirport;
+
+    @Column(name = "available")
+    private Boolean available;
+
     @Builder
-    public Airplane(String code, String manufacturer, String type, Integer standardSeatCount, Integer maxSeatCount, Boolean wifiUsable, Boolean powerConsentUsable, Boolean usbUsable, FlightEnums.VideoType videoType, FlightEnums.FoodSupplyType foodSupplyType, Airline airline) {
+    public Airplane(String code, String manufacturer, String type, Integer standardSeatCount, Integer maxSeatCount,
+                    Boolean wifiUsable, Boolean powerConsentUsable, Boolean usbUsable, FlightEnums.VideoType videoType,
+                    FlightEnums.FoodSupplyType foodSupplyType, Airline airline) {
         this.code = code;
         this.manufacturer = manufacturer;
         this.type = type;
@@ -79,5 +88,7 @@ public class Airplane extends BaseEntity {
         this.videoType = videoType;
         this.foodSupplyType = foodSupplyType;
         this.airline = airline;
+        this.currentAirport = null;
+        this.available = true;
     }
 }
