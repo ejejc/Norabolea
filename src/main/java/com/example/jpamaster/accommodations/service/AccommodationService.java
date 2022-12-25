@@ -4,10 +4,7 @@ import com.example.jpamaster.accommodations.domain.entity.AccommoFacilityInfo;
 import com.example.jpamaster.accommodations.domain.entity.Accommodations;
 import com.example.jpamaster.accommodations.domain.entity.PopularFacility;
 import com.example.jpamaster.accommodations.domain.entity.Review;
-import com.example.jpamaster.accommodations.dto.AccommoFacilityInfoDto;
-import com.example.jpamaster.accommodations.dto.AccommodationDto;
-import com.example.jpamaster.accommodations.dto.ReviewDto;
-import com.example.jpamaster.accommodations.dto.RoomDto;
+import com.example.jpamaster.accommodations.dto.*;
 import com.example.jpamaster.accommodations.feign.KakaoFeignClient;
 import com.example.jpamaster.accommodations.repository.AccommodationsRepository;
 import com.example.jpamaster.accommodations.repository.AcommoFacilityInfoRepository;
@@ -18,9 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -113,8 +108,8 @@ public class AccommodationService {
         }
     }
 
-    public void findLocationToAccommodation() {
-     Object ob = kakaoFeignClient.searchLocation("경기도 안양시 만안구 안양천서로 177");
-     log.info("hi");
+    public void findLocationToAccommodation(String query) {
+     Map result = kakaoFeignClient.searchLocation(query);
+     Object res = result.get("documents");
     }
 }

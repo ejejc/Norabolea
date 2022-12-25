@@ -39,8 +39,8 @@ public class AccommodationController {
 
     @GetMapping("/location")
     @ApiOperation(value = "숙박 위치 정보 조회 API")
-    public ApiResponse<Void> findLocation() {
-        accommodationService.findLocationToAccommodation();
+    public ApiResponse<Void> findLocation(@RequestParam String query) {
+        accommodationService.findLocationToAccommodation(query);
         return ApiResponse.createOk(null);
     }
 
