@@ -5,6 +5,8 @@ import lombok.*;
 import org.modelmapper.internal.util.Assert;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -48,6 +50,9 @@ public class Airport extends BaseEntity {
     @Column(name = "search_count")
     private Long searchCount;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "airport", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AvailableAirline> availableAirline;
+
 
     @Builder(
             builderMethodName = "airportGenerator",
@@ -75,6 +80,7 @@ public class Airport extends BaseEntity {
         this.cityEn = cityEn;
         this.searchCount = 0L;
         this.availableAirplaneCnt = 0;
+        this.availableAirline = new ArrayList<>();
     }
 
     @Override

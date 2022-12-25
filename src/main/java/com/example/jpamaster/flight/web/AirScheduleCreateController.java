@@ -19,7 +19,7 @@ public class AirScheduleCreateController {
 
     private final AirScheduleCreateService airScheduleCreateService;
     @PostMapping
-    public ApiResponse<Void> createAirSchedule(@Valid AirScheduleCreateRequestDto dto) {
+    public ApiResponse<Void> createAirSchedule( AirScheduleCreateRequestDto dto) {
 
         airScheduleCreateService.createAirSchedule(dto);
         return ApiResponse.createOk(null);

@@ -12,13 +12,7 @@ public class AirScheduleCreateRequestDto {
     private Long airplaneSeq;
     private Long fromAirportSeq;
     private Long toAirportSeq;
-    private LocalDateTime takeoffAt;
-    private LocalDateTime landingAt;
+    private LocalDateTime expectedTakeoffAt;
+    private LocalDateTime expectedLandingAt;
 
-    private List<SeatAvailableDto> seatAvailableDtoList;
-
-    public static class SeatAvailableDto {
-        private FlightEnums.SeatType seatType;
-        private Integer availableCnt;
-    }
 }

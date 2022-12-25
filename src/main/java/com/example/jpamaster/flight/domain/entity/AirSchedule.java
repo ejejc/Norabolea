@@ -2,6 +2,7 @@ package com.example.jpamaster.flight.domain.entity;
 
 import com.example.jpamaster.common.domain.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -42,4 +43,17 @@ public class AirSchedule extends BaseEntity {
     @Column(name = "landing_at")
     private LocalDateTime landingAt;
 
+
+    @Builder(
+            builderMethodName = "createAirSchedule",
+            buildMethodName = "create"
+    )
+    public AirSchedule(Airplane airplane, Airport deptAirport, Airport arrAirport,
+                       LocalDateTime expectedTakeoffAt, LocalDateTime expectedLandingAt) {
+        this.airplane = airplane;
+        this.deptAirport = deptAirport;
+        this.arrAirport = arrAirport;
+        this.expectedTakeoffAt = expectedTakeoffAt;
+        this.expectedLandingAt = expectedLandingAt;
+    }
 }
