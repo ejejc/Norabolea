@@ -1,8 +1,10 @@
 package com.example.jpamaster.accommodations.controller;
 
 import com.example.jpamaster.accommodations.dto.AccommodationDto;
+import com.example.jpamaster.accommodations.dto.KakaoDto;
 import com.example.jpamaster.accommodations.service.AccommodationService;
 import com.example.jpamaster.common.ApiResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -39,9 +41,8 @@ public class AccommodationController {
 
     @GetMapping("/location")
     @ApiOperation(value = "숙박 위치 정보 조회 API")
-    public ApiResponse<Void> findLocation(@RequestParam String query) {
-        accommodationService.findLocationToAccommodation(query);
-        return ApiResponse.createOk(null);
+    public ApiResponse<KakaoDto.Res> findLocation(@RequestParam String query) {
+        return ApiResponse.createOk(accommodationService.findLocationToAccommodation(query));
     }
 
 

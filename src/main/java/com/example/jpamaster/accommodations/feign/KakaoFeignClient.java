@@ -1,10 +1,12 @@
 package com.example.jpamaster.accommodations.feign;
 
 import com.example.jpamaster.accommodations.feign.configuration.KaKaoFeignConfiguration;
+import org.springframework.cloud.client.loadbalancer.Response;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 
@@ -12,5 +14,5 @@ import java.util.Map;
 public interface KakaoFeignClient {
 
     @GetMapping
-    public Map  searchLocation(@RequestParam("query") String query);
+    public Map searchLocation(@RequestParam("query") String query);
 }

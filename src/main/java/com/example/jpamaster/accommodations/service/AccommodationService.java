@@ -10,8 +10,12 @@ import com.example.jpamaster.accommodations.repository.AccommodationsRepository;
 import com.example.jpamaster.accommodations.repository.AcommoFacilityInfoRepository;
 import com.example.jpamaster.accommodations.repository.PopularFacilityRepository;
 import com.example.jpamaster.accommodations.repository.review.ReviewRepository;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.client.loadbalancer.Response;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -108,8 +112,13 @@ public class AccommodationService {
         }
     }
 
-    public void findLocationToAccommodation(String query) {
-     Map result = kakaoFeignClient.searchLocation(query);
-     Object res = result.get("documents");
+    public KakaoDto.Res findLocationToAccommodation(String query) {
+        KakaoDto.Res res = null;
+        Map result = kakaoFeignClient.searchLocation(query);
+        ArrayList<Map<String, String>> list = (ArrayList<Map<String, String>>) result.get("documents");
+        if (!CollectionUtils.isEmpty(list)) {
+             res = KakaoDto.Res.KakaoResOfDto(list.get(0));
+        }
+        return res;
     }
 }
