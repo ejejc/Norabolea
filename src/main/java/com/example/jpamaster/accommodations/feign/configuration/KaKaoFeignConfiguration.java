@@ -40,7 +40,7 @@ public class KaKaoFeignConfiguration implements ErrorDecoder {
         }
 
         switch (response.status()) {
-            case 400:
+            case 400: case 401:
                 throw new KakaoResException(msg.getMessage(), msg.getErrorType());
         }
         return null;
