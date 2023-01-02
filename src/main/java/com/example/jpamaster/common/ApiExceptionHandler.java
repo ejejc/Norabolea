@@ -1,6 +1,7 @@
 package com.example.jpamaster.common;
 
 import com.example.jpamaster.common.enums.Status;
+import com.example.jpamaster.common.exception.KakaoResException;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,4 +25,13 @@ public class ApiExceptionHandler {
         log.error(e.getCause().getMessage(), e);
         return new ApiResponse<Void>(Status.FAIL);
     }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(value = KakaoResException.class)
+    public ApiResponse<Void> kakaoErrorHandler(KakaoResException e)
+    {
+        // 로그
+        return new ApiResponse<Void>(Status.FAIL, e.getMessage());
+    }
+
 }

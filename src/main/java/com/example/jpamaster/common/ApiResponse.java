@@ -30,6 +30,10 @@ public class ApiResponse<T> {
         this.meta = new Meta(code, code.getMsg());
     }
 
+    public ApiResponse(Status code, String msg) {
+        this.meta = new Meta(code, msg);
+    }
+
     /**
      * API 성공 시, 공통 Response 정의
      * @param data

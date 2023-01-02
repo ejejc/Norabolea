@@ -9,8 +9,6 @@ import java.util.Arrays;
 import java.util.Map;
 
 public class KakaoDto {
-
-
     @Getter
     @Builder
     public static class Res {
@@ -18,6 +16,7 @@ public class KakaoDto {
         private AddressType addressType;
         private String x;
         private String y;
+        private ErrorResponse error;
 
         public static Res KakaoResOfDto(Map<String, String> documentMap) {
             return  KakaoDto.Res.builder()
@@ -45,6 +44,13 @@ public class KakaoDto {
                     .findFirst()
                     .orElse(null);
         }
+    }
+
+    @Getter
+    @Setter
+    public static class ErrorResponse {
+        private String message;
+        private String errorType;
     }
 
 
