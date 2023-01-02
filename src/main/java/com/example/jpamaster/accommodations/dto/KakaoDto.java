@@ -16,7 +16,6 @@ public class KakaoDto {
         private AddressType addressType;
         private String x;
         private String y;
-        private ErrorResponse error;
 
         public static Res KakaoResOfDto(Map<String, String> documentMap) {
             return  KakaoDto.Res.builder()
