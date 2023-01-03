@@ -37,6 +37,16 @@ public class ApiExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(value = KakaoResException.class)
+    public ApiResponse<Void> kakaoErrorHandler(KakaoResException e)
+    {
+        log.error(e.getMessage(), e);
+        return ApiResponse.createError(
+                HttpStatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), LocalDateTime.now()
+        );
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
     public ApiResponse<Void> handler(Exception e) {
         log.error(e.getMessage(), e);

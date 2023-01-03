@@ -5,16 +5,20 @@ import com.example.jpamaster.accommodations.domain.entity.Media;
 import com.example.jpamaster.accommodations.domain.entity.Room;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
+@Builder
 @ApiModel(value = "룸")
 public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
 
+    private Long seq;
     @ApiModelProperty(value = "방 가격")
     private Long roomPrice;
     @ApiModelProperty(value = "기준 인원")
@@ -34,6 +38,7 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
 
     @Setter
     @Getter
+    @Builder
     @ApiModel(value = "룸 미디어")
     private static class RoomMedia {
         @ApiModelProperty(value = "이미지 URL")
@@ -50,10 +55,18 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
                         .useYn(this.useYn)
                         .build();
         }
+
+        public static RoomMedia changeToDto(Media entity) {
+            return RoomMedia.builder()
+                    .mediaUrl(entity.getMediaUrl())
+                    .mainFlag(entity.isMainFlag())
+                    .useYn(entity.isUseYn()).build();
+        }
     }
 
     @Setter
     @Getter
+    @Builder
     @ApiModel(value = "대실")
     private static class Borrow {
         @ApiModelProperty(value = "대실 시간")
@@ -69,6 +82,13 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
                         .borrowPrice(this.borrowPrice)
                         .operateTime(this.operateTime)
                         .build();
+        }
+
+        public static RoomDto.Borrow changeToDto(BorrowRoom entity) {
+            return Borrow.builder()
+                    .borrowTime(entity.getBorrowTime())
+                    .borrowPrice(entity.getBorrowPrice())
+                    .operateTime(entity.getOperateTime()).build();
         }
     }
 
@@ -87,5 +107,20 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
             room.addMedia(vo.changeEntity());
         }
         return room;
+    }
+
+    public static RoomDto changeToDto(Room entity) {
+        RoomDto roomDto
+         = RoomDto.builder()
+                .seq(entity.getRoomSeq())
+                .roomPrice(entity.getRoomPrice())
+                .standardPerson(entity.getStandardPerson())
+                .maxPerson(entity.getMaxPerson())
+                .checkInTime(entity.getCheckInTime())
+                .checkOutTime(entity.getCheckOutTime())
+                .useYn(entity.isUseYn())
+                .mediaList(entity.getMedia().stream().map(RoomMedia::changeToDto).collect(Collectors.toList()))
+                .borrow(RoomDto.Borrow.changeToDto(entity.getBorrowRoom())).build();
+        return roomDto;
     }
 }

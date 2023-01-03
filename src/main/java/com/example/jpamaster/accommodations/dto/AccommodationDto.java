@@ -3,15 +3,20 @@ package com.example.jpamaster.accommodations.dto;
 import com.example.jpamaster.accommodations.domain.Address;
 import com.example.jpamaster.accommodations.domain.entity.Accommodations;
 import com.example.jpamaster.accommodations.enums.AccomodationsEnum;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
+@Builder
 @ApiModel(value = "숙소")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AccommodationDto {
     @ApiModelProperty(value = "숙소 이름")
     private String accommodationTitle;
@@ -23,6 +28,17 @@ public class AccommodationDto {
     private AccomodationsEnum.Type accommodationsType;
     @ApiModelProperty(value = "방")
     private List<RoomDto> rooms;
+    @ApiModelProperty(value = "인기시설 정보 - 요청 객체")
+    private List<AccommoFacilityInfoDto.Req> facilityInfoReq;
+
+    @ApiModelProperty(value = "인기시설 정보 - 응답 객체")
+    private List<AccommoFacilityInfoDto.Res> facilityInfoRes;
+
+    @ApiModelProperty(value = "평균 별점")
+    private double avgStarScore;
+
+    @ApiModelProperty(value = "리뷰 총 갯수")
+    private int totalReviewCnt;
 
     public Accommodations changeToEntity() {
         Accommodations accommodations = Accommodations.builder()
@@ -35,5 +51,23 @@ public class AccommodationDto {
             accommodations.addRoom(dto.changeEntity());
         }
         return accommodations;
+    }
+
+    public static AccommodationDto changeToDto(Accommodations entity) {
+        return AccommodationDto.builder()
+                .accommodationTitle(entity.getAccommodationTitle())
+                .contact(entity.getContact())
+                .address(entity.getAddress())
+                .accommodationsType(entity.getAccommodationsType())
+                .rooms(entity.getRooms().stream().map(RoomDto::changeToDto).collect(Collectors.toList()))
+                .facilityInfoRes(entity.getAccommoFacilityInfos().stream().map(AccommoFacilityInfoDto.Res::changeToDto).collect(Collectors.toList()))
+                .build();
+    }
+    public Integer findSortMatchForSeq(Long facilitySeq) {
+        return this.facilityInfoReq.stream()
+                    .filter(vo -> vo.getFacilitySeq().equals(facilitySeq))
+                    .map(AccommoFacilityInfoDto.Req::getSort)
+                    .findFirst()
+                    .orElse(null);
     }
 }

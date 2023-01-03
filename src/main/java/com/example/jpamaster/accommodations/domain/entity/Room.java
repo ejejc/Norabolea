@@ -1,9 +1,6 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
+@Getter
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -55,6 +53,9 @@ public class Room {
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "borrow_room_seq")
     private BorrowRoom borrowRoom;
+
+    @OneToMany(mappedBy = "room")
+    private List<Review> review;
 
     @Builder
     public Room(Long roomPrice, int standardPerson, int maxPerson, String checkInTime, String checkOutTime, boolean useYn, BorrowRoom borrowRoom) {

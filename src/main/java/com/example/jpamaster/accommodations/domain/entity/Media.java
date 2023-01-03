@@ -9,7 +9,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Setter
+@Getter
 @Table(name = "room_media")
 public class Media {
     @Id
@@ -32,5 +32,6 @@ public class Media {
 
     @ManyToOne
     @JoinColumn(name = "room_id")
+    @Setter
     private Room room;
 }
