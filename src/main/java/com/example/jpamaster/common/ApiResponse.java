@@ -45,10 +45,6 @@ public class ApiResponse<T> {
         );
     }
 
-    public ApiResponse(Status code, String msg) {
-        this.meta = new Meta(code, msg);
-    }
-
     /**
      * API 성공 시, 공통 Response 정의
      * @param data
