@@ -55,6 +55,10 @@ public class ApiResponse<T> {
         return new ApiResponse<>(data, HttpStatusCode.OK);
     }
 
+    public static<T> ApiResponse<T> createEmptyBody() {
+        return createOk(null);
+    }
+
     public static<T> ApiResponse<T> createError(final HttpStatusCode code, final String message, final LocalDateTime createdAt) {
         return new ApiResponse<>(code, message, createdAt);
     }

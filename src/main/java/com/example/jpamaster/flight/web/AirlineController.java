@@ -23,7 +23,7 @@ public class AirlineController {
             @PathVariable("airlineSeq") Long airlineSeq
     ) {
         airlineService.deleteAirline(airlineSeq);
-        return ApiResponse.createOk(null);
+        return ApiResponse.createEmptyBody();
     }
 
     @PutMapping("/{airlineSeq}")

@@ -1,8 +1,13 @@
 package com.example.jpamaster.flight.service;
 
+import com.example.jpamaster.flight.domain.entity.Airline;
 import com.example.jpamaster.flight.domain.entity.Airport;
+import com.example.jpamaster.flight.domain.entity.AvailableAirline;
+import com.example.jpamaster.flight.domain.repository.AirlineRepository;
 import com.example.jpamaster.flight.domain.repository.AirportRepository;
+import com.example.jpamaster.flight.domain.repository.AvailableAirlineRepository;
 import com.example.jpamaster.flight.web.dto.req.KeywordSearchConditionDto;
+import com.example.jpamaster.flight.web.dto.req.RegisterAvailableAirlineRequestDto;
 import com.example.jpamaster.flight.web.dto.res.AirportDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +27,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -30,6 +36,8 @@ import java.util.stream.Collectors;
 public class AirportService {
 
     private final AirportRepository airportRepository;
+    private final AirlineRepository airlineRepository;
+    private final AvailableAirlineRepository availableAirlineRepository;
 
     @Transactional(readOnly = true)
     public List<AirportDto> getAirportBySearchCondition(KeywordSearchConditionDto airportSearchConditionDto) {
@@ -50,5 +58,25 @@ public class AirportService {
         return top3Airport.stream()
                 .map(airport -> modelMapper.map(airport, AirportDto.class))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void registerAvailableAirline (Long airportSeq, RegisterAvailableAirlineRequestDto dto) {
+        Optional<Airport> optionalAirport = airportRepository.findByAirportSeq(airportSeq);
+        Optional<Airline> optionalAirline = airlineRepository.findById(dto.getAirlineSeq());
+
+        if (optionalAirport.isPresent() && optionalAirline.isPresent()) {
+            Airport airport = optionalAirport.get();
+            Airline airline = optionalAirline.get();
+
+            AvailableAirline availableAirline = AvailableAirline.builder()
+                    .airline(airline)
+                    .airport(airport)
+                    .availableFrom(dto.getAvailableFrom())
+                    .availableTo(dto.getAvailableTo())
+                    .build();
+
+            availableAirlineRepository.save(availableAirline);
+        }
     }
 }
