@@ -28,6 +28,14 @@ public class KaKaoFeignConfiguration implements ErrorDecoder {
     }
 
 
+    /**
+     *
+     * @param methodKey {@link feign.Feign#configKey} of the java method that invoked the request. ex.
+     *        {@code IAM#getUser()}
+     * @param response HTTP response where {@link Response#status() status} is greater than or equal
+     *        to {@code 300}.
+     * @return
+     */
     @Override
     public Exception decode(String methodKey, Response response) {
 
