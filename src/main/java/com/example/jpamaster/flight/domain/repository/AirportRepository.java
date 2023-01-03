@@ -18,7 +18,8 @@ public interface AirportRepository extends JpaRepository<Airport, Long> {
                     "   or lower(a.nameKr)  like %:keyword% " +
                     "   or lower(a.IATACode) like %:keyword% " +
                     "   or lower(a.ICAOCode)  like %:keyword% " +
-                    "   or lower(a.location)  like %:keyword% " +
+                    "   or lower(a.locationKr)  like %:keyword% " +
+                    "   or lower(a.locationEn)  like %:keyword% " +
                     "   or lower(a.countryEn)  like %:keyword% " +
                     "   or lower(a.countryKr)  like %:keyword% " +
                     "   or lower(a.cityEn)  like %:keyword% " +

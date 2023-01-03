@@ -45,10 +45,6 @@ public class ApiResponse<T> {
         );
     }
 
-    public ApiResponse(Status code, String msg) {
-        this.meta = new Meta(code, msg);
-    }
-
     /**
      * API 성공 시, 공통 Response 정의
      * @param data
@@ -57,6 +53,10 @@ public class ApiResponse<T> {
      */
     public static<T> ApiResponse<T> createOk(final T data) {
         return new ApiResponse<>(data, HttpStatusCode.OK);
+    }
+
+    public static<T> ApiResponse<T> createEmptyBody() {
+        return createOk(null);
     }
 
     public static<T> ApiResponse<T> createError(final HttpStatusCode code, final String message, final LocalDateTime createdAt) {

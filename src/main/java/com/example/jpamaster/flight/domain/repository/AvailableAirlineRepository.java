@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AvailableAirlineRepository extends JpaRepository<AvailableAirline, Long> {
-    long countByAirline_AirlineSeqAndAirport_AirportSeqIn(Airline airline, List<Long> airportSeqs);
+    long countByAirline_AirlineSeqAndAirport_AirportSeqIn(Long airlineSeq, List<Long> airportSeqs);
 }

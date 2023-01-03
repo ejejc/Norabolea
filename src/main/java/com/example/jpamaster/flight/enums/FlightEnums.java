@@ -42,10 +42,4 @@ public class FlightEnums {
         private final String enName;
         private final String krName;
     }
-
-
-    @Getter
-    public enum DomainType {
-        AIRPORT, AIRLINE, AIRPLANE;
-    }
 }

@@ -12,7 +12,7 @@ public class AirScheduleCreateRequestDto {
     private Long airplaneSeq;
     private Long fromAirportSeq;
     private Long toAirportSeq;
-    private LocalDateTime expectedTakeoffAt;
-    private LocalDateTime expectedLandingAt;
+    private String expectedTakeoffDate;
+    private String expectedTakeoffTime;
 
 }

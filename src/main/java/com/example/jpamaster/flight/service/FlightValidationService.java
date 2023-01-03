@@ -23,8 +23,8 @@ public class FlightValidationService {
     private final AirplaneRepository airplaneRepository;
     private final AvailableAirlineRepository availableAirlineRepository;
 
-    boolean createAirScheduleValidationAirline(Airline airline, List<Long> airportSeqs) {
-        if (availableAirlineRepository.countByAirline_AirlineSeqAndAirport_AirportSeqIn(airline, airportSeqs) < 2) {
+    boolean createAirScheduleValidation (Airplane airplane, Airport fromAirport, Airport toAirport) {
+        if (availableAirlineRepository.countByAirline_AirlineSeqAndAirport_AirportSeqIn(airplane.getAirline().getAirlineSeq(), List.of(fromAirport.getAirportSeq(), toAirport.getAirportSeq())) < 2) {
             throw new FlightBadRequestException(HttpStatusCode.BAD_REQUEST, "취항 하려는 공항 정보가 잘못되었습니다.");
         }
 
