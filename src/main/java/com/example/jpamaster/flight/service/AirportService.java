@@ -60,6 +60,7 @@ public class AirportService {
                 .collect(Collectors.toList());
     }
 
+    // TODO 취항사 등록 검증 처리 필요
     @Transactional
     public void registerAvailableAirline (Long airportSeq, RegisterAvailableAirlineRequestDto dto) {
         Optional<Airport> optionalAirport = airportRepository.findByAirportSeq(airportSeq);

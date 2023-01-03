@@ -31,29 +31,4 @@ public class AirSchedule extends BaseEntity {
     @JoinColumn(name = "arr_airport_seq")
     private Airport arrAirport;
 
-    @Column(name = "expected_takeoff_at")
-    private LocalDateTime expectedTakeoffAt;
-
-    @Column(name = "takeoff_at")
-    private LocalDateTime takeoffAt;
-
-    @Column(name = "expected_landing_at")
-    private LocalDateTime expectedLandingAt;
-
-    @Column(name = "landing_at")
-    private LocalDateTime landingAt;
-
-
-    @Builder(
-            builderMethodName = "createAirSchedule",
-            buildMethodName = "create"
-    )
-    public AirSchedule(Airplane airplane, Airport deptAirport, Airport arrAirport,
-                       LocalDateTime expectedTakeoffAt, LocalDateTime expectedLandingAt) {
-        this.airplane = airplane;
-        this.deptAirport = deptAirport;
-        this.arrAirport = arrAirport;
-        this.expectedTakeoffAt = expectedTakeoffAt;
-        this.expectedLandingAt = expectedLandingAt;
-    }
 }

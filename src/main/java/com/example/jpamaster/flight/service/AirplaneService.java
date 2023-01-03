@@ -25,6 +25,7 @@ public class AirplaneService {
     private final AirportRepository airportRepository;
     private final AirplaneRepository airplaneRepository;
 
+    // TODO 중복 비행기 등록 막기
     @Transactional
     public void registerAirplane(Long airlineSeq, AirplaneRegisterRequestDto dto) {
         Optional<Airline> optionalAirline = airlineRepository.findById(airlineSeq);
