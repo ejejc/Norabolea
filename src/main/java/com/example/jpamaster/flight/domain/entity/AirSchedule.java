@@ -19,6 +19,17 @@ public class AirSchedule extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long airScheduleSeq;
 
+    private LocalDateTime departAt;
+
+    private LocalDateTime arriveAt;
+
+    private Integer flightDistanceKm;
+
+    private Integer estimatedHourSpent;
+
+    private Integer estimatedMinuteSpent;
+
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "airplane_seq")
     private Airplane airplane;
@@ -31,4 +42,17 @@ public class AirSchedule extends BaseEntity {
     @JoinColumn(name = "arr_airport_seq")
     private Airport arrAirport;
 
+    @Builder
+    public AirSchedule (LocalDateTime departAt, LocalDateTime arriveAt, Integer flightDistanceKm,
+                        Integer estimatedHourSpent, Integer estimatedMinuteSpent, Airplane airplane,
+                        Airport deptAirport, Airport arrAirport) {
+        this.departAt = departAt;
+        this.arriveAt = arriveAt;
+        this.flightDistanceKm = flightDistanceKm;
+        this.estimatedHourSpent = estimatedHourSpent;
+        this.estimatedMinuteSpent = estimatedMinuteSpent;
+        this.airplane = airplane;
+        this.deptAirport = deptAirport;
+        this.arrAirport = arrAirport;
+    }
 }

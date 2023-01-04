@@ -1,7 +1,6 @@
 package com.example.jpamaster.flight.domain.entity;
 
 import com.example.jpamaster.common.domain.BaseEntity;
-import com.example.jpamaster.flight.enums.FlightEnums;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,7 +45,7 @@ public class Airplane extends BaseEntity {
     private Airport currentAirport;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AvailableSeatType> availableSeatTypes = new ArrayList<>();
+    private List<AirplaneSeatType> airplaneSeatTypes = new ArrayList<>();
 
     @Column(name = "available")
     private Boolean available;

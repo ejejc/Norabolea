@@ -3,7 +3,7 @@ package com.example.jpamaster.flight.service;
 import com.example.jpamaster.flight.domain.entity.Airline;
 import com.example.jpamaster.flight.domain.entity.Airplane;
 import com.example.jpamaster.flight.domain.entity.Airport;
-import com.example.jpamaster.flight.domain.entity.AvailableSeatType;
+import com.example.jpamaster.flight.domain.entity.AirplaneSeatType;
 import com.example.jpamaster.flight.domain.repository.AirlineRepository;
 import com.example.jpamaster.flight.domain.repository.AirplaneRepository;
 import com.example.jpamaster.flight.domain.repository.AirportRepository;
@@ -45,12 +45,12 @@ public class AirplaneService {
 
             if (!dto.getSeatRegisterRequestDtos().isEmpty()) {
                 for (SeatRegisterRequestDto seatDto : dto.getSeatRegisterRequestDtos()) {
-                    AvailableSeatType availableSeatType = AvailableSeatType.builder()
+                    AirplaneSeatType airplaneSeatType = AirplaneSeatType.builder()
                             .seatType(seatDto.getSeatType())
                             .availableSeatCount(seatDto.getAvailableSeatCount())
                             .build();
 
-                    availableSeatType.registerAirplane(airplane);
+                    airplaneSeatType.registerAirplane(airplane);
                 }
             }
 

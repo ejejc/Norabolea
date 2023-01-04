@@ -11,12 +11,12 @@ import javax.persistence.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Table(name = "available_seat_type")
+@Table(name = "airplane_seat_type")
 @Entity
-public class AvailableSeatType {
+public class AirplaneSeatType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long availableSeatTypeSeq;
+    private Long airplaneSeatTypeSeq;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "airplane_seq")
@@ -32,13 +32,13 @@ public class AvailableSeatType {
     private Integer availableSeatCount;
 
     @Builder
-    public AvailableSeatType (FlightEnums.SeatType seatType, Integer availableSeatCount) {
+    public AirplaneSeatType (FlightEnums.SeatType seatType, Integer availableSeatCount) {
         this.seatType = seatType;
         this.availableSeatCount = availableSeatCount;
     }
 
     public void registerAirplane(Airplane airplane) {
         this.airplane = airplane;
-        airplane.getAvailableSeatTypes().add(this);
+        airplane.getAirplaneSeatTypes().add(this);
     }
 }
