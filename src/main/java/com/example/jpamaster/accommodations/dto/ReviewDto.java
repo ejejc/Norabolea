@@ -3,8 +3,8 @@ package com.example.jpamaster.accommodations.dto;
 import com.example.jpamaster.accommodations.domain.entity.Review;
 import com.example.jpamaster.accommodations.domain.entity.ReviewMedia;
 import com.example.jpamaster.accommodations.domain.entity.Room;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
+
 import java.util.List;
 
 public class ReviewDto {
@@ -58,5 +58,18 @@ public class ReviewDto {
                     .useYn(this.useYn).build();
 
         }
+    }
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Setter
+    @Getter
+    public static class ReviewSummary {
+        private Long roomSeq;
+        private int cleanlinessSum;
+        private int convenienceSum;
+        private int kindnessSum;
+        private int locationSum;
+        private Long reviewCnt;
     }
 }
