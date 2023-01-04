@@ -26,7 +26,7 @@ public class ReviewController {
     // 특정 숙소에 대한 리뷰 리스트 불러오기
     // 방 필터 선택 시, 방마다 필터 걸어서 불러오기
     @GetMapping("/avg/grade")
-    public ApiResponse<Void> searchReviewAvgGrade(@RequestParam(value = "accommodationSeq") Long accommodationSeq
+    public ApiResponse<ReviewDto.ReviewSummary> searchReviewAvgGrade(@RequestParam(value = "accommodationSeq") Long accommodationSeq
             , @RequestParam(value = "roomSeq", required = false) Long roomSeq) {
         return reviewService.searchReviewAvgGrade(accommodationSeq, roomSeq);
     }

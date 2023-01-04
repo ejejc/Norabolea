@@ -64,12 +64,36 @@ public class ReviewDto {
     @AllArgsConstructor
     @Setter
     @Getter
-    public static class ReviewSummary {
+    public static class ReviewSum {
         private Long roomSeq;
         private int cleanlinessSum;
         private int convenienceSum;
         private int kindnessSum;
         private int locationSum;
         private Long reviewCnt;
+    }
+
+    @Getter
+    public static class ReviewSummary {
+        private double cleanlinessAvg;
+        private double convenienceAvg;
+        private double kindnessAvg;
+        private double locationAvg;
+        private Long reveiwCntSum = 0L;
+
+        public void sum(ReviewSum reviewSum) {
+            this.cleanlinessAvg = this.cleanlinessAvg + reviewSum.getCleanlinessSum();
+            this.convenienceAvg = this.convenienceAvg + reviewSum.getConvenienceSum();
+            this.kindnessAvg = this.kindnessAvg + reviewSum.getKindnessSum();
+            this.locationAvg = this.locationAvg + reviewSum.getLocationSum();
+            this.reveiwCntSum = this.reveiwCntSum + reviewSum.getReviewCnt();
+        }
+
+        public void avg () {
+            this.cleanlinessAvg = this.cleanlinessAvg / this.reveiwCntSum;
+            this.convenienceAvg = this.convenienceAvg / this.reveiwCntSum;
+            this.kindnessAvg = this.kindnessAvg / this.reveiwCntSum;
+            this.locationAvg = this.locationAvg / this.reveiwCntSum;
+        }
     }
 }

@@ -26,7 +26,7 @@ public class ReviewService {
         reviewRepository.save(reviewDto.changeToEntity(room));
     }
 
-    public ApiResponse<Void> searchReviewAvgGrade(Long accommodationSeq, Long roomSeq) {
+    public ApiResponse<ReviewDto.ReviewSummary> searchReviewAvgGrade(Long accommodationSeq, Long roomSeq) {
 
         if (Objects.isNull(accommodationSeq) || accommodationSeq == 0L) {
             return new ApiResponse<>(Status.INVALID_ACCOMMODATION);
@@ -37,14 +37,21 @@ public class ReviewService {
                     .filter(vo -> vo.getRoomSeq().equals(roomSeq))
                     .collect(Collectors.toList());
         }
-        this.findReviewForAccommodation(roomList);
+        return ApiResponse.createOk(this.findReviewForAccommodation(roomList));
 
-
-        return null;
     }
 
-    private void findReviewForAccommodation(List<Room> roomList) {
-        List<ReviewDto.ReviewSummary> reviewList = reviewRepository.findAvgEachScore();
+    private ReviewDto.ReviewSummary findReviewForAccommodation(List<Room> roomList) {
+        List<ReviewDto.ReviewSum> reviewList = reviewRepository.findAvgEachScore();
+        reviewList = reviewList.stream()
+                .filter(vo -> roomList.stream().anyMatch(vo2 -> vo.getRoomSeq().equals(vo2.getRoomSeq())))
+                .collect(Collectors.toList());
 
+        ReviewDto.ReviewSummary reviewSummary = new ReviewDto.ReviewSummary();
+        for (ReviewDto.ReviewSum reviewSum : reviewList) {
+            reviewSummary.sum(reviewSum);
+        }
+        reviewSummary.avg();
+        return reviewSummary;
     }
 }
