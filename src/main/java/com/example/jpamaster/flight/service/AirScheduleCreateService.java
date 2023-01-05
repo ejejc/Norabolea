@@ -1,15 +1,18 @@
 package com.example.jpamaster.flight.service;
 
+import com.example.jpamaster.flight.constant.FlightConstant;
 import com.example.jpamaster.flight.domain.entity.AirSchedule;
 import com.example.jpamaster.flight.domain.entity.Airplane;
 import com.example.jpamaster.flight.domain.entity.Airport;
 import com.example.jpamaster.flight.domain.repository.AirScheduleRepository;
-import com.example.jpamaster.flight.util.DistanceUtils;
+import com.example.jpamaster.flight.util.FlightUtils;
 import com.example.jpamaster.flight.web.dto.req.AirScheduleCreateRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,15 +33,34 @@ public class AirScheduleCreateService {
 
         if (flightValidationService.createAirScheduleValidation(airplane, fromAirport, toAirport)) {
 
-            int distance = DistanceUtils.getDistanceAsKm(
+            LocalDateTime depart = FlightUtils.toLocalDateTime(dto.getExpectedTakeoffDate(), dto.getExpectedTakeoffTime());
+
+            int distance = FlightUtils.getDistanceAsKm(
                     getDoubleFromStr(fromAirport.getLat()),
                     getDoubleFromStr(fromAirport.getLon()),
                     getDoubleFromStr(toAirport.getLat()),
                     getDoubleFromStr(toAirport.getLon())
             );
 
-            // TODO 평균 비행 속도와 비행 거리에 따른 비행 시간 계산하기
-            // TODO 비행 시간에 따른 도착시간 구하기
+            double approximateTime = FlightUtils.round(distance / FlightConstant.AVERAGE_AIRPLANE_SPEED, 2);
+
+            int hour = (int) approximateTime;
+            int min = (int) (((approximateTime - hour) * 3600) / 60);
+
+            LocalDateTime arrive = FlightUtils.calculateArriveLocalDateTime(toAirport.getLocationEn(), depart, hour, min);
+
+            AirSchedule airSchedule = AirSchedule.builder()
+                    .departAt(depart)
+                    .arriveAt(arrive)
+                    .estimatedHourSpent(hour)
+                    .estimatedMinuteSpent(min)
+                    .flightDistanceKm(distance)
+                    .airplane(airplane)
+                    .deptAirport(fromAirport)
+                    .arrAirport(toAirport)
+                    .build();
+
+            airScheduleRepository.save(airSchedule);
         }
     }
 
