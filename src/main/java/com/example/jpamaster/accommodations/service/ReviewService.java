@@ -54,4 +54,20 @@ public class ReviewService {
         reviewSummary.avg();
         return reviewSummary;
     }
+
+    public ApiResponse<Void> searchReviewList(Long accommodationSeq, Long roomSeq) {
+        if (Objects.isNull(accommodationSeq) || accommodationSeq == 0L) {
+            return new ApiResponse<>(Status.INVALID_ACCOMMODATION);
+        }
+        List<Room> roomList = roomReposittory.findByAccommodationSeq(accommodationSeq);
+        List<Long> roomSeqList = roomList.stream()
+                .map(Room::getRoomSeq).collect(Collectors.toList());
+        List<Review> reviewList = reviewRepository.findAllReviewByRoomList(roomSeqList);
+        List<ReviewDto.Req> reviewDtoList = reviewList.stream()
+                  .map(ReviewDto.Req::changeToDto)
+                  .collect(Collectors.toList());
+        System.out.println("확인");
+        // 평균 별점, 객실명, 인기시설, 리뷰 내용, 리뷰 사진, 등록일자
+        return null;
+    }
 }
