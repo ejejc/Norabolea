@@ -96,11 +96,8 @@ public class AccommodationService {
         List<ReviewDto.Req> totalReviewDtoList = null;
         if (Objects.nonNull(totalReviewList)) {
             totalReviewDtoList = totalReviewList.stream()
-                    .map(vo -> ReviewDto.Req.builder()
-                            .cleanlinessStarScore(vo.getCleanlinessStarScore())
-                            .kindnessStarScore(vo.getKindnessStarScore())
-                            .locationStarScore(vo.getLocationStarScore())
-                            .convenienceStarScore(vo.getConvenienceStarScore()).build())
+                    .map(vo -> new ReviewDto.Req(vo.getCleanlinessStarScore(), vo.getKindnessStarScore()
+                            , vo.getLocationStarScore(),vo.getConvenienceStarScore()))
                     .collect(Collectors.toList());
         }
 
