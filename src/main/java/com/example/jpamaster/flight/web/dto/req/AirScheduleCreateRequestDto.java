@@ -1,10 +1,8 @@
 package com.example.jpamaster.flight.web.dto.req;
 
-import com.example.jpamaster.flight.enums.FlightEnums;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 public class AirScheduleCreateRequestDto {
@@ -15,4 +13,5 @@ public class AirScheduleCreateRequestDto {
     private String expectedTakeoffDate;
     private String expectedTakeoffTime;
 
+    private Set<SeatRegisterRequestDto> seatRegisterRequestDtos = new HashSet<>();
 }

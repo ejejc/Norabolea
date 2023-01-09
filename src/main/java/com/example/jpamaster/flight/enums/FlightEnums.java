@@ -20,7 +20,7 @@ public class FlightEnums {
 
     @Getter
     @RequiredArgsConstructor
-    public enum VideoType {
+    public enum DisplayType {
         WIDE_SCREEN("wide screen", "와이드 스크린"),
         SEAT_REAR_SCREEN("seat rear screen", "좌석 뒤 스크린"),
         PERSONAL_MONITOR_ON_DEMAND_VIDEO("personal monitor on-demand video", "개인 모니터 주문형 비디오"),
@@ -33,8 +33,9 @@ public class FlightEnums {
 
     @Getter
     @RequiredArgsConstructor
-    public enum FoodSupplyType {
-        IN_FLIGHT_MEAL("in-flight meal", "기내식"),
+    public enum FoodType {
+        PREMIUM_IN_FLIGHT_MEAL("premium in-flight meal", "프리미엄 기내식"),
+        IN_FLIGHT_MEAL("in-flight meal", "일반 기내식"),
         SNACK("snack", "스낵"),
         NOT_SUPPORT("not support", "제공 안함")
         ;

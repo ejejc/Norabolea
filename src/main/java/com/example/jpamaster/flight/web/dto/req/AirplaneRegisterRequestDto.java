@@ -1,16 +1,14 @@
 package com.example.jpamaster.flight.web.dto.req;
 
-import com.example.jpamaster.flight.enums.FlightEnums;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Getter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 public class AirplaneRegisterRequestDto {
     private String manufacturer;
     private String code;
     private String type;
-    private List<SeatRegisterRequestDto> seatRegisterRequestDtos = new ArrayList<>();
+    private Set<SeatRegisterRequestDto> seatRegisterRequestDtos = new HashSet<>();
     private Long initialAirportSeq;
 }

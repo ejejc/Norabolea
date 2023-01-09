@@ -12,29 +12,20 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "airplane_seat_type")
+@AttributeOverride(
+    name = "seq",
+    column = @Column(name = "airplane_seat_type_seq")
+)
 @Entity
-public class AirplaneSeatType {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long airplaneSeatTypeSeq;
+public class AirplaneSeatType extends SeatType{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "airplane_seq")
     private Airplane airplane;
 
-    @Comment("좌석 종류")
-    @Enumerated(EnumType.STRING)
-    @Column(name = "seat_type")
-    private FlightEnums.SeatType seatType;
-
-    @Comment("이용 가능 좌석 수")
-    @Column(name = "available_seat_count")
-    private Integer availableSeatCount;
-
     @Builder
     public AirplaneSeatType (FlightEnums.SeatType seatType, Integer availableSeatCount) {
-        this.seatType = seatType;
-        this.availableSeatCount = availableSeatCount;
+        super(seatType, availableSeatCount);
     }
 
     public void registerAirplane(Airplane airplane) {

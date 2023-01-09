@@ -1,6 +1,8 @@
 package com.example.jpamaster.flight.domain.entity;
 
 import com.example.jpamaster.common.domain.BaseEntity;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,6 +43,10 @@ public class AirSchedule extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "arr_airport_seq")
     private Airport arrAirport;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "airSchedule", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private final Set<AirScheduleSeatType> airScheduleSeatTypes = new HashSet<>();
 
     @Builder
     public AirSchedule (LocalDateTime departAt, LocalDateTime arriveAt, Integer flightDistanceKm,
