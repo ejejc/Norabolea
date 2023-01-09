@@ -44,7 +44,7 @@ public class Airplane extends BaseEntity {
     @JoinColumn(name = "current_airport_seq")
     private Airport currentAirport;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "airplane", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AirplaneSeatType> airplaneSeatTypes = new ArrayList<>();
 
     @Column(name = "available")

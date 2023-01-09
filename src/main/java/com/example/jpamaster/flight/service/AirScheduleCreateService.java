@@ -7,18 +7,18 @@ import com.example.jpamaster.flight.domain.entity.Airport;
 import com.example.jpamaster.flight.domain.repository.AirScheduleRepository;
 import com.example.jpamaster.flight.util.FlightUtils;
 import com.example.jpamaster.flight.web.dto.req.AirScheduleCreateRequestDto;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class AirScheduleCreateService {
 
+    private final SeatService seatService;
     private final FlightValidationService flightValidationService;
     private final AirScheduleRepository airScheduleRepository;
 
@@ -59,6 +59,8 @@ public class AirScheduleCreateService {
                     .deptAirport(fromAirport)
                     .arrAirport(toAirport)
                     .build();
+
+            seatService.registerSeatForAirSchedule(dto.getAirScheduleSeatRegisterRequestDtos(), airSchedule);
 
             airScheduleRepository.save(airSchedule);
         }

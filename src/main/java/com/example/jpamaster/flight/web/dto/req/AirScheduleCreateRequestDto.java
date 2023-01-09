@@ -13,5 +13,5 @@ public class AirScheduleCreateRequestDto {
     private String expectedTakeoffDate;
     private String expectedTakeoffTime;
 
-    private Set<SeatRegisterRequestDto> seatRegisterRequestDtos = new HashSet<>();
+    private Set<AirScheduleSeatRegisterRequestDto> airScheduleSeatRegisterRequestDtos = new HashSet<>();
 }

@@ -60,8 +60,16 @@ public class AirScheduleSeatType extends SeatType{
     private Boolean usbAvailability;
 
     @Builder
-    public AirScheduleSeatType(FlightEnums.SeatType seatType, Integer availableSeatCount) {
+    public AirScheduleSeatType(FlightEnums.SeatType seatType, Integer availableSeatCount,
+        FoodType foodType, Integer availableBaggageCount, Integer availableBaggageWeight,
+        DisplayType displayType, Boolean wifiAvailability, Boolean usbAvailability) {
         super(seatType, availableSeatCount);
+        this.foodType = foodType;
+        this.availableBaggageCount = availableBaggageCount;
+        this.availableBaggageWeight = availableBaggageWeight;
+        this.displayType = displayType;
+        this.wifiAvailability = wifiAvailability;
+        this.usbAvailability = usbAvailability;
     }
 
     public void registerAirSchedule(AirSchedule airSchedule) {

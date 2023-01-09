@@ -1,15 +1,23 @@
 package com.example.jpamaster.flight.domain.entity;
 
 import com.example.jpamaster.common.domain.BaseEntity;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -44,9 +52,8 @@ public class AirSchedule extends BaseEntity {
     @JoinColumn(name = "arr_airport_seq")
     private Airport arrAirport;
 
-    @Builder.Default
     @OneToMany(mappedBy = "airSchedule", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private final Set<AirScheduleSeatType> airScheduleSeatTypes = new HashSet<>();
+    private Set<AirScheduleSeatType> airScheduleSeatTypes;
 
     @Builder
     public AirSchedule (LocalDateTime departAt, LocalDateTime arriveAt, Integer flightDistanceKm,
@@ -60,5 +67,6 @@ public class AirSchedule extends BaseEntity {
         this.airplane = airplane;
         this.deptAirport = deptAirport;
         this.arrAirport = arrAirport;
+        this.airScheduleSeatTypes = new HashSet<>();
     }
 }

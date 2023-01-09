@@ -3,23 +3,22 @@ package com.example.jpamaster.flight.service;
 import com.example.jpamaster.flight.domain.entity.Airline;
 import com.example.jpamaster.flight.domain.entity.Airplane;
 import com.example.jpamaster.flight.domain.entity.Airport;
-import com.example.jpamaster.flight.domain.entity.AirplaneSeatType;
 import com.example.jpamaster.flight.domain.repository.AirlineRepository;
 import com.example.jpamaster.flight.domain.repository.AirplaneRepository;
 import com.example.jpamaster.flight.domain.repository.AirportRepository;
 import com.example.jpamaster.flight.web.dto.req.AirplaneRegisterRequestDto;
-import com.example.jpamaster.flight.web.dto.req.SeatRegisterRequestDto;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class AirplaneService {
+
+    private final SeatService seatService;
 
     private final AirlineRepository airlineRepository;
     private final AirportRepository airportRepository;
@@ -43,16 +42,7 @@ public class AirplaneService {
                     .currentAirport(airport)
                     .build();
 
-            if (!dto.getSeatRegisterRequestDtos().isEmpty()) {
-                for (SeatRegisterRequestDto seatDto : dto.getSeatRegisterRequestDtos()) {
-                    AirplaneSeatType airplaneSeatType = AirplaneSeatType.builder()
-                            .seatType(seatDto.getSeatType())
-                            .availableSeatCount(seatDto.getAvailableSeatCount())
-                            .build();
-
-                    airplaneSeatType.registerAirplane(airplane);
-                }
-            }
+            seatService.registerSeatForAirplane(dto.getAirplaneSeatRegisterRequestDtos(), airplane);
 
             airplaneRepository.save(airplane);
         }

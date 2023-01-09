@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @EqualsAndHashCode(of = {"seatType"})
 @Getter
-public class SeatRegisterRequestDto {
+public class AirplaneSeatRegisterRequestDto {
     private FlightEnums.SeatType seatType;
     private Integer availableSeatCount;
 }

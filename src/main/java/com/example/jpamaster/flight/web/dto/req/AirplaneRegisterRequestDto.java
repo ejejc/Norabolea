@@ -9,6 +9,6 @@ public class AirplaneRegisterRequestDto {
     private String manufacturer;
     private String code;
     private String type;
-    private Set<SeatRegisterRequestDto> seatRegisterRequestDtos = new HashSet<>();
+    private Set<AirplaneSeatRegisterRequestDto> airplaneSeatRegisterRequestDtos = new HashSet<>();
     private Long initialAirportSeq;
 }
