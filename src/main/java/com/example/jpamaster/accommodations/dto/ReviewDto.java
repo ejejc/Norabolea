@@ -1,15 +1,21 @@
 package com.example.jpamaster.accommodations.dto;
 
+import com.example.jpamaster.accommodations.domain.entity.Media;
 import com.example.jpamaster.accommodations.domain.entity.Review;
 import com.example.jpamaster.accommodations.domain.entity.ReviewMedia;
 import com.example.jpamaster.accommodations.domain.entity.Room;
 import lombok.*;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReviewDto {
 
     @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Req {
         private Long roomSeq;
         private String content;
@@ -17,10 +23,22 @@ public class ReviewDto {
         private int convenienceStarScore;
         private int cleanlinessStarScore;
         private int locationStarScore;
-
+        private String roomName;
+        private Date regDate;
         private double totalStarScore;
-        private List<Media> mediaList;
+        private List<Medias> mediaList;
 
+        public static ReviewDto.Req changeToDto(Review review) {
+           return Req.builder()
+                    .totalStarScore((review.getCleanlinessStarScore()+ review.getConvenienceStarScore()+ review.getKindnessStarScore()+ review.getLocationStarScore()) / 4.0)
+                    .content(review.getContent())
+                    .roomName(review.getRoom().getRoomName())
+                    // .regDate(new Date()) - TODO:추후 넣어야 됨
+                    .mediaList(review.getReviewMedias().stream()
+                            .map(Medias::changeToDto)
+                            .collect(Collectors.toList()))
+                    .build();
+        }
         public Review changeToEntity(Room room) {
             Review review =  Review.builder()
                     .room(room)
@@ -31,13 +49,12 @@ public class ReviewDto {
                     .cleanlinessStarScore(this.cleanlinessStarScore)
                     .build();
 
-            for (Media vo : mediaList) {
+            for (Medias vo : mediaList) {
                 review.add(vo.changeToEntity());
             }
             return review;
         }
 
-        @Builder
         public Req(int kindnessStarScore, int convenienceStarScore, int cleanlinessStarScore, int locationStarScore) {
             this.kindnessStarScore = kindnessStarScore;
             this.convenienceStarScore = convenienceStarScore;
@@ -48,7 +65,8 @@ public class ReviewDto {
     }
 
     @Getter
-    public static class Media {
+    @Builder
+    public static class Medias {
         private String url;
         private boolean useYn;
 
@@ -57,6 +75,13 @@ public class ReviewDto {
                     .mediaUrl(this.url)
                     .useYn(this.useYn).build();
 
+        }
+
+        public static Medias changeToDto(ReviewMedia reviewMedia) {
+            return Medias.builder()
+                    .url(reviewMedia.getMediaUrl())
+                    .useYn(reviewMedia.isUseYn())
+                    .build();
         }
     }
 

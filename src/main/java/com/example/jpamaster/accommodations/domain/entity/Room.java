@@ -19,6 +19,9 @@ public class Room {
     @Column(name = "room_id")
     private Long roomSeq;
 
+    @Comment("객실 이름")
+    @Column(name = "room_name")
+    private String roomName;
     @Comment("객실 가격")
     @Column(name = "room_price")
     private Long roomPrice;
@@ -58,8 +61,9 @@ public class Room {
     private List<Review> review;
 
     @Builder
-    public Room(Long roomPrice, int standardPerson, int maxPerson, String checkInTime, String checkOutTime, boolean useYn, BorrowRoom borrowRoom) {
+    public Room(Long roomPrice, int standardPerson, int maxPerson, String checkInTime, String checkOutTime, boolean useYn, BorrowRoom borrowRoom, String roomName) {
         this.roomPrice = roomPrice;
+        this.roomName = roomName;
         this.standardPerson = standardPerson;
         this.maxPerson = maxPerson;
         this.checkInTime = checkInTime;
