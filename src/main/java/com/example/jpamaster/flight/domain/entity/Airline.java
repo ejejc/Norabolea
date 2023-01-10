@@ -7,8 +7,10 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@EqualsAndHashCode(of = "airlineSeq")
+@EqualsAndHashCode(of = "airlineSeq", callSuper = false)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
@@ -49,6 +51,9 @@ public class Airline extends BaseEntity {
     @Column(name = "deleted")
     private boolean deleted;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "airline", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AvailableAirline> availableAirline;
+
     @Builder
     public Airline(String airlineImage, String airlineName, String airlineTel, String airlineIcTel, String airlineIata, String airlineIcao) {
         this.airlineImage = airlineImage;
@@ -58,6 +63,7 @@ public class Airline extends BaseEntity {
         this.airlineIata = airlineIata;
         this.airlineIcao = airlineIcao;
         this.deleted = false;
+        this.availableAirline = new ArrayList<>();
     }
 
     public void updateAirlineInfo(String airlineName, String airlineTel, String airlineIcTel) {

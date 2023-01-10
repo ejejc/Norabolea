@@ -5,6 +5,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public class AirportDto {
+    private Long airportSeq;
     private String nameEn;
 
     private String nameKr;
@@ -13,7 +14,8 @@ public class AirportDto {
 
     private String ICAOCode;
 
-    private String location;
+    private String locationKr;
+    private String locationEn;
 
     private String countryEn;
 

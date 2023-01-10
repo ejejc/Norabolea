@@ -4,10 +4,11 @@ import com.example.jpamaster.accommodations.domain.entity.Review;
 import com.example.jpamaster.accommodations.domain.entity.Room;
 import com.example.jpamaster.accommodations.dto.ReviewDto;
 import com.example.jpamaster.accommodations.dto.ReviewDto.Req;
+import com.example.jpamaster.accommodations.exception.InvalidAccommodationException;
 import com.example.jpamaster.accommodations.repository.review.ReviewRepository;
 import com.example.jpamaster.accommodations.repository.room.RoomReposittory;
 import com.example.jpamaster.common.ApiResponse;
-import com.example.jpamaster.common.enums.Status;
+import com.example.jpamaster.common.enums.HttpStatusCode;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -29,8 +30,9 @@ public class ReviewService {
     public ApiResponse<ReviewDto.ReviewSummary> searchReviewAvgGrade(Long accommodationSeq, Long roomSeq) {
 
         if (Objects.isNull(accommodationSeq) || accommodationSeq == 0L) {
-            return new ApiResponse<>(Status.INVALID_ACCOMMODATION);
+            throw new InvalidAccommodationException(HttpStatusCode.NOT_FOUND, "유효하지 않은 숙소입니다.");
         }
+
         List<Room> roomList = roomReposittory.findByAccommodationSeq(accommodationSeq);
         if (Objects.nonNull(roomSeq)) {
             roomList = roomList.stream()

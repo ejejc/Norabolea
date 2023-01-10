@@ -4,7 +4,6 @@ import com.example.jpamaster.accommodations.dto.AccommodationDto;
 import com.example.jpamaster.accommodations.dto.KakaoDto;
 import com.example.jpamaster.accommodations.service.AccommodationService;
 import com.example.jpamaster.common.ApiResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
