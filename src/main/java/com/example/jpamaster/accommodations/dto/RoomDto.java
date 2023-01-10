@@ -21,6 +21,8 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
     private Long seq;
     @ApiModelProperty(value = "방 가격")
     private Long roomPrice;
+    @ApiModelProperty(value = "방 이름")
+    private String roomName;
     @ApiModelProperty(value = "기준 인원")
     private int standardPerson;
     @ApiModelProperty(value = "최대 인원")
@@ -95,6 +97,7 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
     public Room changeEntity() {
         Room room = Room.builder()
                       .roomPrice(this.roomPrice)
+                      .roomName(this.roomName)
                       .standardPerson(this.standardPerson)
                       .maxPerson(this.maxPerson)
                       .checkInTime(this.checkInTime)
@@ -114,6 +117,7 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
          = RoomDto.builder()
                 .seq(entity.getRoomSeq())
                 .roomPrice(entity.getRoomPrice())
+                .roomName(entity.getRoomName())
                 .standardPerson(entity.getStandardPerson())
                 .maxPerson(entity.getMaxPerson())
                 .checkInTime(entity.getCheckInTime())

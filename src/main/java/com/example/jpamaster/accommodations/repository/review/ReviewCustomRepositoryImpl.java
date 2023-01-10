@@ -27,6 +27,13 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository{
     }
 
     @Override
+    public List<Review> findAllReviewByRoomList(List<Long> roomseqList) {
+        return jpaQueryFactory.selectFrom(QReview.review)
+                .where(QReview.review.room.roomSeq.in(roomseqList))
+                .fetch();
+    }
+
+    @Override
     public List<ReviewDto.ReviewSum> findAvgEachScore() {
         /**
          * sum() 집계 함수에서 값이 없을 경우, null이 아닌 0으로 반환하기 위해 coalesce() 사용

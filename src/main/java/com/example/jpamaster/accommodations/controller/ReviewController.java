@@ -23,12 +23,17 @@ public class ReviewController {
         return ApiResponse.createOk(null);
     }
 
-    // 특정 숙소에 대한 리뷰 리스트 불러오기
-    // 방 필터 선택 시, 방마다 필터 걸어서 불러오기
     @GetMapping("/avg/grade")
+    @ApiOperation(value = "숙소 리뷰 평균 등급 API")
     public ApiResponse<ReviewDto.ReviewSummary> searchReviewAvgGrade(@RequestParam(value = "accommodationSeq") Long accommodationSeq
             , @RequestParam(value = "roomSeq", required = false) Long roomSeq) {
         return reviewService.searchReviewAvgGrade(accommodationSeq, roomSeq);
+    }
+
+    @GetMapping("/list")
+    public ApiResponse<Void> searchReviewList(@RequestParam(value = "accommodationSeq") Long accommodationSeq
+          , @RequestParam(value = "roomSeq", required = false) Long roomSeq) {
+        return reviewService.searchReviewList(accommodationSeq, roomSeq);
     }
 
 }

@@ -9,4 +9,6 @@ public interface ReviewCustomRepository {
     List<Review> findAllReviewByRoomSeq(Long roomSeq);
 
     List<ReviewDto.ReviewSum> findAvgEachScore();
+
+    List<Review> findAllReviewByRoomList(List<Long> roomseqList);
 }
