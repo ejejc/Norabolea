@@ -26,10 +26,11 @@ public class AirScheduleCreateService {
     public void createAirSchedule (AirScheduleCreateRequestDto dto) {
 
         // TODO 비행 스케줄 검증 후 비행 스케줄 등록 필요 - 타이트한 검증 처리
-        Airport fromAirport = flightValidationService.createAirScheduleValidationAirport(dto.getFromAirportSeq());
-        Airport toAirport = flightValidationService.createAirScheduleValidationAirport(dto.getToAirportSeq());
+        Airport fromAirport = flightValidationService.createAirScheduleAirportValidation(dto.getFromAirportSeq());
+        Airport toAirport = flightValidationService.createAirScheduleAirportValidation(dto.getToAirportSeq());
 
-        Airplane airplane = flightValidationService.createAirScheduleValidationAirplane(dto.getAirplaneSeq());
+        Airplane airplane = flightValidationService.createAirScheduleAirplaneValidation(dto.getAirplaneSeq());
+        flightValidationService.airplaneSeatValidation(airplane.getAirplaneSeatTypes(), dto.getAirScheduleSeatRegisterRequestDtos());
 
         if (flightValidationService.createAirScheduleValidation(airplane, fromAirport, toAirport)) {
 

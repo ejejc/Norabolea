@@ -8,11 +8,8 @@ import lombok.Getter;
 @Getter
 public class BadRequestException extends CommonException {
 
-    public BadRequestException(HttpStatusCode httpStatusCode) {
-        super(httpStatusCode);
-    }
 
-    public BadRequestException(HttpStatusCode httpStatusCode, String message) {
-        super(httpStatusCode, message);
+    public BadRequestException(String message) {
+        super(HttpStatusCode.BAD_REQUEST, message);
     }
 }

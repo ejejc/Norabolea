@@ -14,7 +14,7 @@ public class AirlineFeignConfiguration implements ErrorDecoder {
     public Exception decode(String methodKey, Response response) {
         switch (response.status()) {
             case 400:
-                throw new BadRequestException(HttpStatusCode.BAD_REQUEST, "항공사 정보를 찾아올 수 없습니다.");
+                throw new BadRequestException("항공사 정보를 찾아올 수 없습니다.");
         }
 
         return null;
