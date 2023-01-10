@@ -1,17 +1,14 @@
 package com.example.jpamaster.common.exception;
 
+import com.example.jpamaster.common.enums.HttpStatusCode;
 import lombok.Getter;
 
 @Getter
-public class KakaoResException extends RuntimeException{
-    private String message;
+public class KakaoResException extends CommonException{
     private String errorType;
 
-    public KakaoResException() {
-    }
-
-    public KakaoResException(String message, String errorType) {
-        this.message = message;
+    public KakaoResException(String message, String errorType, HttpStatusCode code) {
+        super(code, message);
         this.errorType = errorType;
     }
 }

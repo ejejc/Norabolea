@@ -6,13 +6,13 @@ import com.example.jpamaster.common.exception.CommonException;
 import lombok.Getter;
 
 @Getter
-public class FlightNotFoundException extends CommonException {
+public class NotFounException extends CommonException {
 
-    public FlightNotFoundException(HttpStatusCode httpStatusCode) {
+    public NotFounException(HttpStatusCode httpStatusCode) {
         super(httpStatusCode);
     }
 
-    public FlightNotFoundException(HttpStatusCode httpStatusCode, String message) {
+    public NotFounException(HttpStatusCode httpStatusCode, String message) {
         super(httpStatusCode, message);
     }
 }

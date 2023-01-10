@@ -1,6 +1,7 @@
 package com.example.jpamaster.accommodations.feign.configuration;
 
 import com.example.jpamaster.accommodations.dto.KakaoDto;
+import com.example.jpamaster.common.enums.HttpStatusCode;
 import com.example.jpamaster.common.exception.KakaoResException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.RequestInterceptor;
@@ -49,7 +50,7 @@ public class KaKaoFeignConfiguration implements ErrorDecoder {
 
         switch (response.status()) {
             case 400: case 401:
-                throw new KakaoResException(msg.getMessage(), msg.getErrorType());
+                throw new KakaoResException(msg.getMessage(), msg.getErrorType(), HttpStatusCode.findStatusCode(response.status()));
         }
         return null;
     }

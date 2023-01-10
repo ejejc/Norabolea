@@ -6,13 +6,13 @@ import com.example.jpamaster.common.exception.CommonException;
 import lombok.Getter;
 
 @Getter
-public class FlightBadRequestException extends CommonException {
+public class BadRequestException extends CommonException {
 
-    public FlightBadRequestException(HttpStatusCode httpStatusCode) {
+    public BadRequestException(HttpStatusCode httpStatusCode) {
         super(httpStatusCode);
     }
 
-    public FlightBadRequestException(HttpStatusCode httpStatusCode, String message) {
+    public BadRequestException(HttpStatusCode httpStatusCode, String message) {
         super(httpStatusCode, message);
     }
 }

@@ -2,8 +2,8 @@ package com.example.jpamaster.common.exception;
 
 import com.example.jpamaster.common.ApiResponse;
 import com.example.jpamaster.common.enums.HttpStatusCode;
-import com.example.jpamaster.flight.exception.FlightBadRequestException;
-import com.example.jpamaster.flight.exception.FlightNotFoundException;
+import com.example.jpamaster.flight.exception.BadRequestException;
+import com.example.jpamaster.flight.exception.NotFounException;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,18 +22,18 @@ import java.time.LocalDateTime;
 public class ApiExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = FlightBadRequestException.class)
-    public ApiResponse<Void> handler(FlightBadRequestException e) {
+    @ExceptionHandler(value = BadRequestException.class)
+    public ApiResponse<Void> handler(BadRequestException e) {
         log.error(e.getMessage(), e);
-        return ApiResponse.createError(e.getHttpStatusCode(), e.getMessage(), e.getCreatedAt());
+        return ApiResponse.createError(e.getHttpStatusCode(), e.getMessage());
     }
 
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = FlightNotFoundException.class)
-    public ApiResponse<Void> handler(FlightNotFoundException e) {
+    @ExceptionHandler(value = NotFounException.class)
+    public ApiResponse<Void> handler(NotFounException e) {
         log.error(e.getMessage(), e);
-        return ApiResponse.createError(e.getHttpStatusCode(), e.getMessage(), e.getCreatedAt());
+        return ApiResponse.createError(e.getHttpStatusCode(), e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -41,9 +41,7 @@ public class ApiExceptionHandler {
     public ApiResponse<Void> kakaoErrorHandler(KakaoResException e)
     {
         log.error(e.getMessage(), e);
-        return ApiResponse.createError(
-                HttpStatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), LocalDateTime.now()
-        );
+        return ApiResponse.createError(e.getHttpStatusCode(), e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -51,7 +49,7 @@ public class ApiExceptionHandler {
     public ApiResponse<Void> handler(Exception e) {
         log.error(e.getMessage(), e);
         return ApiResponse.createError(
-                HttpStatusCode.INTERNAL_SERVER_ERROR, e.getMessage(), LocalDateTime.now()
+                HttpStatusCode.INTERNAL_SERVER_ERROR, e.getMessage()
         );
     }
 }

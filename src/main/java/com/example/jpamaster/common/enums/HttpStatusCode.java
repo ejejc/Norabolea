@@ -3,6 +3,8 @@ package com.example.jpamaster.common.enums;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
+
 @Getter
 @RequiredArgsConstructor
 public enum HttpStatusCode {
@@ -13,6 +15,7 @@ public enum HttpStatusCode {
 
     // 4xx
     BAD_REQUEST(400, "CL000", "Bad Request"),
+    INVALID_PARAMETER(422, "CL022", "invalid parameter"),
     NOT_FOUND(404, "CL004", "Not Found"),
 
     // 5xx
@@ -22,4 +25,11 @@ public enum HttpStatusCode {
     private final int status;
     private final String code;
     private final String defaultMessage;
+
+    public static HttpStatusCode findStatusCode(int status) {
+        return Arrays.stream(HttpStatusCode.values())
+              .filter(vo -> vo.status == status)
+              .findFirst()
+              .orElse(null);
+    }
 }

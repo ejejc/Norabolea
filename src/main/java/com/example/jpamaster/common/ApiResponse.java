@@ -23,7 +23,6 @@ public class ApiResponse<T> {
        private String code;
        private String message;
        private LocalDateTime createdAt;
-
    }
 
     private ApiResponse(final T data, final HttpStatusCode code) {
@@ -59,7 +58,7 @@ public class ApiResponse<T> {
         return createOk(null);
     }
 
-    public static<T> ApiResponse<T> createError(final HttpStatusCode code, final String message, final LocalDateTime createdAt) {
-        return new ApiResponse<>(code, message, createdAt);
+    public static<T> ApiResponse<T> createError(final HttpStatusCode code, final String message) {
+        return new ApiResponse<>(code, message, LocalDateTime.now());
     }
 }
