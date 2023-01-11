@@ -6,6 +6,8 @@ import com.example.jpamaster.common.ApiResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,7 +20,8 @@ public class ReviewController {
 
     @PostMapping
     @ApiOperation(value = "리뷰 등록 API")
-    public ApiResponse<Void> add(@RequestBody ReviewDto.Req reviewDto) {
+    public ApiResponse<Void> add(@RequestBody ReviewDto.ReqRes reviewDto) {
+        // TODO: 유효한 룸 seq인지 확인 필요
         reviewService.addReview(reviewDto);
         return ApiResponse.createOk(null);
     }
@@ -31,9 +34,9 @@ public class ReviewController {
     }
 
     @GetMapping("/list")
-    public ApiResponse<Void> searchReviewList(@RequestParam(value = "accommodationSeq") Long accommodationSeq
-          , @RequestParam(value = "roomSeq", required = false) Long roomSeq) {
-        return reviewService.searchReviewList(accommodationSeq, roomSeq);
+    public ApiResponse<Page<ReviewDto.ReqRes>> searchReviewList(@RequestParam(value = "accommodationSeq") Long accommodationSeq
+          , @RequestParam(value = "roomSeq", required = false) Long roomSeq, Pageable pageable) {
+        return ApiResponse.createOk(reviewService.searchReviewList(accommodationSeq, roomSeq, pageable));
     }
 
 }

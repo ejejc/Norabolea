@@ -10,12 +10,8 @@ import com.example.jpamaster.accommodations.repository.AccommodationsRepository;
 import com.example.jpamaster.accommodations.repository.AcommoFacilityInfoRepository;
 import com.example.jpamaster.accommodations.repository.PopularFacilityRepository;
 import com.example.jpamaster.accommodations.repository.review.ReviewRepository;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.client.loadbalancer.Response;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -93,10 +89,10 @@ public class AccommodationService {
                 totalReviewList.addAll(reviewRepository.findAllReviewByRoomSeq(roomDto.getSeq()));
             }
         }
-        List<ReviewDto.Req> totalReviewDtoList = null;
+        List<ReviewDto.ReqRes> totalReviewDtoList = null;
         if (Objects.nonNull(totalReviewList)) {
             totalReviewDtoList = totalReviewList.stream()
-                    .map(vo -> new ReviewDto.Req(vo.getCleanlinessStarScore(), vo.getKindnessStarScore()
+                    .map(vo -> new ReviewDto.ReqRes(vo.getCleanlinessStarScore(), vo.getKindnessStarScore()
                             , vo.getLocationStarScore(),vo.getConvenienceStarScore()))
                     .collect(Collectors.toList());
         }
@@ -104,7 +100,7 @@ public class AccommodationService {
         if (!CollectionUtils.isEmpty(totalReviewDtoList)) {
             dto.setTotalReviewCnt(totalReviewList.size());
             double score = totalReviewDtoList.stream()
-                    .mapToDouble(ReviewDto.Req::getTotalStarScore).sum();
+                    .mapToDouble(ReviewDto.ReqRes::getTotalStarScore).sum();
             dto.setAvgStarScore(score / dto.getTotalReviewCnt());
         }
     }

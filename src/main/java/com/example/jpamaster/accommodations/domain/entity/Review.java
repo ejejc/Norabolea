@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
+import com.example.jpamaster.common.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor
 @Table(name = "review")
-public class Review {
+public class Review extends BaseEntity {
 
     @Column(name = "review_seq")
     @Id
@@ -35,7 +36,7 @@ public class Review {
     @Column(name = "location_star_score")
     private int locationStarScore;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private Room room;
 

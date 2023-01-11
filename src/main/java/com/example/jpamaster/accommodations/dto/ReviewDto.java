@@ -1,12 +1,11 @@
 package com.example.jpamaster.accommodations.dto;
 
-import com.example.jpamaster.accommodations.domain.entity.Media;
 import com.example.jpamaster.accommodations.domain.entity.Review;
 import com.example.jpamaster.accommodations.domain.entity.ReviewMedia;
 import com.example.jpamaster.accommodations.domain.entity.Room;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,7 @@ public class ReviewDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Req {
+    public static class ReqRes {
         private Long roomSeq;
         private String content;
         private int kindnessStarScore;
@@ -24,19 +23,19 @@ public class ReviewDto {
         private int cleanlinessStarScore;
         private int locationStarScore;
         private String roomName;
-        private Date regDate;
+        private LocalDateTime regDate;
         private double totalStarScore;
         private List<Medias> mediaList;
 
-        public static ReviewDto.Req changeToDto(Review review) {
-           return Req.builder()
+        public static ReqRes changeToDto(Review review) {
+           return ReqRes.builder()
                     .totalStarScore((review.getCleanlinessStarScore()+ review.getConvenienceStarScore()+ review.getKindnessStarScore()+ review.getLocationStarScore()) / 4.0)
                     .content(review.getContent())
                     .roomName(review.getRoom().getRoomName())
-                    // .regDate(new Date()) - TODO:추후 넣어야 됨
                     .mediaList(review.getReviewMedias().stream()
                             .map(Medias::changeToDto)
                             .collect(Collectors.toList()))
+                    .regDate(review.getCreatedAt())
                     .build();
         }
         public Review changeToEntity(Room room) {
@@ -55,7 +54,7 @@ public class ReviewDto {
             return review;
         }
 
-        public Req(int kindnessStarScore, int convenienceStarScore, int cleanlinessStarScore, int locationStarScore) {
+        public ReqRes(int kindnessStarScore, int convenienceStarScore, int cleanlinessStarScore, int locationStarScore) {
             this.kindnessStarScore = kindnessStarScore;
             this.convenienceStarScore = convenienceStarScore;
             this.cleanlinessStarScore = cleanlinessStarScore;
