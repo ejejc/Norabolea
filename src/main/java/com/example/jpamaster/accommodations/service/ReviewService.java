@@ -23,10 +23,7 @@ public class ReviewService {
     private final RoomReposittory roomReposittory;
 
     public void addReview(ReqRes reviewDto) {
-        Room room = roomReposittory.findById(reviewDto.getRoomSeq()).orElse(null);
-        if (Objects.isNull(room)) {
-            throw new InvalidParameterException("유효하지 않는 룸 입니다.");
-        }
+        Room room = roomReposittory.findById(reviewDto.getRoomSeq()).orElseThrow(() -> new InvalidParameterException("유효하지 않는 룸 입니다."));
         reviewRepository.save(reviewDto.changeToEntity(room));
     }
 
@@ -57,12 +54,14 @@ public class ReviewService {
 
     public Page<ReqRes> searchReviewList(Long accommodationSeq, Long roomSeq, Pageable pageable) {
         List<Room> roomList = this.searchRoomListOfAccommodationSeq(accommodationSeq);
+        if (Objects.nonNull(roomSeq)) {
+            roomList = roomList.stream().filter(vo -> vo.getRoomSeq().equals(roomSeq)).collect(Collectors.toList());
+        }
         Page<Review> reviewList = reviewRepository.findAllReviewByRoomList(
                 roomList.stream().map(Room::getRoomSeq).collect(Collectors.toList()), pageable
         );
-        Page<ReqRes> reviewListRes = reviewList.map(ReqRes::changeToDto);
-        // 평균 별점, 객실명, 인기시설, 리뷰 내용, 리뷰 사진, 등록일자
-        return reviewListRes;
+        // TODO: 숙소별 인기시설도 추가
+        return reviewList.map(ReqRes::changeToDto);
     }
 
     public List<Room> searchRoomListOfAccommodationSeq(Long accommodationSeq) {

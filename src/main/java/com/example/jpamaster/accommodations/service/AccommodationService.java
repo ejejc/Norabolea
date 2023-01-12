@@ -10,6 +10,7 @@ import com.example.jpamaster.accommodations.repository.AccommodationsRepository;
 import com.example.jpamaster.accommodations.repository.AcommoFacilityInfoRepository;
 import com.example.jpamaster.accommodations.repository.PopularFacilityRepository;
 import com.example.jpamaster.accommodations.repository.review.ReviewRepository;
+import com.example.jpamaster.common.exception.InvalidParameterException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,7 @@ public class AccommodationService {
 
     public AccommodationDto findAccommodation(Long accommodationSeq) {
         // TODO: 유효성 체크 로직 추가
-        Accommodations entity = accommodationsRepository.findById(accommodationSeq).orElse(null);
+        Accommodations entity = accommodationsRepository.findById(accommodationSeq).orElseThrow(() -> new InvalidParameterException("유효하지 않은 숙박업체 입니다."));
         AccommodationDto dto = AccommodationDto.changeToDto(entity);
         this.setReviewCntAndReviewScore(dto);
         return dto;

@@ -33,6 +33,7 @@ public class ReviewController {
     }
 
     @GetMapping("/list")
+    @ApiOperation(value = "리뷰 리스트 조회 API")
     public ApiResponse<Page<ReviewDto.ReqRes>> searchReviewList(@RequestParam(value = "accommodationSeq") Long accommodationSeq
           , @RequestParam(value = "roomSeq", required = false) Long roomSeq, Pageable pageable) {
         return ApiResponse.createOk(reviewService.searchReviewList(accommodationSeq, roomSeq, pageable));
