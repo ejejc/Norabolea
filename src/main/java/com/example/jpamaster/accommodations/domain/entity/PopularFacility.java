@@ -1,5 +1,6 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
+import com.example.jpamaster.common.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Table(name = "popular_facility")
-public class PopularFacility {
+public class PopularFacility extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "popular_facility_seq")
@@ -24,7 +25,4 @@ public class PopularFacility {
 
     @Column(name = "facility_logo_url")
     private String logoUrl;
-
-    // TODO: 등록, 수정일지 공통으로 되면 넣기
-
 }

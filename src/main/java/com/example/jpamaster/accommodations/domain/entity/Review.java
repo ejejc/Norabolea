@@ -61,5 +61,4 @@ public class Review extends BaseEntity {
     }
 
     // private User user; TODO: 추후 추가 예정
-    // TODO: 등록, 수정일지 공통으로 되면 넣기
 }

@@ -3,6 +3,7 @@ package com.example.jpamaster.accommodations.dto;
 import com.example.jpamaster.accommodations.domain.entity.Review;
 import com.example.jpamaster.accommodations.domain.entity.ReviewMedia;
 import com.example.jpamaster.accommodations.domain.entity.Room;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -71,7 +72,7 @@ public class ReviewDto {
 
         public ReviewMedia changeToEntity() {
             return ReviewMedia.builder()
-                    .mediaUrl(this.url)
+                                                                                                                          .mediaUrl(this.url)
                     .useYn(this.useYn).build();
 
         }
@@ -85,7 +86,6 @@ public class ReviewDto {
     }
 
     @NoArgsConstructor
-    @AllArgsConstructor
     @Setter
     @Getter
     public static class ReviewSum {
@@ -95,6 +95,16 @@ public class ReviewDto {
         private int kindnessSum;
         private int locationSum;
         private Long reviewCnt;
+
+        @QueryProjection
+        public ReviewSum(Long roomSeq, int cleanlinessSum, int convenienceSum, int kindnessSum, int locationSum, Long reviewCnt) {
+            this.roomSeq = roomSeq;
+            this.cleanlinessSum = cleanlinessSum;
+            this.convenienceSum = convenienceSum;
+            this.kindnessSum = kindnessSum;
+            this.locationSum = locationSum;
+            this.reviewCnt = reviewCnt;
+        }
     }
 
     @Getter

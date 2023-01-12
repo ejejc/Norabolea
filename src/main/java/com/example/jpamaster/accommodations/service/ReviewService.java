@@ -24,6 +24,9 @@ public class ReviewService {
 
     public void addReview(ReqRes reviewDto) {
         Room room = roomReposittory.findById(reviewDto.getRoomSeq()).orElse(null);
+        if (Objects.isNull(room)) {
+            throw new InvalidParameterException("유효하지 않는 룸 입니다.");
+        }
         reviewRepository.save(reviewDto.changeToEntity(room));
     }
 
@@ -58,7 +61,6 @@ public class ReviewService {
                 roomList.stream().map(Room::getRoomSeq).collect(Collectors.toList()), pageable
         );
         Page<ReqRes> reviewListRes = reviewList.map(ReqRes::changeToDto);
-        reviewListRes.getContent();
         // 평균 별점, 객실명, 인기시설, 리뷰 내용, 리뷰 사진, 등록일자
         return reviewListRes;
     }

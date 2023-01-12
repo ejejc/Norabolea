@@ -1,5 +1,6 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
+import com.example.jpamaster.common.domain.BaseEntity;
 import lombok.*;
 
 import javax.persistence.Column;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "review_media")
-public class ReviewMedia {
+public class ReviewMedia extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,6 +35,4 @@ public class ReviewMedia {
     @JoinColumn(name = "review_seq")
     @Setter
     private Review review;
-
-    // TODO: 등록, 수정일지 공통으로 되면 넣기
 }

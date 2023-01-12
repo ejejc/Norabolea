@@ -21,7 +21,6 @@ public class ReviewController {
     @PostMapping
     @ApiOperation(value = "리뷰 등록 API")
     public ApiResponse<Void> add(@RequestBody ReviewDto.ReqRes reviewDto) {
-        // TODO: 유효한 룸 seq인지 확인 필요
         reviewService.addReview(reviewDto);
         return ApiResponse.createOk(null);
     }
