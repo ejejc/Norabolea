@@ -3,6 +3,7 @@ package com.example.jpamaster.flight.domain.entity;
 import com.example.jpamaster.flight.enums.FlightEnums;
 import com.example.jpamaster.flight.enums.FlightEnums.DisplayType;
 import com.example.jpamaster.flight.enums.FlightEnums.FoodType;
+import java.util.Objects;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -76,4 +77,24 @@ public class AirScheduleSeatType extends SeatType{
         this.airSchedule = airSchedule;
         airSchedule.getAirScheduleSeatTypes().add(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        AirScheduleSeatType that = (AirScheduleSeatType) o;
+        return Objects.equals(airSchedule, that.airSchedule)
+            && Objects.equals(super.getSeq(), that.getSeq())
+            && Objects.equals(super.getSeatType(), that.getSeatType());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.getSeq(), super.getSeatType(), airSchedule);
+    }
+
 }

@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @EqualsAndHashCode(of = "seatType")
 @Getter
-public class AirScheduleSeatRegisterRequestDto {
+public class AirScheduleSeatRequestDto {
     private FlightEnums.SeatType seatType;
     private Integer availableSeatCount = 0;
     private FoodType foodType = FoodType.NOT_SUPPORT;

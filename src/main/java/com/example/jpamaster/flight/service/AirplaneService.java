@@ -2,12 +2,14 @@ package com.example.jpamaster.flight.service;
 
 import com.example.jpamaster.flight.domain.entity.Airline;
 import com.example.jpamaster.flight.domain.entity.Airplane;
+import com.example.jpamaster.flight.domain.entity.AirplaneSeatType;
 import com.example.jpamaster.flight.domain.entity.Airport;
 import com.example.jpamaster.flight.domain.repository.AirlineRepository;
 import com.example.jpamaster.flight.domain.repository.AirplaneRepository;
 import com.example.jpamaster.flight.domain.repository.AirportRepository;
 import com.example.jpamaster.flight.web.dto.req.AirplaneRegisterRequestDto;
 import java.util.Optional;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,7 +44,8 @@ public class AirplaneService {
                     .currentAirport(airport)
                     .build();
 
-            seatService.registerSeatForAirplane(dto.getAirplaneSeatRegisterRequestDtos(), airplane);
+            Set<AirplaneSeatType> airplaneSeatTypes = seatService.registerSeatForAirplane(dto.getAirplaneSeatRegisterRequestDtos());
+            airplaneSeatTypes.forEach(airplaneSeatType -> airplaneSeatType.registerAirplane(airplane));
 
             airplaneRepository.save(airplane);
         }
