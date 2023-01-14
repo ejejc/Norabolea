@@ -1,6 +1,5 @@
 package com.example.jpamaster.flight.service;
 
-import com.example.jpamaster.common.enums.HttpStatusCode;
 import com.example.jpamaster.flight.domain.entity.Airplane;
 import com.example.jpamaster.flight.domain.entity.AirplaneSeatType;
 import com.example.jpamaster.flight.domain.entity.Airport;
@@ -9,15 +8,16 @@ import com.example.jpamaster.flight.domain.repository.AirportRepository;
 import com.example.jpamaster.flight.domain.repository.AvailableAirlineRepository;
 import com.example.jpamaster.flight.exception.BadRequestException;
 import com.example.jpamaster.flight.exception.NotFoundException;
+import com.example.jpamaster.flight.util.FlightUtils;
 import com.example.jpamaster.flight.web.dto.req.AirScheduleSeatRequestDto;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -28,12 +28,14 @@ public class FlightValidationService {
     private final AvailableAirlineRepository availableAirlineRepository;
 
     void availableAirlineValidation(Airplane airplane, Airport fromAirport, Airport toAirport) {
-        if (availableAirlineRepository.countByAirline_AirlineSeqAndAirport_AirportSeqIn(airplane.getAirline().getAirlineSeq(), List.of(fromAirport.getAirportSeq(), toAirport.getAirportSeq())) < 2) {
+        if (availableAirlineRepository.countByAirline_AirlineSeqAndAirport_AirportSeqIn(
+            airplane.getAirline().getAirlineSeq(), List.of(fromAirport.getAirportSeq(), toAirport.getAirportSeq()))
+            < 2) {
             throw new BadRequestException("취항 하려는 공항 정보가 잘못되었습니다.");
         }
     }
 
-     Airport airScheduleAirportValidation(Long airportSeq) {
+    Airport airScheduleAirportValidation(Long airportSeq) {
         Optional<Airport> optionalAirport = airportRepository.findByAirportSeq(airportSeq);
         if (optionalAirport.isEmpty()) {
             throw new NotFoundException("존재하지 않는 공항입니다.");
@@ -51,12 +53,14 @@ public class FlightValidationService {
         return optionalAirplane.get();
     }
 
-    void airplaneSeatValidation(List<AirplaneSeatType> airplaneSeatTypes, Set<AirScheduleSeatRequestDto> airScheduleSeatRequestDtos) {
+    void airplaneSeatValidation(List<AirplaneSeatType> airplaneSeatTypes,
+        Set<AirScheduleSeatRequestDto> airScheduleSeatRequestDtos) {
         for (AirScheduleSeatRequestDto dto : airScheduleSeatRequestDtos) {
             AirplaneSeatType seatType = airplaneSeatTypes.stream()
                 .filter(airplaneSeatType -> airplaneSeatType.getSeatType() == dto.getSeatType())
                 .findFirst()
-                .orElseThrow(() -> new BadRequestException(String.format("%s - 해당 좌석 타입이 존재하지 않습니다.", dto.getSeatType().getKrName())));
+                .orElseThrow(() -> new BadRequestException(
+                    String.format("%s - 해당 좌석 타입이 존재하지 않습니다.", dto.getSeatType().getKrName())));
 
             if (seatType.getAvailableSeatCount() < dto.getAvailableSeatCount()) {
                 throw new BadRequestException(
@@ -65,7 +69,13 @@ public class FlightValidationService {
         }
     }
 
-    public void takeOffTimeValidation(Airport fromAirport, String expectedTakeoffDate, String expectedTakeoffTime) {
+    public void takeOffTimeValidation(String zoneId, String expectedTakeoffDate, String expectedTakeoffTime) {
+        LocalDateTime takeOffDate = FlightUtils.toLocalDateTime(expectedTakeoffDate, expectedTakeoffTime);
+        LocalDateTime now = ZonedDateTime.now(ZoneId.of(zoneId)).toLocalDateTime();
+
+        if (takeOffDate.isBefore(now)) {
+            throw new BadRequestException("출발 시간이 현재 시간보다 이전입니다.");
+        }
 
     }
 }
