@@ -60,6 +60,9 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private List<Review> review;
 
+    @OneToMany(mappedBy = "room")
+    private List<RoomFeaturesInfo> roomFeaturesInfoList;
+
     @Builder
     public Room(Long roomPrice, int standardPerson, int maxPerson, String checkInTime, String checkOutTime, boolean useYn, BorrowRoom borrowRoom, String roomName) {
         this.roomPrice = roomPrice;
