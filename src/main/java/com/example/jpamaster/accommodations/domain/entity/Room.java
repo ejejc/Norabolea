@@ -60,7 +60,10 @@ public class Room {
     @OneToMany(mappedBy = "room")
     private List<Review> review;
 
-    @OneToMany(mappedBy = "room")
+    /**
+     * 1:N 양방향 관계에서 1인 entity 저장 시, N인 entity도 같이 저장되도록 cascade 옵션 추가.
+     */
+    @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST)
     private List<RoomFeaturesInfo> roomFeaturesInfoList;
 
     @Builder
@@ -73,11 +76,17 @@ public class Room {
         this.checkOutTime = checkOutTime;
         this.useYn = useYn;
         this.media = new ArrayList<>();
+        this.roomFeaturesInfoList = new ArrayList<>();
         this.borrowRoom = borrowRoom;
     }
 
     public void addMedia(Media media) {
         this.media.add(media);
         media.setRoom(this);
+    }
+
+    public void addFeaturesInfo(RoomFeaturesInfo roomFeaturesInfo) {
+        this.roomFeaturesInfoList.add(roomFeaturesInfo);
+        roomFeaturesInfo.setRoom(this);
     }
 }

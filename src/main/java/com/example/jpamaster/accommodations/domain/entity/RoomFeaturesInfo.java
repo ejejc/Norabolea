@@ -1,10 +1,17 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
 import com.example.jpamaster.common.domain.BaseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "room_features_info")
 public class RoomFeaturesInfo extends BaseEntity {
     @Id
@@ -16,7 +23,11 @@ public class RoomFeaturesInfo extends BaseEntity {
     @JoinColumn(name = "features_seq")
     private Features features;
 
+    @Column(name = "sort_num")
+    private int sort;
+
     @ManyToOne
     @JoinColumn(name = "room_id")
+    @Setter
     private Room room;
 }

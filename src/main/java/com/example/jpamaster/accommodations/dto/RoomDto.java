@@ -1,8 +1,6 @@
 package com.example.jpamaster.accommodations.dto;
 
-import com.example.jpamaster.accommodations.domain.entity.BorrowRoom;
-import com.example.jpamaster.accommodations.domain.entity.Media;
-import com.example.jpamaster.accommodations.domain.entity.Room;
+import com.example.jpamaster.accommodations.domain.entity.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -35,6 +33,8 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
     private boolean useYn;
     @ApiModelProperty(value = "숙소 이미지 리스트")
     private List<RoomMedia> mediaList;
+    @ApiModelProperty(value = "특징 리스트 seq")
+    private List<FeaturesDto.FeaturesInfoDto> featureList;
     @ApiModelProperty(value = "숙소 대실")
     private Borrow borrow;
 
@@ -42,7 +42,7 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
     @Getter
     @Builder
     @ApiModel(value = "룸 미디어")
-    private static class RoomMedia {
+    public static class RoomMedia {
         @ApiModelProperty(value = "이미지 URL")
         private String mediaUrl;
         @ApiModelProperty(value = "대표 이미지 여부")
@@ -70,7 +70,7 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
     @Getter
     @Builder
     @ApiModel(value = "대실")
-    private static class Borrow {
+    public static class Borrow {
         @ApiModelProperty(value = "대실 시간")
         private int borrowTime;
         @ApiModelProperty(value = "시간당 대실 가격")

@@ -13,4 +13,10 @@ public class FeaturesDto {
                 .featuresName(this.name)
                 .featuresIconUrl(this.iconUrl).build();
     }
+
+    @Getter
+    public static class FeaturesInfoDto {
+        private Long featureSeq;
+        private int sort;
+    }
 }

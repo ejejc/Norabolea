@@ -3,12 +3,14 @@ package com.example.jpamaster.accommodations.domain.entity;
 import com.example.jpamaster.common.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "features")

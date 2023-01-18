@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final RoomReposittory roomReposittory;
+    private final RoomService roomService;
 
     public void addReview(ReqRes reviewDto) {
         Room room = roomReposittory.findById(reviewDto.getRoomSeq()).orElseThrow(() -> new InvalidParameterException("유효하지 않는 룸 입니다."));
@@ -28,7 +29,7 @@ public class ReviewService {
     }
 
     public ApiResponse<ReviewDto.ReviewSummary> searchReviewAvgGrade(Long accommodationSeq, Long roomSeq) {
-        List<Room> roomList = this.searchRoomListOfAccommodationSeq(accommodationSeq);
+        List<Room> roomList = roomService.searchRoomListOfAccommodationSeq(accommodationSeq);
         if (Objects.nonNull(roomSeq)) {
             roomList = roomList.stream()
                     .filter(vo -> vo.getRoomSeq().equals(roomSeq))
@@ -53,7 +54,7 @@ public class ReviewService {
     }
 
     public Page<ReqRes> searchReviewList(Long accommodationSeq, Long roomSeq, Pageable pageable) {
-        List<Room> roomList = this.searchRoomListOfAccommodationSeq(accommodationSeq);
+        List<Room> roomList = roomService.searchRoomListOfAccommodationSeq(accommodationSeq);
         if (Objects.nonNull(roomSeq)) {
             roomList = roomList.stream().filter(vo -> vo.getRoomSeq().equals(roomSeq)).collect(Collectors.toList());
         }
@@ -64,10 +65,5 @@ public class ReviewService {
         return reviewList.map(ReqRes::changeToDto);
     }
 
-    public List<Room> searchRoomListOfAccommodationSeq(Long accommodationSeq) {
-        if (Objects.isNull(accommodationSeq) || accommodationSeq == 0L) {
-            throw new InvalidParameterException("유효하지 않은 숙소입니다.");
-        }
-        return roomReposittory.findByAccommodationSeq(accommodationSeq);
-    }
+
 }
