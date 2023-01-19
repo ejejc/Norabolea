@@ -27,7 +27,7 @@ import org.hibernate.annotations.Comment;
     column = @Column(name = "air_schedule_seat_type_seq")
 )
 @Entity
-public class AirScheduleSeatType extends SeatType{
+public class AirScheduleSeatType extends SeatType {
 
     @Comment("항공 스케줄 시퀀스")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -60,10 +60,14 @@ public class AirScheduleSeatType extends SeatType{
     @Column(name = "usb_availability")
     private Boolean usbAvailability;
 
+    @Comment("소아 허용 좌석수")
+    @Column(name = "available_child_count")
+    private Integer availableChildCount;
+
     @Builder
     public AirScheduleSeatType(FlightEnums.SeatType seatType, Integer availableSeatCount,
         FoodType foodType, Integer availableBaggageCount, Integer availableBaggageWeight,
-        DisplayType displayType, Boolean wifiAvailability, Boolean usbAvailability) {
+        DisplayType displayType, Boolean wifiAvailability, Boolean usbAvailability, Integer availableChildCount) {
         super(seatType, availableSeatCount);
         this.foodType = foodType;
         this.availableBaggageCount = availableBaggageCount;
@@ -71,6 +75,10 @@ public class AirScheduleSeatType extends SeatType{
         this.displayType = displayType;
         this.wifiAvailability = wifiAvailability;
         this.usbAvailability = usbAvailability;
+
+        this.availableChildCount = availableChildCount > availableSeatCount / 10
+            ? availableSeatCount / 10
+            : availableChildCount;
     }
 
     public void registerAirSchedule(AirSchedule airSchedule) {
