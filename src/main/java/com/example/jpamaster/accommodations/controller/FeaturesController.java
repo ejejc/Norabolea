@@ -17,8 +17,8 @@ public class FeaturesController {
     private final FeaturesService featuresService;
 
     @PostMapping
-    public ApiResponse<Void> add(@RequestBody FeaturesDto featuresDto) {
-        featuresService.add(featuresDto);
+    public ApiResponse<Void> add(@RequestBody FeaturesDto.Feature featureDto) {
+        featuresService.add(featureDto);
         return ApiResponse.createEmptyBody();
     }
 

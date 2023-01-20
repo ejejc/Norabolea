@@ -33,8 +33,10 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
     private boolean useYn;
     @ApiModelProperty(value = "숙소 이미지 리스트")
     private List<RoomMedia> mediaList;
-    @ApiModelProperty(value = "특징 리스트 seq")
-    private List<FeaturesDto.FeaturesInfoDto> featureList;
+    @ApiModelProperty(value = "특징 리스트 seq - REQ")
+    private List<FeaturesDto.FeatureInfoDto> featureList;
+    @ApiModelProperty(value = "특징 리스트 seq - RES")
+    private List<FeaturesDto.Feature> featuresDtos;
     @ApiModelProperty(value = "숙소 대실")
     private Borrow borrow;
 
@@ -123,7 +125,9 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
                 .checkInTime(entity.getCheckInTime())
                 .checkOutTime(entity.getCheckOutTime())
                 .useYn(entity.isUseYn())
+                .featuresDtos(entity.getRoomFeaturesInfoList().stream().map(FeaturesDto.FeatureInfoDto::of).collect(Collectors.toList()))
                 .mediaList(entity.getMedia().stream().map(RoomMedia::changeToDto).collect(Collectors.toList()))
+                //.featuresDtos()
                 .borrow(RoomDto.Borrow.changeToDto(entity.getBorrowRoom())).build();
         return roomDto;
     }

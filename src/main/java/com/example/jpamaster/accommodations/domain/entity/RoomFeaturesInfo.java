@@ -1,10 +1,8 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
+import com.example.jpamaster.accommodations.dto.FeaturesDto;
 import com.example.jpamaster.common.domain.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +10,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Table(name = "room_features_info")
 public class RoomFeaturesInfo extends BaseEntity {
     @Id

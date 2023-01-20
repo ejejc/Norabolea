@@ -1,5 +1,6 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
+import com.example.jpamaster.accommodations.dto.FeaturesDto;
 import com.example.jpamaster.common.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,4 +27,5 @@ public class Features extends BaseEntity {
 
     @Column(name = "features_icon_url")
     private String featuresIconUrl;
+
 }

@@ -78,7 +78,7 @@ public class AccommodationService {
             List<Features> featuresList = featuresService.searchFeaturesListToByIds(dto.getFeatureList());
 
             for (Features features : featuresList) {
-                FeaturesDto.FeaturesInfoDto featuresInfoDto
+                FeaturesDto.FeatureInfoDto featuresInfoDto
                         = featuresService.searchSameFeatureSeqToEntitySeq(dto.getFeatureList(), features.getFeaturesSeq());
                 room.addFeaturesInfo( RoomFeaturesInfo.builder()
                         .features(features)
