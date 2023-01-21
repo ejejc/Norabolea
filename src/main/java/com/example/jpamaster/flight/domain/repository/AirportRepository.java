@@ -33,4 +33,6 @@ public interface AirportRepository extends JpaRepository<Airport, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Airport> findByIATACodeAndICAOCode(String IATACode, String ICAOCode);
+
+    Optional<Airport> findByIATACode(String iataCode);
 }

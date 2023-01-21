@@ -1,4 +1,4 @@
-package com.example.jpamaster.flight.exception;
+package com.example.jpamaster.common.exception;
 
 
 import com.example.jpamaster.common.enums.HttpStatusCode;
@@ -6,9 +6,9 @@ import com.example.jpamaster.common.exception.CommonException;
 import lombok.Getter;
 
 @Getter
-public class NotFoundException extends CommonException {
+public class JpaMasterNotFoundException extends CommonException {
 
-    public NotFoundException(String message) {
+    public JpaMasterNotFoundException(String message) {
         super(HttpStatusCode.NOT_FOUND, message);
     }
 }

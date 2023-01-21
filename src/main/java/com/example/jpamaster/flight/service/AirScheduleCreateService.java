@@ -4,10 +4,10 @@ import com.example.jpamaster.flight.domain.entity.AirSchedule;
 import com.example.jpamaster.flight.domain.entity.AirScheduleSeatType;
 import com.example.jpamaster.flight.domain.entity.Airplane;
 import com.example.jpamaster.flight.domain.entity.Airport;
-import com.example.jpamaster.flight.domain.repository.AirScheduleRepository;
-import com.example.jpamaster.flight.exception.NotFoundException;
+import com.example.jpamaster.flight.domain.repository.airschedule.AirScheduleRepository;
+import com.example.jpamaster.common.exception.JpaMasterNotFoundException;
 import com.example.jpamaster.flight.web.dto.req.AirScheduleRequestDto;
-import com.example.jpamaster.flight.web.dto.res.AirScheduleResponseDto;
+import com.example.jpamaster.flight.web.dto.res.AirScheduleCreateResponseDto;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ public class AirScheduleCreateService {
     private final AirScheduleRepository airScheduleRepository;
 
     @Transactional
-    public AirScheduleResponseDto createAirSchedule(AirScheduleRequestDto dto) {
+    public AirScheduleCreateResponseDto createAirSchedule(AirScheduleRequestDto dto) {
 
         // TODO 비행 스케줄 검증 후 비행 스케줄 등록 필요 - 타이트한 검증 처리
         Airport fromAirport = flightValidationService.airScheduleAirportValidation(dto.getFromAirportSeq());
@@ -48,7 +48,7 @@ public class AirScheduleCreateService {
         // 저장
         AirSchedule savedAirSchedule = airScheduleRepository.save(airSchedule);
 
-        return new AirScheduleResponseDto(
+        return new AirScheduleCreateResponseDto(
             savedAirSchedule.getAirScheduleSeq(),
             savedAirSchedule.getDepartAt(),
             savedAirSchedule.getArriveAt(),
@@ -60,9 +60,9 @@ public class AirScheduleCreateService {
 
 
     @Transactional
-    public AirScheduleResponseDto updateAirSchedule(Long airScheduleSeq, AirScheduleRequestDto dto) {
+    public AirScheduleCreateResponseDto updateAirSchedule(Long airScheduleSeq, AirScheduleRequestDto dto) {
         AirSchedule airSchedule = airScheduleRepository.findById(airScheduleSeq)
-            .orElseThrow(() -> new NotFoundException("해당 스케줄 정보가 존재하지 않습니다."));
+            .orElseThrow(() -> new JpaMasterNotFoundException("해당 스케줄 정보가 존재하지 않습니다."));
 
         Airport fromAirport = flightValidationService.airScheduleAirportValidation(dto.getFromAirportSeq());
         Airport toAirport = flightValidationService.airScheduleAirportValidation(dto.getToAirportSeq());
@@ -76,7 +76,7 @@ public class AirScheduleCreateService {
         airSchedule.updateAirSchedule(fromAirport, toAirport, dto.getExpectedTakeoffDate(),
             dto.getExpectedTakeoffTime());
 
-        return new AirScheduleResponseDto(
+        return new AirScheduleCreateResponseDto(
             airSchedule.getAirScheduleSeq(),
             airSchedule.getDepartAt(),
             airSchedule.getArriveAt(),

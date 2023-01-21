@@ -1,4 +1,4 @@
-package com.example.jpamaster.flight.exception;
+package com.example.jpamaster.common.exception;
 
 
 import com.example.jpamaster.common.enums.HttpStatusCode;
@@ -6,10 +6,10 @@ import com.example.jpamaster.common.exception.CommonException;
 import lombok.Getter;
 
 @Getter
-public class BadRequestException extends CommonException {
+public class JpaMasterBadRequest extends CommonException {
 
 
-    public BadRequestException(String message) {
+    public JpaMasterBadRequest(String message) {
         super(HttpStatusCode.BAD_REQUEST, message);
     }
 }

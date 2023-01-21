@@ -2,8 +2,6 @@ package com.example.jpamaster.common.exception;
 
 import com.example.jpamaster.common.ApiResponse;
 import com.example.jpamaster.common.enums.HttpStatusCode;
-import com.example.jpamaster.flight.exception.BadRequestException;
-import com.example.jpamaster.flight.exception.NotFoundException;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,16 +18,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ApiExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(value = BadRequestException.class)
-    public ApiResponse<Void> handler(BadRequestException e) {
+    @ExceptionHandler(value = JpaMasterBadRequest.class)
+    public ApiResponse<Void> handler(JpaMasterBadRequest e) {
         log.error(e.getMessage(), e);
         return ApiResponse.createError(e.getHttpStatusCode(), e.getMessage());
     }
 
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(value = NotFoundException.class)
-    public ApiResponse<Void> handler(NotFoundException e) {
+    @ExceptionHandler(value = JpaMasterNotFoundException.class)
+    public ApiResponse<Void> handler(JpaMasterNotFoundException e) {
         log.error(e.getMessage(), e);
         return ApiResponse.createError(e.getHttpStatusCode(), e.getMessage());
     }

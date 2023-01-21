@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
-public class AirScheduleResponseDto {
+public class AirScheduleCreateResponseDto {
 
     private Long airScheduleSeq;
     private LocalDateTime departAt;
@@ -13,7 +13,7 @@ public class AirScheduleResponseDto {
     private Integer estimatedHourSpent;
     private Integer estimatedMinuteSpent;
 
-    public AirScheduleResponseDto(Long airScheduleSeq, LocalDateTime departAt, LocalDateTime arriveAt,
+    public AirScheduleCreateResponseDto(Long airScheduleSeq, LocalDateTime departAt, LocalDateTime arriveAt,
         Integer flightDistanceKm, Integer estimatedHourSpent, Integer estimatedMinuteSpent) {
         this.airScheduleSeq = airScheduleSeq;
         this.departAt = departAt;
