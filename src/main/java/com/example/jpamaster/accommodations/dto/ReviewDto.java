@@ -27,6 +27,8 @@ public class ReviewDto {
         private LocalDateTime regDate;
         private double totalStarScore;
         private List<Medias> mediaList;
+        private String filterType;
+        private Long accommodationSeq;
 
         public static ReqRes changeToDto(Review review) {
            return ReqRes.builder()

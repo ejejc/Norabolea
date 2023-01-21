@@ -53,13 +53,13 @@ public class ReviewService {
         return reviewSummary;
     }
 
-    public Page<ReqRes> searchReviewList(Long accommodationSeq, Long roomSeq, Pageable pageable) {
-        List<Room> roomList = roomService.searchRoomListOfAccommodationSeq(accommodationSeq);
-        if (Objects.nonNull(roomSeq)) {
-            roomList = roomList.stream().filter(vo -> vo.getRoomSeq().equals(roomSeq)).collect(Collectors.toList());
+    public Page<ReqRes> searchReviewList(ReqRes req, Pageable pageable) {
+        List<Room> roomList = roomService.searchRoomListOfAccommodationSeq(req.getAccommodationSeq());
+        if (Objects.nonNull(req.getRoomSeq())) {
+            roomList = roomList.stream().filter(vo -> vo.getRoomSeq().equals(req.getRoomSeq())).collect(Collectors.toList());
         }
         Page<Review> reviewList = reviewRepository.findAllReviewByRoomList(
-                roomList.stream().map(Room::getRoomSeq).collect(Collectors.toList()), pageable
+                roomList.stream().map(Room::getRoomSeq).collect(Collectors.toList()), pageable, req
         );
         // TODO: 숙소별 인기시설도 추가
         return reviewList.map(ReqRes::changeToDto);

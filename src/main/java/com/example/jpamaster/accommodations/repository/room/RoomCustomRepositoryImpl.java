@@ -2,8 +2,11 @@ package com.example.jpamaster.accommodations.repository.room;
 
 import com.example.jpamaster.accommodations.domain.entity.QRoom;
 import com.example.jpamaster.accommodations.domain.entity.Room;
+import com.example.jpamaster.accommodations.dto.ReviewDto;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;

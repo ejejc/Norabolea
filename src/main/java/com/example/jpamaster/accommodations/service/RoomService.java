@@ -3,6 +3,7 @@ package com.example.jpamaster.accommodations.service;
 import com.example.jpamaster.accommodations.domain.entity.BorrowRoom;
 import com.example.jpamaster.accommodations.domain.entity.Media;
 import com.example.jpamaster.accommodations.domain.entity.Room;
+import com.example.jpamaster.accommodations.dto.ReviewDto;
 import com.example.jpamaster.accommodations.dto.RoomDto;
 import com.example.jpamaster.accommodations.repository.room.RoomReposittory;
 import com.example.jpamaster.common.exception.InvalidParameterException;

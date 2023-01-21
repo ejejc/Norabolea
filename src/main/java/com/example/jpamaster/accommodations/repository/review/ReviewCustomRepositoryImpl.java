@@ -5,13 +5,17 @@ import com.example.jpamaster.accommodations.domain.entity.QRoom;
 import com.example.jpamaster.accommodations.domain.entity.Review;
 import com.example.jpamaster.accommodations.dto.QReviewDto_ReviewSum;
 import com.example.jpamaster.accommodations.dto.ReviewDto;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -33,10 +37,11 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository{
     }
 
     @Override
-    public Page<Review> findAllReviewByRoomList(List<Long> roomseqList, Pageable pageable) {
+    public Page<Review> findAllReviewByRoomList(List<Long> roomseqList, Pageable pageable, ReviewDto.ReqRes req) {
         List<Review> fetch = jpaQueryFactory.selectFrom(QReview.review)
                 .join(QReview.review.room, QRoom.room).fetchJoin()
                 .where(QReview.review.room.roomSeq.in(roomseqList))
+                .orderBy(reviewSort(req))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -45,6 +50,7 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository{
                 .from(QReview.review)
                 //.join(QReview.review.room, QRoom.room).fetchJoin()
                 .where(QReview.review.room.roomSeq.in(roomseqList));
+
 
 
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchOne);
@@ -67,5 +73,19 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository{
                 ).from(QReview.review)
                 .groupBy(QReview.review.room.roomSeq)
                 .fetch();
+    }
+
+    private OrderSpecifier reviewSort(ReviewDto.ReqRes req) {
+        if (!ObjectUtils.isEmpty(req)) {
+            switch (req.getFilterType()) {
+                case "recentDate":
+                    return new OrderSpecifier(Order.DESC, QReview.review.createdAt);
+                case "highScore":
+                    return new OrderSpecifier(Order.DESC, QReview.review.convenienceStarScore);
+                case "lowScore":
+                    return new OrderSpecifier(Order.ASC, QReview.review.convenienceStarScore);
+            }
+        }
+        return null;
     }
 }

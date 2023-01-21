@@ -16,7 +16,7 @@ public class FeaturesDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Feature {
+    public static class Feature { // TODO: 이부분 오빠랑 코드 리뷰 및 해결 방법 블로그에 정리
         private String name;
         private String iconUrl;
 
