@@ -1,7 +1,8 @@
 package com.example.jpamaster.flight.domain.repository;
 
 import com.example.jpamaster.flight.domain.entity.Airline;
-import org.hibernate.LockMode;
+import java.util.Optional;
+import javax.persistence.LockModeType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,9 +11,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.LockModeType;
-import java.util.Optional;
 
 public interface AirlineRepository extends JpaRepository<Airline, Long> {
 

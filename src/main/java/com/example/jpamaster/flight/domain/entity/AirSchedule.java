@@ -18,13 +18,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "air_schedule")
+@Where(clause = " deleted = false ")
 @Entity
 public class AirSchedule extends BaseEntity {
 
@@ -41,6 +42,8 @@ public class AirSchedule extends BaseEntity {
     private Integer estimatedHourSpent;
 
     private Integer estimatedMinuteSpent;
+
+    private Boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "airplane_seq")
@@ -61,6 +64,7 @@ public class AirSchedule extends BaseEntity {
         this.deptAirport = deptAirport;
         this.arrAirport = arrAirport;
         this.airplane = airplane;
+        this.deleted = false;
     }
 
     public static AirSchedule createAirSchedule(Airport fromAirport, Airport toAirport, Airplane airplane) {

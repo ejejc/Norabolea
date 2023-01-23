@@ -23,6 +23,11 @@ public class AirScheduleSearchRequestDto {
     private boolean isFreeBaggage;
 
     private SeatType seatType = SeatType.ECONOMY;
+    private int page = 1;
+
+    public int getPage() {
+        return page - 1;
+    }
 
     @Hidden
     @JsonIgnore

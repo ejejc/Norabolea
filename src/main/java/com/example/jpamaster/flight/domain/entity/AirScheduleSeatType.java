@@ -61,13 +61,22 @@ public class AirScheduleSeatType extends SeatType {
     private Boolean usbAvailability;
 
     @Comment("소아 허용 좌석수")
-    @Column(name = "available_child_count")
-    private Integer availableChildCount;
+    @Column(name = "available_child_seat_count")
+    private Integer availableChildSeatCount;
+
+    @Comment("현재 이용 가능 좌석수")
+    @Column(name = "actual_available_seat_count")
+    private Integer actualAvailableSeatCount;
+
+    @Comment("현재 이용 가능 소아 좌석 수")
+    @Column(name = "actual_available_child_seat_count")
+    private Integer actualAvailableChildSeatCount;
+
 
     @Builder
     public AirScheduleSeatType(FlightEnums.SeatType seatType, Integer availableSeatCount,
         FoodType foodType, Integer availableBaggageCount, Integer availableBaggageWeight,
-        DisplayType displayType, Boolean wifiAvailability, Boolean usbAvailability, Integer availableChildCount) {
+        DisplayType displayType, Boolean wifiAvailability, Boolean usbAvailability, Integer availableChildSeatCount) {
         super(seatType, availableSeatCount);
         this.foodType = foodType;
         this.availableBaggageCount = availableBaggageCount;
@@ -76,9 +85,12 @@ public class AirScheduleSeatType extends SeatType {
         this.wifiAvailability = wifiAvailability;
         this.usbAvailability = usbAvailability;
 
-        this.availableChildCount = availableChildCount > availableSeatCount / 10
+        this.availableChildSeatCount = availableChildSeatCount > availableSeatCount / 10
             ? availableSeatCount / 10
-            : availableChildCount;
+            : availableChildSeatCount;
+
+        this.actualAvailableSeatCount = availableSeatCount;
+        this.actualAvailableChildSeatCount = this.availableChildSeatCount;
     }
 
     public void registerAirSchedule(AirSchedule airSchedule) {

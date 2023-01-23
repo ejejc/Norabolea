@@ -49,7 +49,7 @@ public class SeatService {
                     .displayType(dto.getDisplayType())
                     .wifiAvailability(dto.getWifiAvailability())
                     .usbAvailability(dto.getUsbAvailability())
-                    .availableChildCount(dto.getAvailableChildCount())
+                    .availableChildSeatCount(dto.getAvailableChildCount())
                     .build();
 
                 airScheduleSeatTypes.add(airScheduleSeatType);
