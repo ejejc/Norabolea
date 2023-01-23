@@ -3,6 +3,7 @@ package com.example.jpamaster.accommodations.domain.entity;
 import com.example.jpamaster.common.domain.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Table(name = "answer")
 public class Answer extends BaseEntity {
 

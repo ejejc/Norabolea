@@ -30,6 +30,7 @@ public class ReviewDto {
         private List<Medias> mediaList;
         private String filterType;
         private Long accommodationSeq;
+        private AnswerDto.Res answer;
 
         public static ReqRes changeToDto(Review review) {
            return ReqRes.builder()
@@ -40,6 +41,7 @@ public class ReviewDto {
                             .map(Medias::changeToDto)
                             .collect(Collectors.toList()))
                    .featureList(FeaturesDto.Feature.makeFeaturesDto(review.getRoom().getRoomFeaturesInfoList()))
+                   .answer(AnswerDto.Res.toDto(review.getAnswer()))
                    .regDate(review.getCreatedAt())
                    .build();
         }

@@ -60,11 +60,9 @@ public class ReviewService {
             roomList = roomList.stream().filter(vo -> vo.getRoomSeq().equals(req.getRoomSeq())).collect(Collectors.toList());
         }
         Page<Review> reviewList = reviewRepository.findAllReviewByRoomList(
-                roomList.stream().map(Room::getRoomSeq).collect(Collectors.toList()), pageable, req
+            roomList.stream().map(Room::getRoomSeq).collect(Collectors.toList()), pageable, req
         );
-        // TODO: 숙소별 인기시설도 추가
         return reviewList.map(ReqRes::changeToDto);
-
     }
 
 
