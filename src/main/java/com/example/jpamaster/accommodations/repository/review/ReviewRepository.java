@@ -9,7 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewCustomRepository {
-    @EntityGraph(attributePaths = "room")
-    Page<Review> findAllByRoom_RoomSeqInOrderBySeqDesc(List<Long> collect, Pageable pageable);
 
 }

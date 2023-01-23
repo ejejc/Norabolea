@@ -1,10 +1,16 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
 import com.example.jpamaster.common.domain.BaseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "answer")
 public class Answer extends BaseEntity {
 
@@ -21,4 +27,8 @@ public class Answer extends BaseEntity {
 
     @Column(name = "reg_admin_seq")
     private Long regAdminSeq;
+
+    @OneToOne
+    @JoinColumn(name = "review_seq")
+    private Review review;
 }

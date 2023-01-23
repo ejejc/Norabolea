@@ -1,5 +1,6 @@
 package com.example.jpamaster.accommodations.controller;
 
+import com.example.jpamaster.accommodations.dto.AnswerDto;
 import com.example.jpamaster.accommodations.dto.ReviewDto;
 import com.example.jpamaster.accommodations.service.ReviewService;
 import com.example.jpamaster.common.ApiResponse;
@@ -45,5 +46,6 @@ public class ReviewController {
                 .filterType(filterType).build();
         return ApiResponse.createOk(reviewService.searchReviewList(req, pageable));
     }
+
 
 }
