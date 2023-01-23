@@ -24,6 +24,7 @@ public class ReviewDto {
         private int cleanlinessStarScore;
         private int locationStarScore;
         private String roomName;
+        private List<FeaturesDto.Feature> featureList;
         private LocalDateTime regDate;
         private double totalStarScore;
         private List<Medias> mediaList;
@@ -38,8 +39,9 @@ public class ReviewDto {
                     .mediaList(review.getReviewMedias().stream()
                             .map(Medias::changeToDto)
                             .collect(Collectors.toList()))
-                    .regDate(review.getCreatedAt())
-                    .build();
+                   .featureList(FeaturesDto.Feature.makeFeaturesDto(review.getRoom().getRoomFeaturesInfoList()))
+                   .regDate(review.getCreatedAt())
+                   .build();
         }
         public Review changeToEntity(Room room) {
             Review review =  Review.builder()

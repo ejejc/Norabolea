@@ -44,7 +44,7 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository{
                 .where(QReview.review.room.roomSeq.in(roomseqList))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(reviewSort(req))
+                .orderBy(reviewSort(req)) // TODO: null처리 좀 더 좋은 방법 없을까?
                 .fetch();
 
         JPAQuery<Long> countQuery = jpaQueryFactory.select(QReview.review.count())

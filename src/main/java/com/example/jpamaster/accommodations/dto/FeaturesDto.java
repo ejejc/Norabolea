@@ -8,9 +8,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @NoArgsConstructor
 @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 public class FeaturesDto {
+
+
 
     @Getter
     @Builder
@@ -24,6 +29,13 @@ public class FeaturesDto {
             return Features.builder()
                     .featuresName(this.name)
                     .featuresIconUrl(this.iconUrl).build();
+        }
+
+        public static List<Feature> makeFeaturesDto(List<RoomFeaturesInfo> roomFeaturesInfoList) {
+           return roomFeaturesInfoList.stream()
+                    .map(vo -> new FeaturesDto.Feature(vo.getFeatures().getFeaturesName()
+                            , vo.getFeatures().getFeaturesIconUrl()))
+                    .collect(Collectors.toList());
         }
     }
 
