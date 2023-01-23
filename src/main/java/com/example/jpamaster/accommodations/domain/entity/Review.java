@@ -36,6 +36,9 @@ public class Review extends BaseEntity {
     @Column(name = "location_star_score")
     private int locationStarScore;
 
+    @Column(name = "avg_star_score")
+    private double avgStartScore;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private Room room;
@@ -50,7 +53,8 @@ public class Review extends BaseEntity {
     }
 
     @Builder
-    public Review(String content, int kindnessStarScore, int cleanlinessStarScore, int convenienceStarScore, int locationStarScore, Room room) {
+    public Review(String content, int kindnessStarScore, int cleanlinessStarScore
+            , int convenienceStarScore, int locationStarScore, Room room) {
         this.content = content;
         this.kindnessStarScore = kindnessStarScore;
         this.cleanlinessStarScore = cleanlinessStarScore;
@@ -58,6 +62,11 @@ public class Review extends BaseEntity {
         this.locationStarScore = locationStarScore;
         this.room = room;
         this.reviewMedias = new ArrayList<>();
+        this.avgStartScore = this.calculateAvgStartScore();
+    }
+
+    private double calculateAvgStartScore() {
+        return (this.kindnessStarScore + this.cleanlinessStarScore + this.convenienceStarScore + this.locationStarScore) / 4.0;
     }
 
     // private User user; TODO: 추후 추가 예정

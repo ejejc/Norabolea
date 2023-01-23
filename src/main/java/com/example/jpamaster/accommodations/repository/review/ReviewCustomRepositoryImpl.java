@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -41,17 +42,14 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository{
         List<Review> fetch = jpaQueryFactory.selectFrom(QReview.review)
                 .join(QReview.review.room, QRoom.room).fetchJoin()
                 .where(QReview.review.room.roomSeq.in(roomseqList))
-                .orderBy(reviewSort(req))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
+                .orderBy(reviewSort(req))
                 .fetch();
 
         JPAQuery<Long> countQuery = jpaQueryFactory.select(QReview.review.count())
                 .from(QReview.review)
-                //.join(QReview.review.room, QRoom.room).fetchJoin()
                 .where(QReview.review.room.roomSeq.in(roomseqList));
-
-
 
         return PageableExecutionUtils.getPage(fetch, pageable, countQuery::fetchOne);
     }
@@ -75,17 +73,17 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository{
                 .fetch();
     }
 
-    private OrderSpecifier reviewSort(ReviewDto.ReqRes req) {
-        if (!ObjectUtils.isEmpty(req)) {
+    private OrderSpecifier<?> reviewSort(ReviewDto.ReqRes req) {
+        if (!ObjectUtils.isEmpty(req) && !ObjectUtils.isEmpty(req.getFilterType())) {
             switch (req.getFilterType()) {
                 case "recentDate":
                     return new OrderSpecifier(Order.DESC, QReview.review.createdAt);
                 case "highScore":
-                    return new OrderSpecifier(Order.DESC, QReview.review.convenienceStarScore);
+                    return new OrderSpecifier(Order.DESC, QReview.review.avgStartScore);
                 case "lowScore":
-                    return new OrderSpecifier(Order.ASC, QReview.review.convenienceStarScore);
+                    return new OrderSpecifier(Order.ASC, QReview.review.avgStartScore);
             }
         }
-        return null;
+        return new OrderSpecifier(Order.DESC, QReview.review.createdAt);
     }
 }

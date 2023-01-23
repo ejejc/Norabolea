@@ -40,6 +40,7 @@ public class ReviewService {
     }
 
     private ReviewDto.ReviewSummary findReviewForAccommodation(List<Room> roomList) {
+        // roomSeq 별로, 리뷰들의 총점을 가져온다.
         List<ReviewDto.ReviewSum> reviewSums = reviewRepository.findAvgEachScore();
         reviewSums = reviewSums.stream()
                 .filter(vo -> roomList.stream().anyMatch(vo2 -> vo.getRoomSeq().equals(vo2.getRoomSeq())))
