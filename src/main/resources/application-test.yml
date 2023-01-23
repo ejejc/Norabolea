@@ -1,0 +1,49 @@
+server:
+  port: 0
+  servlet:
+    application-display-name: jpa-master
+    context-path: /api  # 전역 api path 설정
+
+spring:
+  application:
+    name: jpa-master
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    hikari:
+      driver-class-name: org.h2.Driver
+      jdbc-url: jdbc:h2:mem:test-jpa-master
+      username: sa
+      password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size : 100
+    database-platform: org.hibernate.dialect.H2Dialect
+  redis:
+    host: localhost
+    port: 6379
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          client: DEBUG
+
+open-api:
+  airline:
+    request-uri: "http://apis.data.go.kr/B551177/StatusOfSrvAirlines/getServiceAirlineInfo"
+    api-key: "eMnMvGML1ccLs2K4gEVX5m8Ld8HkzUBHdgw2Kzo9tt5J8F8rHhikcX6aUWTvn0FXcOCnWdLpqXv8ZVRVd8G1/w=="
+  kakao:
+    request-uri: "https://dapi.kakao.com/v2/local/search/address.json"
