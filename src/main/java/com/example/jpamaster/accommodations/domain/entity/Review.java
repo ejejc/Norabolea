@@ -47,6 +47,10 @@ public class Review extends BaseEntity {
     //@Builder.Default TODO: 이거 사용할때 @Builder에 컴파일 오류 발생 이유 확인해보기
     private List<ReviewMedia> reviewMedias;
 
+    @OneToOne
+    @JoinColumn(name = "answer_seq")
+    private Answer answer;
+
     public void add(ReviewMedia mediaEntity) {
         reviewMedias.add(mediaEntity);
         mediaEntity.setReview(this);
