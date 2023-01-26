@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -66,4 +68,10 @@ public class ReviewService {
     }
 
 
+    @Transactional // TODO: transactional을 해줘야지만 update 쿼리가 날아가는 이유 공부하기
+    public void modifyBestReview(ReviewDto.BestReq bestReq) {
+        Review review = reviewRepository.findById(bestReq.getReviewSeq())
+                .orElseThrow(() -> new InvalidParameterException("존재하지 않는 리뷰 입니다."));
+        review.updateBestYn(bestReq.isBestYn());
+    }
 }

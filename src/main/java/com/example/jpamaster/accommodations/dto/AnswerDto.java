@@ -2,15 +2,12 @@ package com.example.jpamaster.accommodations.dto;
 
 import com.example.jpamaster.accommodations.domain.entity.Answer;
 import com.example.jpamaster.accommodations.domain.entity.Review;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class AnswerDto {
 

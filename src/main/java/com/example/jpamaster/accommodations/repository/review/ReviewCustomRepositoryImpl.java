@@ -76,7 +76,7 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository{
     private OrderSpecifier<?> reviewSort(ReviewDto.ReqRes req) {
         if (!ObjectUtils.isEmpty(req) && !ObjectUtils.isEmpty(req.getFilterType())) {
             switch (req.getFilterType()) {
-                case "recentDate":
+                case "recentDate": // TODO: enum 정의
                     return new OrderSpecifier(Order.DESC, QReview.review.createdAt);
                 case "highScore":
                     return new OrderSpecifier(Order.DESC, QReview.review.avgStartScore);

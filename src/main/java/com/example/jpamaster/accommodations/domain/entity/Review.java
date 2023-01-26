@@ -24,6 +24,9 @@ public class Review extends BaseEntity {
     @Column(name = "content")
     private String content;
 
+    @Column(name = "best_yn")
+    private boolean bestYn;
+
     @Column(name = "kindness_star_score")
     private int kindnessStarScore;
 
@@ -72,5 +75,8 @@ public class Review extends BaseEntity {
         return (this.kindnessStarScore + this.cleanlinessStarScore + this.convenienceStarScore + this.locationStarScore) / 4.0;
     }
 
+    public void updateBestYn(boolean bestYn) {
+        this.bestYn = bestYn;
+    }
     // private User user; TODO: 추후 추가 예정
 }

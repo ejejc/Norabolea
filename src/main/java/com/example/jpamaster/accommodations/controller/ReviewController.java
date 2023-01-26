@@ -47,5 +47,10 @@ public class ReviewController {
         return ApiResponse.createOk(reviewService.searchReviewList(req, pageable));
     }
 
-
+    @PostMapping("/best/add")
+    @ApiOperation(value = "베스트 리뷰 설정 API")
+    public ApiResponse<Void> modifyBestReview(@RequestBody ReviewDto.BestReq bestReq) {
+        reviewService.modifyBestReview(bestReq);
+        return ApiResponse.createEmptyBody();
+    }
 }

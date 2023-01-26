@@ -13,6 +13,12 @@ import java.util.stream.Collectors;
 public class ReviewDto {
 
     @Getter
+    public static class BestReq {
+        private Long reviewSeq;
+        private boolean bestYn;
+    }
+
+    @Getter
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
