@@ -40,6 +40,8 @@ dependencies {
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
     // feign-client 의존성 추가
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    // redis template
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 // feign client 사용을 위해 spring
 dependencyManagement {

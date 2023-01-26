@@ -21,6 +21,14 @@ public class FlightUtils {
         return (int) Math.ceil(EARTH_RADIUS * c );
     }
 
+    public static double haversiveFomulaDistanceAsKm(double fromLat, double fromLon, double toLat, double toLon) {
+        fromLat = Math.toRadians(fromLat);
+        fromLon = Math.toRadians(fromLon);
+        toLat = Math.toRadians(toLat);
+        toLon = Math.toRadians(toLon);
+        return EARTH_RADIUS * Math.acos(Math.sin(fromLat) * Math.sin(toLat) + Math.cos(fromLat) * Math.cos(toLat) * Math.cos(fromLon - toLon));
+    }
+
     public static LocalDateTime toLocalDateTime (String date, String time) {
         return LocalDateTime.of(getYear(date), getMonth(date), getDay(date), getHour(time), getMinute(time));
     }

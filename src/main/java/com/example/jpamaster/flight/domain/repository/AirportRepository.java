@@ -1,8 +1,10 @@
 package com.example.jpamaster.flight.domain.repository;
 
 import com.example.jpamaster.flight.domain.entity.Airport;
+import javax.persistence.LockModeType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -29,4 +31,6 @@ public interface AirportRepository extends JpaRepository<Airport, Long> {
 
     Optional<Airport> findByAirportSeq(Long fromAirportSeq);
 
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    Optional<Airport> findByIATACodeAndICAOCode(String IATACode, String ICAOCode);
 }

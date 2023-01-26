@@ -5,7 +5,7 @@ import java.util.Set;
 import lombok.Getter;
 
 @Getter
-public class AirScheduleCreateRequestDto {
+public class AirScheduleRequestDto {
 
     private Long airplaneSeq;
     private Long fromAirportSeq;
@@ -13,5 +13,5 @@ public class AirScheduleCreateRequestDto {
     private String expectedTakeoffDate;
     private String expectedTakeoffTime;
 
-    private Set<AirScheduleSeatRegisterRequestDto> airScheduleSeatRegisterRequestDtos = new HashSet<>();
+    private Set<AirScheduleSeatRequestDto> airScheduleSeatRequestDtos = new HashSet<>();
 }

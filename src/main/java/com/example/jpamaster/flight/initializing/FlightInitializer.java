@@ -5,6 +5,7 @@ import com.example.jpamaster.flight.domain.entity.Airport;
 import com.example.jpamaster.flight.domain.repository.AirlineRepository;
 import com.example.jpamaster.flight.domain.repository.AirportRepository;
 import com.example.jpamaster.flight.feign.AirlineFeignClient;
+import javax.annotation.PostConstruct;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -31,9 +33,15 @@ public class FlightInitializer {
     @Value("${open-api.airline.api-key}")
     private String serviceKey;
 
+    private RedisTemplate<String, Object> redisTemplate;
     private final AirlineFeignClient airlineFeignClient;
     private final AirlineRepository airlineRepository;
     private final AirportRepository airportRepository;
+
+    @PostConstruct
+    public void init() {
+
+    }
 
 
     @Transactional
@@ -102,8 +110,9 @@ public class FlightInitializer {
                      * airportInfo[10] - 경도
                      */
 
-
-                    Airport airport = Airport.airportGenerator()
+                    Optional<Airport> optionalAirport = airportRepository.findByIATACodeAndICAOCode(airportInfo[2], airportInfo[3]);
+                    if (optionalAirport.isEmpty()) {
+                        Airport airport = Airport.airportGenerator()
                             .nameEn(airportInfo[0])
                             .nameKr(airportInfo[1])
                             .IATACode(airportInfo[2])
@@ -117,9 +126,9 @@ public class FlightInitializer {
                             .lon(airportInfo[10])
                             .generate();
 
-                    airportList.add(airport);
+                        airportList.add(airport);
+                    }
                 }
-
 
                 airportRepository.saveAll(airportList);
 
