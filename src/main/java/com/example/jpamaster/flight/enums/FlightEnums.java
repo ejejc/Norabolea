@@ -8,14 +8,15 @@ public class FlightEnums {
     @Getter
     @RequiredArgsConstructor
     public enum SeatType {
-        FIRST_CLASS("first-class", "퍼스트 클래스"),
-        BUSINESS("business", "비지니스"),
-        PREMIUM_ECONOMY("premium-economy", "프리미엄 이코노미"),
-        ECONOMY("economy", "이코노미"),
+        FIRST_CLASS("first-class", "퍼스트 클래스", 2.8),
+        BUSINESS("business", "비지니스", 2.0),
+        PREMIUM_ECONOMY("premium-economy", "프리미엄 이코노미", 1.4),
+        ECONOMY("economy", "이코노미", 1.0),
         ;
 
         private final String enName;
         private final String krName;
+        private final double costMultiple;
     }
 
     @Getter

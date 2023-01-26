@@ -1,11 +1,11 @@
 package com.example.jpamaster.flight.service;
 
-import com.example.jpamaster.flight.domain.entity.AirSchedule;
 import com.example.jpamaster.flight.domain.entity.AirScheduleSeatType;
 import com.example.jpamaster.flight.domain.entity.Airplane;
 import com.example.jpamaster.flight.domain.entity.AirplaneSeatType;
-import com.example.jpamaster.flight.web.dto.req.AirScheduleSeatRegisterRequestDto;
+import com.example.jpamaster.flight.web.dto.req.AirScheduleSeatRequestDto;
 import com.example.jpamaster.flight.web.dto.req.AirplaneSeatRegisterRequestDto;
+import java.util.HashSet;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class SeatService {
 
     @Transactional
-    public void registerSeatForAirplane(Set<AirplaneSeatRegisterRequestDto> dtos, Airplane airplane) {
+    public Set<AirplaneSeatType> registerSeatForAirplane(Set<AirplaneSeatRegisterRequestDto> dtos) {
+        Set<AirplaneSeatType> airplaneSeatTypes = new HashSet<>();
         if (!dtos.isEmpty()) {
             for (AirplaneSeatRegisterRequestDto seatDto : dtos) {
                 AirplaneSeatType airplaneSeatType = AirplaneSeatType.builder()
@@ -24,15 +25,17 @@ public class SeatService {
                     .availableSeatCount(seatDto.getAvailableSeatCount())
                     .build();
 
-                airplaneSeatType.registerAirplane(airplane);
+                airplaneSeatTypes.add(airplaneSeatType);
             }
         }
+        return airplaneSeatTypes;
     }
 
     @Transactional
-    public void registerSeatForAirSchedule(Set<AirScheduleSeatRegisterRequestDto> dtos, AirSchedule airSchedule) {
+    public Set<AirScheduleSeatType> registerSeatForAirSchedule(Set<AirScheduleSeatRequestDto> dtos) {
+        Set<AirScheduleSeatType> airScheduleSeatTypes = new HashSet<>();
         if (!dtos.isEmpty()) {
-            for (AirScheduleSeatRegisterRequestDto dto : dtos) {
+            for (AirScheduleSeatRequestDto dto : dtos) {
                 if (dto.getSeatType() == null) {
                     continue;
                 }
@@ -46,12 +49,13 @@ public class SeatService {
                     .displayType(dto.getDisplayType())
                     .wifiAvailability(dto.getWifiAvailability())
                     .usbAvailability(dto.getUsbAvailability())
+                    .availableChildSeatCount(dto.getAvailableChildCount())
                     .build();
 
-                airScheduleSeatType.registerAirSchedule(airSchedule);
+                airScheduleSeatTypes.add(airScheduleSeatType);
             }
         }
-
+        return airScheduleSeatTypes;
 
     }
 }
