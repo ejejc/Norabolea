@@ -33,6 +33,7 @@ public class ReviewDto {
         private List<FeaturesDto.Feature> featureList;
         private LocalDateTime regDate;
         private double totalStarScore;
+        private boolean bestYn;
         private List<Medias> mediaList;
         private String filterType;
         private Long accommodationSeq;
@@ -48,6 +49,7 @@ public class ReviewDto {
                             .collect(Collectors.toList()))
                    .featureList(FeaturesDto.Feature.makeFeaturesDto(review.getRoom().getRoomFeaturesInfoList()))
                    .answer(AnswerDto.Res.toDto(review.getAnswer()))
+                   .bestYn(review.isBestYn())
                    .regDate(review.getCreatedAt())
                    .build();
         }
@@ -78,6 +80,8 @@ public class ReviewDto {
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Medias {
         private String url;
         private boolean useYn;

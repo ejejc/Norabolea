@@ -3,9 +3,7 @@ package com.example.jpamaster.accommodations.dto;
 import com.example.jpamaster.accommodations.domain.entity.*;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +11,8 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @ApiModel(value = "룸")
 public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
 
@@ -43,6 +43,8 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
     @Setter
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @ApiModel(value = "룸 미디어")
     public static class RoomMedia {
         @ApiModelProperty(value = "이미지 URL")
@@ -71,6 +73,8 @@ public class RoomDto { //TODO: 어떤 클래스 구조가 좋을까?
     @Setter
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     @ApiModel(value = "대실")
     public static class Borrow {
         @ApiModelProperty(value = "대실 시간")
