@@ -14,8 +14,8 @@ public class ReviewDto {
 
     @Getter
     public static class BestReq {
+        private Long accommodationSeq;
         private Long reviewSeq;
-        private boolean bestYn;
     }
 
     @Getter

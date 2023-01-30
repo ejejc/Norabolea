@@ -1,6 +1,5 @@
 package com.example.jpamaster.accommodations.controller;
 
-import com.example.jpamaster.accommodations.dto.AnswerDto;
 import com.example.jpamaster.accommodations.dto.ReviewDto;
 import com.example.jpamaster.accommodations.service.ReviewService;
 import com.example.jpamaster.common.ApiResponse;
@@ -50,7 +49,7 @@ public class ReviewController {
     @PostMapping("/best/add")
     @ApiOperation(value = "베스트 리뷰 설정 API")
     public ApiResponse<Void> modifyBestReview(@RequestBody ReviewDto.BestReq bestReq) {
-        reviewService.modifyBestReview(bestReq);
+        reviewService.addBestReview(bestReq);
         return ApiResponse.createEmptyBody();
     }
 }

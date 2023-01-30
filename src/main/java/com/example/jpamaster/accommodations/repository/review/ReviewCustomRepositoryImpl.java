@@ -1,5 +1,6 @@
 package com.example.jpamaster.accommodations.repository.review;
 
+import com.example.jpamaster.accommodations.domain.entity.QAccommodations;
 import com.example.jpamaster.accommodations.domain.entity.QReview;
 import com.example.jpamaster.accommodations.domain.entity.QRoom;
 import com.example.jpamaster.accommodations.domain.entity.Review;
@@ -38,7 +39,7 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository{
     }
 
     @Override
-    public Page<Review> findAllReviewByRoomList(List<Long> roomseqList, Pageable pageable, ReviewDto.ReqRes req) {
+    public Page<Review> findAllReviewByRoomListForPaging(List<Long> roomseqList, Pageable pageable, ReviewDto.ReqRes req) {
         List<Review> fetch = jpaQueryFactory.selectFrom(QReview.review)
                 .join(QReview.review.room, QRoom.room).fetchJoin()
                 .where(QReview.review.room.roomSeq.in(roomseqList))
@@ -85,5 +86,15 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository{
             }
         }
         return new OrderSpecifier(Order.DESC, QReview.review.createdAt);
+    }
+
+    @Override
+    public List<Review> findAllReviewByRoomListToBest(List<Long> roomSeqList) {
+        return jpaQueryFactory
+                .selectFrom(QReview.review)
+                .where(QReview.review.room.roomSeq.in(roomSeqList)
+                        .and(QReview.review.bestYn.eq(true))
+                )
+                .orderBy(QReview.review.createdAt.asc()).fetch();
     }
 }

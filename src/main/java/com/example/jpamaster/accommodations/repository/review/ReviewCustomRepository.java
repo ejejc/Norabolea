@@ -12,5 +12,7 @@ public interface ReviewCustomRepository {
 
     List<ReviewDto.ReviewSum> findAvgEachScore();
 
-    Page<Review> findAllReviewByRoomList(List<Long> roomSeqList, Pageable pageable, ReviewDto.ReqRes req);
+    Page<Review> findAllReviewByRoomListForPaging(List<Long> roomSeqList, Pageable pageable, ReviewDto.ReqRes req);
+
+    List<Review> findAllReviewByRoomListToBest(List<Long> roomSeqList);
 }

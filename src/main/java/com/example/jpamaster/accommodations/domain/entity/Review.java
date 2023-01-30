@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.example.jpamaster.common.domain.BaseEntity;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -75,8 +74,13 @@ public class Review extends BaseEntity {
         return (this.kindnessStarScore + this.cleanlinessStarScore + this.convenienceStarScore + this.locationStarScore) / 4.0;
     }
 
-    public void updateBestYn(boolean bestYn) {
-        this.bestYn = bestYn;
+    public void updateBestTrue() {
+        this.bestYn = true;
     }
+
+    public void updateBestFalse() {
+        this.bestYn = false;
+    }
+
     // private User user; TODO: 추후 추가 예정
 }

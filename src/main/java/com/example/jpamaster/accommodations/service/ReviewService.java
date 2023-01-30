@@ -61,17 +61,31 @@ public class ReviewService {
         if (Objects.nonNull(req.getRoomSeq())) {
             roomList = roomList.stream().filter(vo -> vo.getRoomSeq().equals(req.getRoomSeq())).collect(Collectors.toList());
         }
-        Page<Review> reviewList = reviewRepository.findAllReviewByRoomList(
+        Page<Review> reviewList = reviewRepository.findAllReviewByRoomListForPaging(
             roomList.stream().map(Room::getRoomSeq).collect(Collectors.toList()), pageable, req
         );
         return reviewList.map(ReqRes::changeToDto);
     }
 
 
-    @Transactional // TODO: transactional을 해줘야지만 update 쿼리가 날아가는 이유 공부하기
-    public void modifyBestReview(ReviewDto.BestReq bestReq) {
-        Review review = reviewRepository.findById(bestReq.getReviewSeq())
+    @Transactional // TODO: transactional을 해줘야지만 update 쿼리가 날아가는 이유 공부하기 : 트랜잭션 안에 있어야 트랜잭션 commit 후 flush가 발생되기 때문
+    public void addBestReview(ReviewDto.BestReq bestReq) {
+        // 특정 숙소에 해당하는 review List 가져오기
+        List<Review> reviewList = this.searchReviewListForAccommodation(bestReq.getAccommodationSeq());
+
+        if (reviewList.size() >= 3) {
+            Review review = reviewRepository.findById(reviewList.get(0).getSeq())
+                    .orElseThrow(() -> new InvalidParameterException("존재하지 않는 리뷰 입니다."));
+            review.updateBestFalse();
+        }
+        Review addBestReview = reviewRepository.findById(bestReq.getReviewSeq())
                 .orElseThrow(() -> new InvalidParameterException("존재하지 않는 리뷰 입니다."));
-        review.updateBestYn(bestReq.isBestYn());
+        addBestReview.updateBestTrue();
+    }
+
+    private List<Review> searchReviewListForAccommodation(Long accommodationSeq) {
+        List<Long> roomList = roomReposittory.findByAccommodationSeq(accommodationSeq)
+                .stream().map(Room::getRoomSeq).collect(Collectors.toList());
+        return reviewRepository.findAllReviewByRoomListToBest(roomList);
     }
 }
