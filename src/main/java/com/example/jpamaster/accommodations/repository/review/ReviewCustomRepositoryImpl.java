@@ -1,6 +1,5 @@
 package com.example.jpamaster.accommodations.repository.review;
 
-import com.example.jpamaster.accommodations.domain.entity.QAccommodations;
 import com.example.jpamaster.accommodations.domain.entity.QReview;
 import com.example.jpamaster.accommodations.domain.entity.QRoom;
 import com.example.jpamaster.accommodations.domain.entity.Review;
@@ -8,8 +7,6 @@ import com.example.jpamaster.accommodations.dto.QReviewDto_ReviewSum;
 import com.example.jpamaster.accommodations.dto.ReviewDto;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -45,7 +42,7 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository{
                 .where(QReview.review.room.roomSeq.in(roomseqList))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(reviewSort(req)) // TODO: null처리 좀 더 좋은 방법 없을까?
+                .orderBy(reviewSort(req).toArray(OrderSpecifier[]::new)) // TODO: null처리 좀 더 좋은 방법 없을까?
                 .fetch();
 
         JPAQuery<Long> countQuery = jpaQueryFactory.select(QReview.review.count())
@@ -74,18 +71,21 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository{
                 .fetch();
     }
 
-    private OrderSpecifier<?> reviewSort(ReviewDto.ReqRes req) {
+    private List<OrderSpecifier<?>> reviewSort(ReviewDto.ReqRes req) {
+        List<OrderSpecifier<?>> orderSpecifierList = new ArrayList<>();
         if (!ObjectUtils.isEmpty(req) && !ObjectUtils.isEmpty(req.getFilterType())) {
             switch (req.getFilterType()) {
-                case "recentDate": // TODO: enum 정의
-                    return new OrderSpecifier(Order.DESC, QReview.review.createdAt);
                 case "highScore":
-                    return new OrderSpecifier(Order.DESC, QReview.review.avgStartScore);
+                    orderSpecifierList.add(new OrderSpecifier(Order.DESC, QReview.review.avgStartScore));
                 case "lowScore":
-                    return new OrderSpecifier(Order.ASC, QReview.review.avgStartScore);
+                    orderSpecifierList.add(new OrderSpecifier(Order.ASC, QReview.review.avgStartScore));
             }
+        } else {
+            orderSpecifierList.add(new OrderSpecifier<>(Order.DESC, QReview.review.bestYn));
         }
-        return new OrderSpecifier(Order.DESC, QReview.review.createdAt);
+        orderSpecifierList.add(new OrderSpecifier(Order.DESC, QReview.review.createdAt));
+
+        return orderSpecifierList;
     }
 
     @Override
