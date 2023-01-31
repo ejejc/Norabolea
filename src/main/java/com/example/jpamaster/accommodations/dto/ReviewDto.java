@@ -12,6 +12,16 @@ import java.util.stream.Collectors;
 
 public class ReviewDto {
 
+    @AllArgsConstructor
+    @Getter
+    public enum FilterType {
+        LOWSCORE("lowScore", "별점낮은순"),
+        HIGHSCORE("highScore", "별점높은순"),
+        RECENTDATE("recentDate", "최근등록순");
+
+        private final String name;
+        private final String desc;
+    }
     @Getter
     public static class BestReq {
         private Long accommodationSeq;

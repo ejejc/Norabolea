@@ -73,18 +73,15 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository{
 
     private List<OrderSpecifier<?>> reviewSort(ReviewDto.ReqRes req) {
         List<OrderSpecifier<?>> orderSpecifierList = new ArrayList<>();
-        if (!ObjectUtils.isEmpty(req) && !ObjectUtils.isEmpty(req.getFilterType())) {
-            switch (req.getFilterType()) {
-                case "highScore":
-                    orderSpecifierList.add(new OrderSpecifier(Order.DESC, QReview.review.avgStartScore));
-                case "lowScore":
-                    orderSpecifierList.add(new OrderSpecifier(Order.ASC, QReview.review.avgStartScore));
-            }
+
+        if (ReviewDto.FilterType.LOWSCORE.getName().equals(req.getFilterType())) {
+            orderSpecifierList.add(new OrderSpecifier<>(Order.ASC, QReview.review.avgStartScore));
+        } else if (ReviewDto.FilterType.HIGHSCORE.getName().equals(req.getFilterType())) {
+            orderSpecifierList.add(new OrderSpecifier<>(Order.DESC, QReview.review.avgStartScore));
         } else {
             orderSpecifierList.add(new OrderSpecifier<>(Order.DESC, QReview.review.bestYn));
+            orderSpecifierList.add(new OrderSpecifier<>(Order.DESC, QReview.review.createdAt));
         }
-        orderSpecifierList.add(new OrderSpecifier(Order.DESC, QReview.review.createdAt));
-
         return orderSpecifierList;
     }
 
