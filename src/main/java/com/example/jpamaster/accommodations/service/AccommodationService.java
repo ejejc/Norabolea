@@ -4,7 +4,6 @@ import com.example.jpamaster.accommodations.domain.entity.*;
 import com.example.jpamaster.accommodations.dto.*;
 import com.example.jpamaster.accommodations.feign.KakaoFeignClient;
 import com.example.jpamaster.accommodations.repository.AccommodationsRepository;
-import com.example.jpamaster.accommodations.repository.AcommoFacilityInfoRepository;
 import com.example.jpamaster.accommodations.repository.review.ReviewRepository;
 import com.example.jpamaster.common.exception.InvalidParameterException;
 import lombok.AllArgsConstructor;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AccommodationService {
     private final AccommodationsRepository accommodationsRepository;
-    private final AcommoFacilityInfoRepository acommoFacilityInfoRepository;
     private final ReviewRepository reviewRepository;
     private final KakaoFeignClient kakaoFeignClient;
     private final RoomService roomService;
@@ -39,30 +37,29 @@ public class AccommodationService {
                 .build();
         // dto room을 entity로 변환 후, accommodation에 저장
         this.setRoomToAccommodation(param.getRooms(), accommodations);
+        // 인기시설과 숙소 맵핑
+        this.saveFaclityInfo(param.getFacilityInfoReq(), accommodations);
         // 숙소 저장
         accommodationsRepository.save(accommodations);
-        this.saveFaclityInfo(param, accommodations); // TODO: 메소드 todo-list 해결하면 다시 리팩토링 param 전체를 넘기는 것은 아닌 것 같다 ..
     }
 
     /**
      * 인기 시설 저장
-     * @param param
+     * @param facilityReq
      * @param accommodations
      */
-    private void saveFaclityInfo(AccommodationDto param, Accommodations accommodations) {
+    private void saveFaclityInfo(List<AccommoFacilityInfoDto.Req> facilityReq, Accommodations accommodations) {
         // 파라미터로 받은 Seq를 통해 인기시설 엔티티 조회
         List<PopularFacility> popularFacilityList
-                = popularFacilityService.searchFacilityEntityToLongs(param.getFacilityInfoReq());
+                = popularFacilityService.searchFacilityEntityToLongs(facilityReq);
         // 인기시설 엔티티를 통해, 숙소와 인기시설의 중간테이블 저장
-        List<AccommoFacilityInfo> collect = popularFacilityList.stream()
-                .map(vo -> AccommoFacilityInfo.builder()
-                        .accommodation(accommodations)
-                        .popularFacility(vo)
-                        // TODO: 아래는 dto에서 변환 위에 특징들은 service에서 변환 어떤게 좋을까 ?
-                        // TODO: 어떻게 보면 인기시설에 관한건데 숙박 엔티티에다가 넣는 것은 아닌것 같다 ..
-                        .sort(param.findSortMatchForSeq(vo.getPopularFacilitySeq()))
-                        .build()).collect(Collectors.toList());
-        acommoFacilityInfoRepository.saveAll(collect);
+        for (PopularFacility entity : popularFacilityList) {
+            AccommoFacilityInfoDto.Req dto = facilityReq.stream()
+                    .filter(vo -> vo.getFacilitySeq().equals(entity.getPopularFacilitySeq())).findFirst().orElseThrow(() -> new InvalidParameterException("유효하지 않은 인기시설 입니다."));
+            accommodations.addFacilityInfo(AccommoFacilityInfo.builder()
+                    .popularFacility(entity)
+                    .sort(dto.getSort()).build());
+        }
     }
 
     /**

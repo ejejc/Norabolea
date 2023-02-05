@@ -1,9 +1,6 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -22,6 +19,7 @@ public class AccommoFacilityInfo {
 
     @JoinColumn(name = "accommodations_seq")
     @ManyToOne
+    @Setter
     private Accommodations accommodation;
 
     @JoinColumn(name = "popular_facility_seq")

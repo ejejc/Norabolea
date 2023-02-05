@@ -42,7 +42,7 @@ public class Accommodations {
     @OneToMany(mappedBy = "accommodations", cascade = CascadeType.ALL)
     private List<Room> rooms;
 
-    @OneToMany(mappedBy = "accommodation"/*, cascade = CascadeType.ALL*/ , fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "accommodation", cascade = CascadeType.ALL , fetch = FetchType.LAZY)
     private List<AccommoFacilityInfo> accommoFacilityInfos;
 
     @ManyToOne() // TODO: fetchType 공부해서 넣어주기
@@ -59,6 +59,11 @@ public class Accommodations {
         room.setAccommodations(this);
     }
 
+    public void addFacilityInfo(AccommoFacilityInfo facilityInfo) {
+        this.accommoFacilityInfos.add(facilityInfo);
+        facilityInfo.setAccommodation(this);
+    }
+
     @Builder
     public Accommodations(String accommodationTitle, String contact, Address address, AccomodationsEnum.Type accommodationsType) {
         this.accommodationTitle = accommodationTitle;
@@ -66,5 +71,6 @@ public class Accommodations {
         this.address = address;
         this.accommodationsType = accommodationsType;
         this.rooms = new ArrayList<>();
+        this.accommoFacilityInfos = new ArrayList<>();
     }
 }
