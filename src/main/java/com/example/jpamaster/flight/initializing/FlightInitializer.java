@@ -1,23 +1,11 @@
 package com.example.jpamaster.flight.initializing;
 
+import com.example.jpamaster.flight.constant.FlightConstant;
 import com.example.jpamaster.flight.domain.entity.Airline;
 import com.example.jpamaster.flight.domain.entity.Airport;
 import com.example.jpamaster.flight.domain.repository.AirlineRepository;
 import com.example.jpamaster.flight.domain.repository.AirportRepository;
 import com.example.jpamaster.flight.feign.AirlineFeignClient;
-import javax.annotation.PostConstruct;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,6 +13,16 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,15 +31,9 @@ public class FlightInitializer {
     @Value("${open-api.airline.api-key}")
     private String serviceKey;
 
-    private RedisTemplate<String, Object> redisTemplate;
     private final AirlineFeignClient airlineFeignClient;
     private final AirlineRepository airlineRepository;
     private final AirportRepository airportRepository;
-
-    @PostConstruct
-    public void init() {
-
-    }
 
 
     @Transactional
@@ -113,17 +105,17 @@ public class FlightInitializer {
                     Optional<Airport> optionalAirport = airportRepository.findByIATACodeAndICAOCode(airportInfo[2], airportInfo[3]);
                     if (optionalAirport.isEmpty()) {
                         Airport airport = Airport.airportGenerator()
-                            .nameEn(airportInfo[0])
-                            .nameKr(airportInfo[1])
-                            .IATACode(airportInfo[2])
-                            .ICAOCode(airportInfo[3])
-                            .locationKr(airportInfo[4])
-                            .locationEn(airportInfo[5])
-                            .countryEn(airportInfo[6])
-                            .countryKr(airportInfo[7])
-                            .cityEn(airportInfo[8])
-                            .lat(airportInfo[9])
-                            .lon(airportInfo[10])
+                            .nameEn(airportInfo[FlightConstant.ENG_AIRPORT_NAME_IDX])
+                            .nameKr(airportInfo[FlightConstant.KOR_AIRPORT_NAME_IDX])
+                            .IATACode(airportInfo[FlightConstant.IATA_CODE_IDX])
+                            .ICAOCode(airportInfo[FlightConstant.ICAO_CODE_IDX])
+                            .locationKr(airportInfo[FlightConstant.KOR_AIRPORT_LOCATION_IDX])
+                            .locationEn(airportInfo[FlightConstant.ENG_AIRPORT_LOCATION_IDX])
+                            .countryEn(airportInfo[FlightConstant.ENG_COUNTRY_IDX])
+                            .countryKr(airportInfo[FlightConstant.KOR_COUNTRY_IDX])
+                            .cityEn(airportInfo[FlightConstant.ENG_CITY_IDX])
+                            .lat(airportInfo[FlightConstant.LATITUDE_IDX])
+                            .lon(airportInfo[FlightConstant.LONGITUDE_IDX])
                             .generate();
 
                         airportList.add(airport);
