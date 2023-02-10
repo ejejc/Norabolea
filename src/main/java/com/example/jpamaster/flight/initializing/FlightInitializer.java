@@ -49,13 +49,13 @@ public class FlightInitializer {
 
                 if (optionalAirline.isEmpty()) {
                     Airline airline = Airline.builder()
-                            .airlineImage(item.getAirlineImage())
-                            .airlineName(item.getAirlineName())
-                            .airlineTel(item.getAirlineTel())
-                            .airlineIcTel(item.getAirlineIcTel())
-                            .airlineIata(item.getAirlineIata())
-                            .airlineIcao(item.getAirlineIcao())
-                            .build();
+                        .airlineImage(item.getAirlineImage())
+                        .airlineName(item.getAirlineName())
+                        .airlineTel(item.getAirlineTel())
+                        .airlineIcTel(item.getAirlineIcTel())
+                        .airlineIata(item.getAirlineIata())
+                        .airlineIcao(item.getAirlineIcao())
+                        .build();
 
                     airlines.add(airline);
                 } else {
