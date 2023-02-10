@@ -18,9 +18,4 @@ public class TestConfig {
         return new JPAQueryFactory(entityManager);
     }
 
-    @Bean
-    public AirScheduleCustomRepositoryImpl querydslOrderRepository(){
-        return new AirScheduleCustomRepositoryImpl(jpaQueryFactory());
-    }
-
 }

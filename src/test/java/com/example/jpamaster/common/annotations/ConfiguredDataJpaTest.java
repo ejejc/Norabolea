@@ -1,4 +1,4 @@
-package com.example.jpamaster.flight.common.annotations;
+package com.example.jpamaster.common.annotations;
 
 import com.example.jpamaster.flight.config.TestConfig;
 import java.lang.annotation.ElementType;

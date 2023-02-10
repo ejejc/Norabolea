@@ -1,6 +1,6 @@
 package com.example.jpamaster.flight.domain.repository;
 
-import com.example.jpamaster.flight.common.annotations.ConfiguredDataJpaTest;
+import com.example.jpamaster.common.annotations.ConfiguredDataJpaTest;
 import com.example.jpamaster.flight.domain.entity.Airport;
 import java.util.List;
 import org.assertj.core.api.Assertions;
