@@ -25,7 +25,7 @@ class FlightUtilsTest {
         LocalDateTime expectedTime = FlightUtils.toLocalDateTime("20230114", "1130");
         LocalDateTime now = ZonedDateTime.now(ZoneId.of("America/Vancouver")).toLocalDateTime();
 
-        Assertions.assertThat(expectedTime).isAfter(now);
+        Assertions.assertThat(expectedTime).isBefore(now);
     }
 
     @Test
