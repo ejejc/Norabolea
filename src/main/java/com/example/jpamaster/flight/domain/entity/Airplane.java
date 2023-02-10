@@ -36,11 +36,11 @@ public class Airplane extends BaseEntity {
     private String type;
 
     @Comment("항공사")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "airline_seq")
     private Airline airline;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "current_airport_seq")
     private Airport currentAirport;
 
