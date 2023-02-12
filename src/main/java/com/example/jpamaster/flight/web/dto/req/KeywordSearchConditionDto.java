@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class KeywordSearchConditionDto {
-    private String keyword;
+    private String keyword = "";
 
     public void setKeyword(String keyword) {
         this.keyword = keyword == null || keyword.isEmpty() ? "" : keyword.toLowerCase().trim();

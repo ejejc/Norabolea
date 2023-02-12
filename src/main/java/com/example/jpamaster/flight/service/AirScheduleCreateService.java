@@ -41,7 +41,7 @@ public class AirScheduleCreateService {
         airSchedule.calculateAirSchedule(dto.getExpectedTakeoffDate(), dto.getExpectedTakeoffTime());
 
         // 좌석 정보 등록
-        Set<AirScheduleSeatType> airScheduleSeatTypes = seatService.registerSeatForAirSchedule(
+        Set<AirScheduleSeatType> airScheduleSeatTypes = seatService.createAirScheduleSeatType(
             dto.getAirScheduleSeatRequestDtos());
         airScheduleSeatTypes.forEach(airScheduleSeatType -> airScheduleSeatType.registerAirSchedule(airSchedule));
 

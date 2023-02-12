@@ -1,14 +1,17 @@
-package com.example.jpamaster.flight.domain.repository;
+package com.example.jpamaster.flight.fixture;
 
 import com.example.jpamaster.flight.constant.FlightConstant;
+import com.example.jpamaster.flight.domain.entity.AirScheduleSeatType;
 import com.example.jpamaster.flight.domain.entity.Airline;
 import com.example.jpamaster.flight.domain.entity.Airplane;
 import com.example.jpamaster.flight.domain.entity.AirplaneSeatType;
 import com.example.jpamaster.flight.domain.entity.Airport;
-import com.example.jpamaster.flight.enums.FlightEnums;
+import com.example.jpamaster.flight.enums.FlightEnums.DisplayType;
+import com.example.jpamaster.flight.enums.FlightEnums.FoodType;
 import com.example.jpamaster.flight.enums.FlightEnums.SeatType;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Fixture {
@@ -26,11 +29,9 @@ public class Fixture {
     public static final String AIRPLANE_TYPE = "777-8";
 
     public static List<Airport> generateAllAirportByFixture() {
-
         return Arrays.stream(airportCsvFixture)
             .map(airport -> airport.split(","))
-            .map(airport -> createAirport(airport)
-            )
+            .map(Fixture::createAirport)
             .collect(Collectors.toUnmodifiableList());
     }
 
@@ -65,24 +66,38 @@ public class Fixture {
             .build();
     }
 
-    public static List<AirplaneSeatType> generateAirplaneSeats() {
-        return List.of(
-            AirplaneSeatType.builder()
-                .seatType(SeatType.FIRST_CLASS)
+    public static Set<AirplaneSeatType> generateAirplaneSeatTypes() {
+        return Arrays.stream(SeatType.values())
+            .map(seatType -> AirplaneSeatType.builder()
+                .seatType(seatType)
                 .availableSeatCount(100)
-                .build(),
-            AirplaneSeatType.builder()
-                .seatType(SeatType.BUSINESS)
+                .build())
+            .collect(Collectors.toUnmodifiableSet());
+    }
+
+    public static Airplane generateAirplane() {
+        return Airplane.builder()
+            .manufacturer(Fixture.AIRPLANE_MANUFACTURER)
+            .code(Fixture.AIRPLANE_CODE)
+            .type(Fixture.AIRPLANE_TYPE)
+            .airline(generateAirline())
+            .currentAirport(generateAirport())
+            .build();
+    }
+
+    public static Set<AirScheduleSeatType> generateAirScheduleSeatTypeSet() {
+        return Arrays.stream(SeatType.values())
+            .map(seatType -> AirScheduleSeatType.builder()
+                .seatType(seatType)
                 .availableSeatCount(100)
-                .build(),
-            AirplaneSeatType.builder()
-                .seatType(SeatType.PREMIUM_ECONOMY)
-                .availableSeatCount(100)
-                .build(),
-            AirplaneSeatType.builder()
-                .seatType(SeatType.ECONOMY)
-                .availableSeatCount(100)
-                .build()
-        );
+                .foodType(FoodType.NOT_SUPPORT)
+                .availableBaggageCount(2)
+                .availableBaggageWeight(30)
+                .displayType(DisplayType.NOT_SUPPORT)
+                .wifiAvailability(true)
+                .usbAvailability(true)
+                .availableChildSeatCount(20)
+                .build())
+            .collect(Collectors.toUnmodifiableSet());
     }
 }
