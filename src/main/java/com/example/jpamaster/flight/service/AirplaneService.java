@@ -26,7 +26,7 @@ public class AirplaneService {
     private final AirportRepository airportRepository;
     private final AirplaneRepository airplaneRepository;
 
-    // TODO 중복 비행기 등록 막기
+    // TODO 중복 비행기 등록 막기 - 근데 중복의 조건은 뭐지?
     @Transactional
     public void registerAirplane(Long airlineSeq, AirplaneRegisterRequestDto dto) {
         Optional<Airline> optionalAirline = airlineRepository.findById(airlineSeq);
@@ -44,7 +44,7 @@ public class AirplaneService {
                     .currentAirport(airport)
                     .build();
 
-            Set<AirplaneSeatType> airplaneSeatTypes = seatService.registerSeatForAirplane(dto.getAirplaneSeatRegisterRequestDtos());
+            Set<AirplaneSeatType> airplaneSeatTypes = seatService.createAirplaneSeatType(dto.getAirplaneSeatRegisterRequestDtos());
             airplaneSeatTypes.forEach(airplaneSeatType -> airplaneSeatType.registerAirplane(airplane));
 
             airplaneRepository.save(airplane);

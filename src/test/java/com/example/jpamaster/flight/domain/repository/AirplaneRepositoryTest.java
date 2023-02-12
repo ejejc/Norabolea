@@ -6,7 +6,9 @@ import com.example.jpamaster.flight.domain.entity.Airplane;
 import com.example.jpamaster.flight.domain.entity.AirplaneSeatType;
 import com.example.jpamaster.flight.domain.entity.Airport;
 import com.example.jpamaster.flight.domain.entity.SeatType;
+import com.example.jpamaster.flight.fixture.Fixture;
 import java.util.List;
+import java.util.Set;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,16 +44,7 @@ class AirplaneRepositoryTest {
     @Test
     void given_whenRegisterAirplane_thenRegisterAirplaneSeat() {
         // given
-        Airplane airplane = Airplane.builder()
-            .manufacturer(Fixture.AIRPLANE_MANUFACTURER)
-            .code(Fixture.AIRPLANE_CODE)
-            .type(Fixture.AIRPLANE_TYPE)
-            .airline(airline)
-            .currentAirport(airport)
-            .build();
-
-        List<AirplaneSeatType> airplaneSeatTypes = Fixture.generateAirplaneSeats();
-        airplaneSeatTypes.forEach(airplaneSeatType -> airplaneSeatType.registerAirplane(airplane));
+        Airplane airplane = generateAirplane();
 
         // when
         airplaneRepository.saveAndFlush(airplane);
@@ -67,10 +60,7 @@ class AirplaneRepositoryTest {
             .isNotNull();
     }
 
-    @DisplayName("비행기를 삭제하면 비행기 좌석 타입도 같이 삭제된다.")
-    @Test
-    void given_whenDeleteAirplane_thenDeleteAirplaneSeat() {
-        // given
+    private Airplane generateAirplane() {
         Airplane airplane = Airplane.builder()
             .manufacturer(Fixture.AIRPLANE_MANUFACTURER)
             .code(Fixture.AIRPLANE_CODE)
@@ -79,9 +69,16 @@ class AirplaneRepositoryTest {
             .currentAirport(airport)
             .build();
 
-        List<AirplaneSeatType> airplaneSeatTypes = Fixture.generateAirplaneSeats();
+        Set<AirplaneSeatType> airplaneSeatTypes = Fixture.generateAirplaneSeatTypes();
         airplaneSeatTypes.forEach(airplaneSeatType -> airplaneSeatType.registerAirplane(airplane));
+        return airplane;
+    }
 
+    @DisplayName("비행기를 삭제하면 비행기 좌석 타입도 같이 삭제된다.")
+    @Test
+    void given_whenDeleteAirplane_thenDeleteAirplaneSeat() {
+        // given
+        Airplane airplane = generateAirplane();
         Airplane savedAirplane = airplaneRepository.saveAndFlush(airplane);
 
         // when

@@ -15,8 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class SeatService {
 
-    @Transactional
-    public Set<AirplaneSeatType> registerSeatForAirplane(Set<AirplaneSeatRegisterRequestDto> dtos) {
+    Set<AirplaneSeatType> createAirplaneSeatType(Set<AirplaneSeatRegisterRequestDto> dtos) {
         Set<AirplaneSeatType> airplaneSeatTypes = new HashSet<>();
         if (!dtos.isEmpty()) {
             for (AirplaneSeatRegisterRequestDto seatDto : dtos) {
@@ -31,8 +30,7 @@ public class SeatService {
         return airplaneSeatTypes;
     }
 
-    @Transactional
-    public Set<AirScheduleSeatType> registerSeatForAirSchedule(Set<AirScheduleSeatRequestDto> dtos) {
+    Set<AirScheduleSeatType> createAirScheduleSeatType(Set<AirScheduleSeatRequestDto> dtos) {
         Set<AirScheduleSeatType> airScheduleSeatTypes = new HashSet<>();
         if (!dtos.isEmpty()) {
             for (AirScheduleSeatRequestDto dto : dtos) {
