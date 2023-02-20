@@ -9,6 +9,7 @@ import com.example.jpamaster.flight.domain.entity.Airport;
 import com.example.jpamaster.flight.enums.FlightEnums.DisplayType;
 import com.example.jpamaster.flight.enums.FlightEnums.FoodType;
 import com.example.jpamaster.flight.enums.FlightEnums.SeatType;
+import com.example.jpamaster.flight.web.dto.res.AirlineDto;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -64,6 +65,19 @@ public class Fixture {
             .airlineIata("KE")
             .airlineIcao("KAL")
             .build();
+    }
+
+    public static AirlineDto generateAirlineDto() {
+        Airline airline = generateAirline();
+        return new AirlineDto(
+            airline.getAirlineSeq(),
+            airline.getAirlineImage(),
+            airline.getAirlineName(),
+            airline.getAirlineTel(),
+            airline.getAirlineIcTel(),
+            airline.getAirlineIata(),
+            airline.getAirlineIcao()
+        );
     }
 
     public static Set<AirplaneSeatType> generateAirplaneSeatTypes() {
