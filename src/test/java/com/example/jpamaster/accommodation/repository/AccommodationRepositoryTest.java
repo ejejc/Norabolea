@@ -1,8 +1,10 @@
 package com.example.jpamaster.accommodation.repository;
 
+import com.example.jpamaster.accommodations.domain.entity.AccommoFacilityInfo;
 import com.example.jpamaster.accommodations.domain.entity.Accommodations;
 import com.example.jpamaster.accommodations.domain.entity.PopularFacility;
 import com.example.jpamaster.accommodations.repository.AccommodationsRepository;
+import com.example.jpamaster.accommodations.repository.AcommoFacilityInfoRepository;
 import com.example.jpamaster.accommodations.repository.PopularFacilityRepository;
 import com.example.jpamaster.common.annotations.ConfiguredDataJpaTest;
 import com.example.jpamaster.popular_facility.repository.PopularFacilityFixture;
@@ -20,9 +22,10 @@ public class AccommodationRepositoryTest {
     private Accommodations accommodations;
     @Autowired
     AccommodationsRepository accommodationsRepository;
-
     @Autowired
     private PopularFacilityRepository popularFacilityRepository;
+    @Autowired
+    private AcommoFacilityInfoRepository acommoFacilityInfoRepository;
 
     @BeforeEach
     public void setUp() {
@@ -38,6 +41,9 @@ public class AccommodationRepositoryTest {
         // TODO: 테스트 방법 뭐가 있는지 공부 후 확인
         Assertions.assertThat(accommodations.getAccommodationSeq()).isGreaterThan(0L);
         Assertions.assertThat(accommodations.getRooms().get(0).getRoomSeq()).isGreaterThan(0L);
+        Assertions.assertThat(accommodations.getAccommoFacilityInfos().get(0).getSeq()).isGreaterThan(0L);
 
+        AccommoFacilityInfo info = acommoFacilityInfoRepository.findById(accommodations.getAccommoFacilityInfos().get(0).getSeq()).orElse(null);
+        Assertions.assertThat(info.getAccommodation()).isNotNull();
     }
 }

@@ -70,11 +70,13 @@ public class AccommodationService {
      */
     private Accommodations setRoomToAccommodation(List<RoomDto> rooms, Accommodations accommodations) {
         for (RoomDto dto : rooms) {
+            // room DTO를 Entity로 변환
             Room room = roomService.searchRoomEntity(dto);
             // 특징 seq들을 통해 특징 entity 가져오기
             List<Features> featuresList = featuresService.searchFeaturesListToByIds(dto.getFeatureList());
 
             for (Features features : featuresList) {
+                // 특징 seq가 포함되어 있는 특징 seq dto list를 확인하여 해당 seq에 정해진 sort 정보를 셋팅해준다.
                 FeaturesDto.FeatureInfoDto featuresInfoDto
                         = featuresService.searchSameFeatureSeqToEntitySeq(dto.getFeatureList(), features.getFeaturesSeq());
                 room.addFeaturesInfo( RoomFeaturesInfo.builder()
@@ -82,6 +84,7 @@ public class AccommodationService {
                         .sort(featuresInfoDto.getSort())
                         .room(room).build());
             }
+            // 룸 정보를 숙소 entity에 넣어준다.
             accommodations.addRoom(room);
         }
         return accommodations;

@@ -8,21 +8,21 @@ import java.util.List;
 public class Fixture {
 
     public static Accommodations generateAccommodation(List<PopularFacility> popularFacilityList) {
+        List<AccommoFacilityInfo> accommoFacilityInfos = new ArrayList<>();
+
         Accommodations accommodations = Accommodations.builder()
                 .accommodationTitle("세형이 숙소")
                 .contact("01022349811")
                 .accommodationsType(AccomodationsEnum.Type.HOTEL).build();
-        // TODO: 이게 맞는걸까 ?
-        int sort = 0;
-        List<AccommoFacilityInfo> facilityInfos = new ArrayList<>();
-        for (PopularFacility pc : popularFacilityList) {
-          facilityInfos.add( AccommoFacilityInfo.builder()
-                  .popularFacility(pc)
-                  .sort(sort).build());
-          sort ++;
+        for (int i=0; i<popularFacilityList.size(); i++) {
+            accommoFacilityInfos.add(
+                    AccommoFacilityInfo.builder()
+                    .accommodation(accommodations)
+                    .popularFacility(popularFacilityList.get(i))
+                    .sort(i).build()
+            );
         }
-        accommodations.setAccommoFacilityInfos(facilityInfos);
-
+        accommodations.setAccommoFacilityInfos(accommoFacilityInfos);
         Room room = Room.builder()
                 .roomName("룸1")
                 .roomPrice(1000L)
