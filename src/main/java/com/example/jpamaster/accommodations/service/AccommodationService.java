@@ -109,27 +109,14 @@ public class AccommodationService {
      * @param dto
      */
     private void setReviewCntAndReviewScore(AccommodationDto dto) {
-        List<Review> totalReviewList = null;
-        if (Objects.nonNull(dto.getRooms())) {
-            totalReviewList = new ArrayList<>();
-            for (RoomDto roomDto : dto.getRooms()) {
-                totalReviewList.addAll(reviewRepository.findAllReviewByRoomSeq(roomDto.getSeq()));
-            }
-        }
-        List<ReviewDto.ReqRes> totalReviewDtoList = null;
-        if (Objects.nonNull(totalReviewList)) {
-            totalReviewDtoList = totalReviewList.stream()
-                    .map(vo -> new ReviewDto.ReqRes(vo.getCleanlinessStarScore(), vo.getKindnessStarScore()
-                            , vo.getLocationStarScore(),vo.getConvenienceStarScore()))
-                    .collect(Collectors.toList());
-        }
+        List<Long> roomSeqs = dto.getRooms().stream().map(RoomDto::getSeq).collect(Collectors.toList());
+        List<ReviewDto.ReviewSum> reviewSums = reviewRepository.findAvgEachScore(roomSeqs);
 
-        if (!CollectionUtils.isEmpty(totalReviewDtoList)) {
-            dto.setTotalReviewCnt(totalReviewList.size());
-            double score = totalReviewDtoList.stream()
-                    .mapToDouble(ReviewDto.ReqRes::getTotalStarScore).sum();
-            dto.setAvgStarScore(score / dto.getTotalReviewCnt());
+        for (ReviewDto.ReviewSum info : reviewSums) {
+            dto.setAvgStarScore(dto.getAvgStarScore()+info.getEachAvgSum());
         }
+        dto.setTotalReviewCnt(reviewSums.size());
+        dto.setAvgStarScore(dto.getAvgStarScore() / reviewSums.size());
     }
 
     /**

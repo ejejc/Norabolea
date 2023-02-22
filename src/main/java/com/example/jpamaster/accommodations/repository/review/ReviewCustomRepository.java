@@ -8,9 +8,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface ReviewCustomRepository {
-    List<Review> findAllReviewByRoomSeq(Long roomSeq);
+    List<ReviewDto.ReviewSum> findAvgEachScore(List<Long> roomSeqs);
 
-    List<ReviewDto.ReviewSum> findAvgEachScore();
+    ReviewDto.ReviewSum findEachPartScore(List<Long> roomSeqs);
 
     Page<Review> findAllReviewByRoomListForPaging(List<Long> roomSeqList, Pageable pageable, ReviewDto.ReqRes req);
 

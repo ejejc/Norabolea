@@ -22,6 +22,7 @@ public class ReviewDto {
         private final String name;
         private final String desc;
     }
+
     @Getter
     public static class BestReq {
         private Long accommodationSeq;
@@ -50,21 +51,22 @@ public class ReviewDto {
         private AnswerDto.Res answer;
 
         public static ReqRes changeToDto(Review review) {
-           return ReqRes.builder()
-                    .totalStarScore((review.getCleanlinessStarScore()+ review.getConvenienceStarScore()+ review.getKindnessStarScore()+ review.getLocationStarScore()) / 4.0)
+            return ReqRes.builder()
+                    .totalStarScore((review.getCleanlinessStarScore() + review.getConvenienceStarScore() + review.getKindnessStarScore() + review.getLocationStarScore()) / 4.0)
                     .content(review.getContent())
                     .roomName(review.getRoom().getRoomName())
                     .mediaList(review.getReviewMedias().stream()
                             .map(Medias::changeToDto)
                             .collect(Collectors.toList()))
-                   .featureList(FeaturesDto.Feature.makeFeaturesDto(review.getRoom().getRoomFeaturesInfoList()))
-                   .answer(AnswerDto.Res.toDto(review.getAnswer()))
-                   .bestYn(review.isBestYn())
-                   .regDate(review.getCreatedAt())
-                   .build();
+                    .featureList(FeaturesDto.Feature.makeFeaturesDto(review.getRoom().getRoomFeaturesInfoList()))
+                    .answer(AnswerDto.Res.toDto(review.getAnswer()))
+                    .bestYn(review.isBestYn())
+                    .regDate(review.getCreatedAt())
+                    .build();
         }
+
         public Review changeToEntity(Room room) {
-            Review review =  Review.builder()
+            Review review = Review.builder()
                     .room(room)
                     .content(this.content)
                     .kindnessStarScore(this.kindnessStarScore)
@@ -78,14 +80,6 @@ public class ReviewDto {
             }
             return review;
         }
-
-        public ReqRes(int kindnessStarScore, int convenienceStarScore, int cleanlinessStarScore, int locationStarScore) {
-            this.kindnessStarScore = kindnessStarScore;
-            this.convenienceStarScore = convenienceStarScore;
-            this.cleanlinessStarScore = cleanlinessStarScore;
-            this.locationStarScore = locationStarScore;
-            this.totalStarScore = ( this.kindnessStarScore + this.convenienceStarScore + this.cleanlinessStarScore + this.locationStarScore ) / 4.0;
-        }
     }
 
     @Getter
@@ -98,7 +92,7 @@ public class ReviewDto {
 
         public ReviewMedia changeToEntity() {
             return ReviewMedia.builder()
-                                                                                                                          .mediaUrl(this.url)
+                    .mediaUrl(this.url)
                     .useYn(this.useYn).build();
 
         }
@@ -115,45 +109,50 @@ public class ReviewDto {
     @Setter
     @Getter
     public static class ReviewSum {
-        private Long roomSeq;
-        private int cleanlinessSum;
-        private int convenienceSum;
-        private int kindnessSum;
-        private int locationSum;
+        private int cleanliness;
+        private int convenience;
+        private int kindness;
+        private int location;
+        private double eachAvgSum = 0.0;
         private Long reviewCnt;
 
         @QueryProjection
-        public ReviewSum(Long roomSeq, int cleanlinessSum, int convenienceSum, int kindnessSum, int locationSum, Long reviewCnt) {
-            this.roomSeq = roomSeq;
-            this.cleanlinessSum = cleanlinessSum;
-            this.convenienceSum = convenienceSum;
-            this.kindnessSum = kindnessSum;
-            this.locationSum = locationSum;
+        public ReviewSum(int cleanliness, int convenience, int kindness, int location) {
+            this.cleanliness = cleanliness;
+            this.convenience = convenience;
+            this.kindness = kindness;
+            this.location = location;
+            this.eachAvgSum = (this.cleanliness + this.convenience + this.kindness + this.location) / 4.0;
+        }
+
+        @QueryProjection
+        public ReviewSum(int cleanliness, int convenience, int kindness, int location, Long reviewCnt) {
+            this.cleanliness = cleanliness;
+            this.convenience = convenience;
+            this.kindness = kindness;
+            this.location = location;
             this.reviewCnt = reviewCnt;
         }
     }
 
     @Getter
+    @NoArgsConstructor
+    @Builder
+    @AllArgsConstructor
     public static class ReviewSummary {
         private double cleanlinessAvg;
         private double convenienceAvg;
         private double kindnessAvg;
         private double locationAvg;
-        private Long reveiwCntSum = 0L;
+        private double reviewSum;
 
-        public void sum(ReviewSum reviewSum) {
-            this.cleanlinessAvg = this.cleanlinessAvg + reviewSum.getCleanlinessSum();
-            this.convenienceAvg = this.convenienceAvg + reviewSum.getConvenienceSum();
-            this.kindnessAvg = this.kindnessAvg + reviewSum.getKindnessSum();
-            this.locationAvg = this.locationAvg + reviewSum.getLocationSum();
-            this.reveiwCntSum = this.reveiwCntSum + reviewSum.getReviewCnt();
-        }
-
-        public void avg () {
-            this.cleanlinessAvg = this.cleanlinessAvg / this.reveiwCntSum;
-            this.convenienceAvg = this.convenienceAvg / this.reveiwCntSum;
-            this.kindnessAvg = this.kindnessAvg / this.reveiwCntSum;
-            this.locationAvg = this.locationAvg / this.reveiwCntSum;
+        public static ReviewSummary makeSummary(ReviewSum reviewSum) {
+            return ReviewSummary.builder()
+                    .cleanlinessAvg((double) reviewSum.getCleanliness() / reviewSum.getReviewCnt())
+                    .convenienceAvg((double) reviewSum.getConvenience() / reviewSum.getReviewCnt())
+                    .kindnessAvg((double) reviewSum.getKindness() / reviewSum.getReviewCnt())
+                    .locationAvg((double) reviewSum.getLocation() / reviewSum.getReviewCnt())
+                    .build();
         }
     }
 }

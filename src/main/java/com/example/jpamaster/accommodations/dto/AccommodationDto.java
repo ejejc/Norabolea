@@ -36,23 +36,10 @@ public class AccommodationDto {
     private List<AccommoFacilityInfoDto.Res> facilityInfoRes;
 
     @ApiModelProperty(value = "평균 별점")
-    private double avgStarScore;
+    private double avgStarScore = 0.0;
 
     @ApiModelProperty(value = "리뷰 총 갯수")
     private int totalReviewCnt;
-
-    public Accommodations changeToEntity() {
-        Accommodations accommodations = Accommodations.builder()
-                .accommodationTitle(this.accommodationTitle)
-                .contact(this.contact)
-                .address(this.address)
-                .accommodationsType(this.accommodationsType)
-                .build();
-        for (RoomDto dto : rooms) {
-            accommodations.addRoom(dto.changeEntity());
-        }
-        return accommodations;
-    }
 
     public static AccommodationDto changeToDto(Accommodations entity) {
         return AccommodationDto.builder()
@@ -63,12 +50,5 @@ public class AccommodationDto {
                 .rooms(entity.getRooms().stream().map(RoomDto::changeToDto).collect(Collectors.toList()))
                 .facilityInfoRes(entity.getAccommoFacilityInfos().stream().map(AccommoFacilityInfoDto.Res::changeToDto).collect(Collectors.toList()))
                 .build();
-    }
-    public Integer findSortMatchForSeq(Long facilitySeq) {
-        return this.facilityInfoReq.stream()
-                    .filter(vo -> vo.getFacilitySeq().equals(facilitySeq))
-                    .map(AccommoFacilityInfoDto.Req::getSort)
-                    .findFirst()
-                    .orElse(null);
     }
 }
