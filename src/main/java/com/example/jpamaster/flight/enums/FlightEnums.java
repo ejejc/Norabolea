@@ -44,4 +44,22 @@ public class FlightEnums {
         private final String enName;
         private final String krName;
     }
+
+    @Getter
+    @RequiredArgsConstructor
+    public enum BucketTokenType {
+        DEFAULT(1.0),
+        ST1(1.05),
+        ST2(1.15),
+        ST3(1.23),
+        ST4(1.34),
+        ST5(1.45),
+        ST6(1.58),
+        ST7(1.65),
+        ST8(1.78),
+        ST9(1.89),
+        ;
+
+        private final double costMultiple;
+    }
 }

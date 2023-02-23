@@ -9,6 +9,7 @@ import com.example.jpamaster.common.exception.JpaMasterNotFoundException;
 import com.example.jpamaster.flight.web.dto.req.AirScheduleRequestDto;
 import com.example.jpamaster.flight.web.dto.res.AirScheduleCreateResponseDto;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class AirScheduleCreateService {
 
     private final SeatService seatService;
     private final FlightValidationService flightValidationService;
+    private final FlightTicketTokenBucketService flightTicketTokenBucketService;
+
     private final AirScheduleRepository airScheduleRepository;
 
     @Transactional
@@ -30,20 +33,19 @@ public class AirScheduleCreateService {
         Airport fromAirport = flightValidationService.airScheduleAirportValidation(dto.getFromAirportSeq());
         Airport toAirport = flightValidationService.airScheduleAirportValidation(dto.getToAirportSeq());
         Airplane airplane = flightValidationService.airScheduleAirplaneValidation(dto.getAirplaneSeq());
-        flightValidationService.airplaneSeatValidation(airplane.getAirplaneSeatTypes(),
-            dto.getAirScheduleSeatRequestDtos());
-        flightValidationService.availableAirlineValidation(airplane, fromAirport, toAirport);
-        flightValidationService.takeOffTimeValidation(fromAirport.getLocationEn(), dto.getExpectedTakeoffDate(),
-            dto.getExpectedTakeoffTime());
+        flightScheduleValidation(dto, fromAirport, toAirport, airplane);
 
         // 스케줄 등록
-        AirSchedule airSchedule = AirSchedule.createAirSchedule(fromAirport, toAirport, airplane);
-        airSchedule.calculateAirSchedule(dto.getExpectedTakeoffDate(), dto.getExpectedTakeoffTime());
+        AirSchedule airSchedule = AirSchedule.createAirSchedule(
+            fromAirport, toAirport, airplane,
+            dto.getExpectedTakeoffDate(), dto.getExpectedTakeoffTime()
+        );
 
         // 좌석 정보 등록
-        Set<AirScheduleSeatType> airScheduleSeatTypes = seatService.createAirScheduleSeatType(
-            dto.getAirScheduleSeatRequestDtos());
-        airScheduleSeatTypes.forEach(airScheduleSeatType -> airScheduleSeatType.registerAirSchedule(airSchedule));
+        seatService.createAirScheduleSeatType(dto.getAirScheduleSeatRequestDtos())
+            .forEach(airScheduleSeatType -> airScheduleSeatType.registerAirSchedule(airSchedule));
+
+        airSchedule.mappingTokenBucket(flightTicketTokenBucketService.createDefaultFlightTicketTokenBucket(airSchedule.getTotalAvailableSeatCount()));
 
         // 저장
         AirSchedule savedAirSchedule = airScheduleRepository.save(airSchedule);
@@ -58,6 +60,15 @@ public class AirScheduleCreateService {
         );
     }
 
+    private void flightScheduleValidation(AirScheduleRequestDto dto, Airport fromAirport,
+        Airport toAirport, Airplane airplane) {
+        flightValidationService.airplaneSeatValidation(airplane.getAirplaneSeatTypes(),
+            dto.getAirScheduleSeatRequestDtos());
+        flightValidationService.availableAirlineValidation(airplane, fromAirport, toAirport);
+        flightValidationService.takeOffTimeValidation(fromAirport.getLocationEn(), dto.getExpectedTakeoffDate(),
+            dto.getExpectedTakeoffTime());
+    }
+
 
     @Transactional
     public AirScheduleCreateResponseDto updateAirSchedule(Long airScheduleSeq, AirScheduleRequestDto dto) {
@@ -67,11 +78,7 @@ public class AirScheduleCreateService {
         Airport fromAirport = flightValidationService.airScheduleAirportValidation(dto.getFromAirportSeq());
         Airport toAirport = flightValidationService.airScheduleAirportValidation(dto.getToAirportSeq());
         Airplane airplane = airSchedule.getAirplane();
-        flightValidationService.airplaneSeatValidation(airplane.getAirplaneSeatTypes(),
-            dto.getAirScheduleSeatRequestDtos());
-        flightValidationService.availableAirlineValidation(airplane, fromAirport, toAirport);
-        flightValidationService.takeOffTimeValidation(fromAirport.getLocationEn(), dto.getExpectedTakeoffDate(),
-            dto.getExpectedTakeoffTime());
+        flightScheduleValidation(dto, fromAirport, toAirport, airplane);
 
         airSchedule.updateAirSchedule(fromAirport, toAirport, dto.getExpectedTakeoffDate(),
             dto.getExpectedTakeoffTime());

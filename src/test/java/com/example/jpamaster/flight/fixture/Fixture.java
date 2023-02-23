@@ -6,6 +6,7 @@ import com.example.jpamaster.flight.domain.entity.Airline;
 import com.example.jpamaster.flight.domain.entity.Airplane;
 import com.example.jpamaster.flight.domain.entity.AirplaneSeatType;
 import com.example.jpamaster.flight.domain.entity.Airport;
+import com.example.jpamaster.flight.domain.entity.FlightTicketTokenBucket;
 import com.example.jpamaster.flight.enums.FlightEnums.DisplayType;
 import com.example.jpamaster.flight.enums.FlightEnums.FoodType;
 import com.example.jpamaster.flight.enums.FlightEnums.SeatType;
@@ -113,5 +114,9 @@ public class Fixture {
                 .availableChildSeatCount(20)
                 .build())
             .collect(Collectors.toUnmodifiableSet());
+    }
+
+    public static FlightTicketTokenBucket generateFlightTicketTokenBucket() {
+        return FlightTicketTokenBucket.createDefault(400);
     }
 }
