@@ -47,6 +47,21 @@ public class FlightEnums {
 
     @Getter
     @RequiredArgsConstructor
+    public enum AirlineType {
+        LOW_COST_DOMESTIC(0.8),
+        LOW_COST_INTERNATIONAL(0.9),
+        DOMESTIC(1.0),
+        INTERNATIONAL(1.2),
+        ;
+        private final double costMultiple;
+
+        public static AirlineType randomType() {
+            return values()[((int) (Math.random() * 8)) % values().length];
+        }
+    }
+
+    @Getter
+    @RequiredArgsConstructor
     public enum BucketTokenType {
         DEFAULT(1.0),
         ST1(1.05),

@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class FlightTicketTokenBucketService {
 
-    FlightTicketTokenBucket createDefaultFlightTicketTokenBucket(Integer totalAvailableSeatCount){
-        return FlightTicketTokenBucket.createDefault(totalAvailableSeatCount);
+    FlightTicketTokenBucket createDefaultFlightTicketTokenBucket(int totalAvailableSeatCount,
+        double airlineCostMultiple) {
+        return FlightTicketTokenBucket.createDefault(totalAvailableSeatCount, airlineCostMultiple);
     }
 }

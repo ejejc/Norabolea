@@ -1,15 +1,13 @@
 package com.example.jpamaster.flight.service;
 
+import com.example.jpamaster.common.exception.JpaMasterNotFoundException;
 import com.example.jpamaster.flight.domain.entity.AirSchedule;
-import com.example.jpamaster.flight.domain.entity.AirScheduleSeatType;
+import com.example.jpamaster.flight.domain.entity.Airline;
 import com.example.jpamaster.flight.domain.entity.Airplane;
 import com.example.jpamaster.flight.domain.entity.Airport;
 import com.example.jpamaster.flight.domain.repository.airschedule.AirScheduleRepository;
-import com.example.jpamaster.common.exception.JpaMasterNotFoundException;
 import com.example.jpamaster.flight.web.dto.req.AirScheduleRequestDto;
 import com.example.jpamaster.flight.web.dto.res.AirScheduleCreateResponseDto;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,11 +31,12 @@ public class AirScheduleCreateService {
         Airport fromAirport = flightValidationService.airScheduleAirportValidation(dto.getFromAirportSeq());
         Airport toAirport = flightValidationService.airScheduleAirportValidation(dto.getToAirportSeq());
         Airplane airplane = flightValidationService.airScheduleAirplaneValidation(dto.getAirplaneSeq());
+        Airline airline = airplane.getAirline();
         flightScheduleValidation(dto, fromAirport, toAirport, airplane);
 
         // 스케줄 등록
         AirSchedule airSchedule = AirSchedule.createAirSchedule(
-            fromAirport, toAirport, airplane,
+            fromAirport, toAirport, airplane, airline,
             dto.getExpectedTakeoffDate(), dto.getExpectedTakeoffTime()
         );
 
@@ -45,7 +44,12 @@ public class AirScheduleCreateService {
         seatService.createAirScheduleSeatType(dto.getAirScheduleSeatRequestDtos())
             .forEach(airScheduleSeatType -> airScheduleSeatType.registerAirSchedule(airSchedule));
 
-        airSchedule.mappingTokenBucket(flightTicketTokenBucketService.createDefaultFlightTicketTokenBucket(airSchedule.getTotalAvailableSeatCount()));
+        airSchedule.mappingTokenBucket(
+            flightTicketTokenBucketService.createDefaultFlightTicketTokenBucket(
+                airSchedule.getTotalAvailableSeatCount(),
+                airline.getAirlineType().getCostMultiple()
+            )
+        );
 
         // 저장
         AirSchedule savedAirSchedule = airScheduleRepository.save(airSchedule);

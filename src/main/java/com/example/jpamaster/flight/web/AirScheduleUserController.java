@@ -18,7 +18,7 @@ public class AirScheduleUserController {
     private final AriScheduleService airScheduleService;
 
     @GetMapping
-    public ApiResponse<Slice<AirScheduleSearchResponseDto>> searchAirScheduleByCondition(
+    public ApiResponse<Slice<AirScheduleSearchResponseDto>> searchAirScheduleByLowerCost(
         AirScheduleSearchRequestDto dto) {
 
         if (!dto.personCountValidation()) {

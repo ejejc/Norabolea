@@ -47,6 +47,10 @@ public class AirSchedule extends BaseEntity {
     private Boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "airline_seq")
+    private Airline airline;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "airplane_seq")
     private Airplane airplane;
 
@@ -66,16 +70,17 @@ public class AirSchedule extends BaseEntity {
 
     private Integer totalAvailableSeatCount = 0;
 
-    private AirSchedule(Airport deptAirport, Airport arrAirport, Airplane airplane) {
+    private AirSchedule(Airport deptAirport, Airport arrAirport, Airplane airplane, Airline airline) {
         this.deptAirport = deptAirport;
         this.arrAirport = arrAirport;
         this.airplane = airplane;
+        this.airline = airline;
         this.deleted = false;
     }
 
     public static AirSchedule createAirSchedule(Airport fromAirport, Airport toAirport, Airplane airplane,
-        String expectedTakeoffDate, String expectedTakeoffTime) {
-        AirSchedule airSchedule = new AirSchedule(fromAirport, toAirport, airplane);
+        Airline airline, String expectedTakeoffDate, String expectedTakeoffTime) {
+        AirSchedule airSchedule = new AirSchedule(fromAirport, toAirport, airplane, airline);
         airSchedule.calculateAirSchedule(expectedTakeoffDate, expectedTakeoffTime);
         return airSchedule;
     }

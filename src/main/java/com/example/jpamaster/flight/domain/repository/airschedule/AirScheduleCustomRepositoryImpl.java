@@ -4,10 +4,11 @@ import static com.example.jpamaster.flight.domain.entity.QAirSchedule.airSchedul
 import static com.example.jpamaster.flight.domain.entity.QAirScheduleSeatType.airScheduleSeatType;
 import static com.example.jpamaster.flight.domain.entity.QAirline.airline;
 import static com.example.jpamaster.flight.domain.entity.QAirplane.airplane;
+import static com.example.jpamaster.flight.domain.entity.QFlightTicketTokenBucket.flightTicketTokenBucket;
 
 import com.example.jpamaster.flight.domain.entity.QAirport;
-import com.example.jpamaster.flight.web.dto.res.AirScheduleSearchResponseDto;
 import com.example.jpamaster.flight.web.dto.req.AirScheduleSearchRequestDto;
+import com.example.jpamaster.flight.web.dto.res.AirScheduleSearchResponseDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -33,12 +34,10 @@ public class AirScheduleCustomRepositoryImpl implements AirScheduleCustomReposit
 
         JPAQuery<?> baseQuery = queryFactory
             .from(airSchedule)
-            .join(airScheduleSeatType)
-            .on(airScheduleSeatType.seatType.eq(dto.getSeatType()))
-            .join(departAirport)
-            .on(departAirport.airportSeq.eq(dto.getDepartAirportSeq()))
-            .join(arriveAirport)
-            .on(arriveAirport.airportSeq.eq(dto.getArriveAirportSeq()))
+            .join(airScheduleSeatType).on(airScheduleSeatType.seatType.eq(dto.getSeatType()))
+            .join(airSchedule.flightTicketTokenBucket, flightTicketTokenBucket)
+            .join(departAirport).on(departAirport.airportSeq.eq(dto.getDepartAirportSeq()))
+            .join(arriveAirport).on(arriveAirport.airportSeq.eq(dto.getArriveAirportSeq()))
             .join(airSchedule.airplane, airplane)
             .join(airplane.airline, airline)
             .where(
@@ -90,9 +89,13 @@ public class AirScheduleCustomRepositoryImpl implements AirScheduleCustomReposit
                     arriveAirport.IATACode.as("arrvIataCode"),
                     arriveAirport.countryEn.as("arrvCountryEn"),
                     arriveAirport.countryKr.as("arrvCountryKr"),
-                    arriveAirport.cityEn.as("arrvCityEn")
+                    arriveAirport.cityEn.as("arrvCityEn"),
+
+                    flightTicketTokenBucket.bucketTokenType,
+                    airline.airlineType
                 )
-            );
+            )
+            .orderBy(flightTicketTokenBucket.sortReference.asc());
 
         JPAQuery<Long> countQuery = baseQuery
             .select(airSchedule.airScheduleSeq.count());
