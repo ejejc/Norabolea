@@ -51,4 +51,10 @@ public class AccommodationDto {
                 .facilityInfoRes(entity.getAccommoFacilityInfos().stream().map(AccommoFacilityInfoDto.Res::changeToDto).collect(Collectors.toList()))
                 .build();
     }
+
+    public void calculateRevieScore(Double collect, int size) {
+        totalReviewCnt = size;
+        avgStarScore = collect / size;
+
+    }
 }

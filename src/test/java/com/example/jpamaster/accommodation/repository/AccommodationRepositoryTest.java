@@ -37,12 +37,13 @@ public class AccommodationRepositoryTest {
 
     @Test
     public void 숙박등록_후_룸과_인기시설이_모두_저장되는지_확인한다() {
+        // when
         accommodationsRepository.save(accommodations);
-        // TODO: 테스트 방법 뭐가 있는지 공부 후 확인
+
+        // then
         Assertions.assertThat(accommodations.getAccommodationSeq()).isGreaterThan(0L);
         Assertions.assertThat(accommodations.getRooms().get(0).getRoomSeq()).isGreaterThan(0L);
         Assertions.assertThat(accommodations.getAccommoFacilityInfos().get(0).getSeq()).isGreaterThan(0L);
-
         AccommoFacilityInfo info = acommoFacilityInfoRepository.findById(accommodations.getAccommoFacilityInfos().get(0).getSeq()).orElse(null);
         Assertions.assertThat(info.getAccommodation()).isNotNull();
     }

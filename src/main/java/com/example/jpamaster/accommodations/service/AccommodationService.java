@@ -105,18 +105,15 @@ public class AccommodationService {
 
     /**
      * 숙소 평균 리뷰 점수 및 리뷰 개수 구하기
-     * // TODO: 리팩토링하기
      * @param dto
      */
-    private void setReviewCntAndReviewScore(AccommodationDto dto) {
+    public void setReviewCntAndReviewScore(AccommodationDto dto) {
         List<Long> roomSeqs = dto.getRooms().stream().map(RoomDto::getSeq).collect(Collectors.toList());
         List<ReviewDto.ReviewSum> reviewSums = reviewRepository.findAvgEachScore(roomSeqs);
-
-        for (ReviewDto.ReviewSum info : reviewSums) {
-            dto.setAvgStarScore(dto.getAvgStarScore()+info.getEachAvgSum());
-        }
-        dto.setTotalReviewCnt(reviewSums.size());
-        dto.setAvgStarScore(dto.getAvgStarScore() / reviewSums.size());
+        dto.calculateRevieScore(
+                reviewSums.stream().mapToDouble(ReviewDto.ReviewSum::getEachAvgSum).sum()
+                , reviewSums.size()
+        );
     }
 
     /**
