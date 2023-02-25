@@ -8,6 +8,7 @@ import com.example.jpamaster.accommodations.repository.review.ReviewRepository;
 import com.example.jpamaster.common.exception.InvalidParameterException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -73,12 +74,12 @@ public class AccommodationService {
             // room DTO를 Entity로 변환
             Room room = roomService.searchRoomEntity(dto);
             // 특징 seq들을 통해 특징 entity 가져오기
-            List<Features> featuresList = featuresService.searchFeaturesListToByIds(dto.getFeatureList());
+            List<Features> featuresList = featuresService.searchFeaturesListToByIds(dto.getRoomFeaturesInfoList());
 
             for (Features features : featuresList) {
                 // 특징 seq가 포함되어 있는 특징 seq dto list를 확인하여 해당 seq에 정해진 sort 정보를 셋팅해준다.
                 FeaturesDto.FeatureInfoDto featuresInfoDto
-                        = featuresService.searchSameFeatureSeqToEntitySeq(dto.getFeatureList(), features.getFeaturesSeq());
+                        = featuresService.searchSameFeatureSeqToEntitySeq(dto.getRoomFeaturesInfoList(), features.getFeaturesSeq());
                 room.addFeaturesInfo( RoomFeaturesInfo.builder()
                         .features(features)
                         .sort(featuresInfoDto.getSort())
@@ -91,14 +92,18 @@ public class AccommodationService {
     }
 
     /**
-     * 숙박 정보 조회
+     * 숙소 정보 조회
      * @param accommodationSeq
      * @return
      */
     public AccommodationDto findAccommodation(Long accommodationSeq) {
-        // TODO: 유효성 체크 로직 추가
+        // 숙소 entity 조회
         Accommodations entity = accommodationsRepository.findById(accommodationSeq).orElseThrow(() -> new InvalidParameterException("유효하지 않은 숙박업체 입니다."));
-        AccommodationDto dto = AccommodationDto.changeToDto(entity);
+        // TODO: ModelMapper를 매번 생성하는 것 보다 제네릭이나 bean등록으로 바꿔보는건 어떨까?
+        // 숙소 계층 구조(룸, 인기시설 등)을 dto로 변환
+        ModelMapper modelMapper = new ModelMapper();
+        AccommodationDto dto = modelMapper.map(entity, AccommodationDto.class);
+        // 리뷰 총 개수 및 평균 점수 셋팅
         this.setReviewCntAndReviewScore(dto);
         return dto;
     }
