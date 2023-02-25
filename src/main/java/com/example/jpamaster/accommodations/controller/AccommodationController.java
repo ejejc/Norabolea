@@ -21,8 +21,6 @@ public class AccommodationController {
     @ApiOperation(value = "숙박 정보 저장 API")
     public ApiResponse<Void> add(@RequestBody AccommodationDto param) {
         accommodationService.addAccommodation(param);
-        // 이렇게 생성할 경우, controller 단에서 객체 생성 코드가 반복적으로 일어남.. > 개선해야 할 것 같다.
-        //return new ApiResponse<AccommodationDto>(param);
         /**
          * MEMO: 객체 생성 없이 return 하는 방향을 생각 > ApiResponse 클래스 자체가 제네릭 클래스이다.
          * 객체 생성 없이 하려면 > 정적 메소드를 활용해야 될 것 같은데 제네릭 클래스에 정적 메소드를 사용하면 컴파일 오류 발생

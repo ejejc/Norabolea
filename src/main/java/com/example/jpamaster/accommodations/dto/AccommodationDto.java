@@ -40,7 +40,7 @@ public class AccommodationDto {
     @ApiModelProperty(value = "평균 별점")
     private double avgStarScore = 0.0;
     @ApiModelProperty(value = "리뷰 총 갯수")
-    private int totalReviewCnt;
+    private int totalReviewCnt = 0;
 
     public void calculateRevieScore(Double collect, int size) {
         totalReviewCnt = size;

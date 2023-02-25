@@ -12,14 +12,11 @@ import com.example.jpamaster.accommodations.service.AccommodationService;
 import com.example.jpamaster.accommodations.service.FeaturesService;
 import com.example.jpamaster.accommodations.service.PopularFacilityService;
 import com.example.jpamaster.accommodations.service.RoomService;
-import com.example.jpamaster.popular_facility.repository.PopularFacilityFixture;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ArgumentsSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -27,7 +24,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.anyList;
 import static org.mockito.Mockito.when;
 
@@ -35,7 +34,6 @@ import static org.mockito.Mockito.when;
 public class AccommodationServiceTest {
     private PopularFacility popularFacility;
     private Accommodations accommodations;
-
     @InjectMocks
     private AccommodationService accommodationService;
     @Mock
@@ -51,12 +49,16 @@ public class AccommodationServiceTest {
 
     @BeforeEach
     public void setup() {
-
+        popularFacility = PopularFacility.builder()
+                .popularFacilitySeq(1L)
+                .name("주차가능")
+                .logoUrl("/media/park").build();
         accommodations = Fixture.generateAccommodation(List.of(popularFacility));
     }
     @Test
 //    @ParameterizedTest
 //    @ValueSource
+    @DisplayName("숙소 리뷰들의 평균 별점 및 총 개수를 검증한다.")
     public void setReviewCntAndReviewScoreTest() {
         // given
         ReviewDto.ReviewSum firstReview = new ReviewDto.ReviewSum(1,2,3,4);
@@ -76,6 +78,20 @@ public class AccommodationServiceTest {
         // then
         Assertions.assertThat(dto.getTotalReviewCnt()).isEqualTo(list.size());
         Assertions.assertThat(dto.getAvgStarScore()).isEqualTo(2.625);
+    }
+
+    @Test
+    @DisplayName("숙소 조회 후, dto로 변환이 잘 되었는지 검증한다.")
+    public void findAccommodationTest() {
+        // given
+        when(accommodationsRepository.findById(anyLong())).thenReturn(Optional.ofNullable(accommodations));
+        // when
+        AccommodationDto dto = accommodationService.findAccommodation(anyLong());
+        // then
+        Assertions.assertThat(dto.getRooms()).isNotEmpty();
+        Assertions.assertThat(dto.getRooms().get(0).getMediaList()).isNotEmpty();
+        Assertions.assertThat(dto.getRooms().get(0).getRoomFeaturesInfoList()).isNotEmpty();
+        Assertions.assertThat(dto.getFacilityInfoRes()).hasSize(accommodations.getAccommoFacilityInfos().size());
     }
 
 

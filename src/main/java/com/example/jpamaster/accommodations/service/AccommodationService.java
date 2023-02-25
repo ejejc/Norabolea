@@ -9,6 +9,7 @@ import com.example.jpamaster.common.exception.InvalidParameterException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -101,11 +102,33 @@ public class AccommodationService {
         Accommodations entity = accommodationsRepository.findById(accommodationSeq).orElseThrow(() -> new InvalidParameterException("유효하지 않은 숙박업체 입니다."));
         // TODO: ModelMapper를 매번 생성하는 것 보다 제네릭이나 bean등록으로 바꿔보는건 어떨까?
         // 숙소 계층 구조(룸, 인기시설 등)을 dto로 변환
-        ModelMapper modelMapper = new ModelMapper();
-        AccommodationDto dto = modelMapper.map(entity, AccommodationDto.class);
+        AccommodationDto dto = this.convertDtoToAccommodation(entity);
         // 리뷰 총 개수 및 평균 점수 셋팅
         this.setReviewCntAndReviewScore(dto);
         return dto;
+    }
+
+    /**
+     * 숙소 entity > dto로 변환
+     * @param entity
+     * @return
+     */
+    private AccommodationDto convertDtoToAccommodation(Accommodations entity) {
+        ModelMapper modelMapper = new ModelMapper();
+        List<AccommoFacilityInfoDto.Res> facilityList = new ArrayList<>();
+        for (AccommoFacilityInfo info :entity.getAccommoFacilityInfos()) {
+            facilityList.add(AccommoFacilityInfoDto.Res.builder()
+                    .facilityName(info.getPopularFacility().getName())
+                    .logoUrl(info.getPopularFacility().getLogoUrl())
+                    .sort(info.getSort()).build());
+        }
+        PropertyMap<Accommodations, AccommodationDto> map = new PropertyMap<Accommodations, AccommodationDto>() {
+            protected void configure() {
+                map().setFacilityInfoRes(facilityList);
+            }
+        };
+        modelMapper.addMappings(map);
+        return modelMapper.map(entity, AccommodationDto.class);
     }
 
     /**
@@ -115,6 +138,7 @@ public class AccommodationService {
     public void setReviewCntAndReviewScore(AccommodationDto dto) {
         List<Long> roomSeqs = dto.getRooms().stream().map(RoomDto::getSeq).collect(Collectors.toList());
         List<ReviewDto.ReviewSum> reviewSums = reviewRepository.findAvgEachScore(roomSeqs);
+        if(CollectionUtils.isEmpty(reviewSums)) return;
         dto.calculateRevieScore(
                 reviewSums.stream().mapToDouble(ReviewDto.ReviewSum::getEachAvgSum).sum()
                 , reviewSums.size()

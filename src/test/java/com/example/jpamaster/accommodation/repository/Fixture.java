@@ -1,6 +1,7 @@
 package com.example.jpamaster.accommodation.repository;
 
 import com.example.jpamaster.accommodations.domain.entity.*;
+import com.example.jpamaster.accommodations.dto.FeaturesDto;
 import com.example.jpamaster.accommodations.enums.AccomodationsEnum;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,13 @@ public class Fixture {
                 .mainFlag(true)
                 .useYn(true).build();
         room.setMedia(List.of(media));
+        Features features = Features.builder()
+                .featuresName("수영장")
+                .featuresIconUrl("/media/swim").build();
+        RoomFeaturesInfo info = RoomFeaturesInfo.builder()
+                .features(features)
+                .sort(1).build();
+        room.setRoomFeaturesInfoList(List.of(info));
 
         accommodations.setRooms(List.of(room));
         return accommodations;
