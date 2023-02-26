@@ -42,6 +42,8 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
     // redis template
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 }
 // feign client 사용을 위해 spring
 dependencyManagement {
