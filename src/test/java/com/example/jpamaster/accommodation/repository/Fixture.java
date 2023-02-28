@@ -41,13 +41,13 @@ public class Fixture {
                 .mainFlag(true)
                 .useYn(true).build();
         room.setMedia(List.of(media));
-        Features features = Features.builder()
+        /*Features features = Features.builder()
                 .featuresName("수영장")
                 .featuresIconUrl("/media/swim").build();
         RoomFeaturesInfo info = RoomFeaturesInfo.builder()
                 .features(features)
                 .sort(1).build();
-        room.setRoomFeaturesInfoList(List.of(info));
+        room.setRoomFeaturesInfoList(List.of(info));*/
 
         accommodations.setRooms(List.of(room));
         return accommodations;

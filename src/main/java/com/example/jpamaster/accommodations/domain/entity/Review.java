@@ -5,13 +5,14 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.example.jpamaster.common.domain.BaseEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Table(name = "review")
 public class Review extends BaseEntity {
 
@@ -70,7 +71,7 @@ public class Review extends BaseEntity {
         this.avgStartScore = this.calculateAvgStartScore();
     }
 
-    private double calculateAvgStartScore() {
+    public double calculateAvgStartScore() {
         return (this.kindnessStarScore + this.cleanlinessStarScore + this.convenienceStarScore + this.locationStarScore) / 4.0;
     }
 
