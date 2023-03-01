@@ -27,6 +27,11 @@ public class ReviewDto {
     public static class BestReq {
         private Long accommodationSeq;
         private Long reviewSeq;
+
+        public void ofTestSeq(Long seq, Long reviewSeq) {
+            this.accommodationSeq = seq;
+            this.reviewSeq = reviewSeq;
+        }
     }
 
     @Getter
@@ -107,6 +112,7 @@ public class ReviewDto {
     }
 
     @NoArgsConstructor
+    @AllArgsConstructor
     @Setter
     @Getter
     public static class ReviewSum {

@@ -34,7 +34,6 @@ public class ReviewRepositoryTest {
     AccommodationsRepository accommodationsRepository;
     Accommodations accommodations;
     Review review;
-    List<Room> rooms = new ArrayList<>();
     PopularFacility popularFacility;
 
     @BeforeEach
@@ -123,7 +122,4 @@ public class ReviewRepositoryTest {
         List<Review> best = reviewList.stream().filter(Review::isBestYn).collect(Collectors.toList());
         Assertions.assertThat(reviews.size()).isEqualTo(best.size());
     }
-
-
-
 }

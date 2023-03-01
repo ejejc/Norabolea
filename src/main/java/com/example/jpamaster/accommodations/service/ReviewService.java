@@ -41,12 +41,12 @@ public class ReviewService {
 
     }
 
-    private ReviewDto.ReviewSummary findReviewForAccommodation(List<Room> roomList) {
+    public ReviewDto.ReviewSummary findReviewForAccommodation(List<Room> roomList) {
         // roomSeq 별로, 리뷰들의 총점을 가져온다.
         ReviewDto.ReviewSum reviewSums
                 = reviewRepository.findEachPartScore(roomList.stream().map(Room::getRoomSeq).collect(Collectors.toList()));
         if (Objects.isNull(reviewSums)) {
-            throw new InvalidParameterException("dkf");
+            throw new InvalidParameterException("");
         }
         return ReviewDto.ReviewSummary.makeSummary(reviewSums);
     }
