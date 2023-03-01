@@ -1,7 +1,6 @@
 package com.example.jpamaster.accommodation.repository;
 
 import com.example.jpamaster.accommodations.domain.entity.*;
-import com.example.jpamaster.accommodations.dto.FeaturesDto;
 import com.example.jpamaster.accommodations.enums.AccomodationsEnum;
 import java.util.ArrayList;
 import java.util.List;

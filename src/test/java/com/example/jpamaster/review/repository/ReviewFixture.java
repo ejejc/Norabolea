@@ -21,7 +21,7 @@ public class ReviewFixture {
     public static List<Review> generateReviewList() {
         List<Review> reviewList = new ArrayList<>();
          Review review1 = Review.builder()
-                .content("테스트 리뷰예요~")
+                .content("리뷰1")
                 .bestYn(false)
                 .kindnessStarScore(5)
                 .cleanlinessStarScore(3)
@@ -31,12 +31,12 @@ public class ReviewFixture {
         reviewList.add(review1);
 
         Review review2 = Review.builder()
-                .content("테스트 리뷰예요~")
+                .content("리뷰2")
                 .bestYn(true)
-                .kindnessStarScore(5)
-                .cleanlinessStarScore(3)
+                .kindnessStarScore(1)
+                .cleanlinessStarScore(2)
                 .convenienceStarScore(3)
-                .locationStarScore(4).build();
+                .locationStarScore(1).build();
         review1.setAvgStartScore(review1.calculateAvgStartScore());
         reviewList.add(review2);
         return reviewList;

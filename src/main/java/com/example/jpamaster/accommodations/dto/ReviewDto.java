@@ -46,6 +46,7 @@ public class ReviewDto {
         private double totalStarScore;
         private boolean bestYn;
         private List<Medias> mediaList;
+        @Setter
         private String filterType;
         private Long accommodationSeq;
         private AnswerDto.Res answer;
