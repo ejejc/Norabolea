@@ -55,8 +55,8 @@ public class AriScheduleService {
     private double calculateBasePriceForSchedule(AirScheduleSearchResponseDto airSchedule) {
         return airSchedule.getFlightDistanceKm() * DEFAULT_JET_OIL_PRICE
             * airSchedule.getSeatType().getCostMultiple()
-            * airSchedule.getBucketTokenType().getCostMultiple()
-            * airSchedule.getAirlineType().getCostMultiple();
+            * airSchedule.getReservationBucketCostMultipleRate()
+            * airSchedule.getAirlineType().getAirlineCostMultipleRate();
     }
 
 }

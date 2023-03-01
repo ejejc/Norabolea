@@ -6,7 +6,7 @@ import com.example.jpamaster.flight.domain.entity.Airline;
 import com.example.jpamaster.flight.domain.entity.Airplane;
 import com.example.jpamaster.flight.domain.entity.AirplaneSeatType;
 import com.example.jpamaster.flight.domain.entity.Airport;
-import com.example.jpamaster.flight.domain.entity.FlightTicketTokenBucket;
+import com.example.jpamaster.flight.domain.entity.AirScheduleReservationBucket;
 import com.example.jpamaster.flight.enums.FlightEnums.AirlineType;
 import com.example.jpamaster.flight.enums.FlightEnums.DisplayType;
 import com.example.jpamaster.flight.enums.FlightEnums.FoodType;
@@ -117,7 +117,7 @@ public class Fixture {
             .collect(Collectors.toUnmodifiableSet());
     }
 
-    public static FlightTicketTokenBucket generateFlightTicketTokenBucket() {
-        return FlightTicketTokenBucket.createDefault(400, AirlineType.randomType().getCostMultiple());
+    public static AirScheduleReservationBucket generateFlightTicketTokenBucket() {
+        return AirScheduleReservationBucket.createDefault(400, AirlineType.randomType().getAirlineCostMultipleRate());
     }
 }

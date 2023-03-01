@@ -66,7 +66,7 @@ public class AirSchedule extends BaseEntity {
     private final Set<AirScheduleSeatType> airScheduleSeatTypes = new HashSet<>();
 
     @OneToOne(mappedBy = "airSchedule", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private FlightTicketTokenBucket flightTicketTokenBucket;
+    private AirScheduleReservationBucket airScheduleReservationBucket;
 
     private Integer totalAvailableSeatCount = 0;
 
@@ -125,8 +125,8 @@ public class AirSchedule extends BaseEntity {
         }
     }
 
-    public void mappingTokenBucket(FlightTicketTokenBucket defaultFlightTicketTokenBucket) {
-        this.flightTicketTokenBucket = defaultFlightTicketTokenBucket;
-        defaultFlightTicketTokenBucket.mappingAirSchedule(this);
+    public void mappingAirScheduleReservationBucket(AirScheduleReservationBucket airScheduleReservationBucket) {
+        this.airScheduleReservationBucket = airScheduleReservationBucket;
+        airScheduleReservationBucket.mappingAirSchedule(this);
     }
 }

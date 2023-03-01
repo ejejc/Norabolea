@@ -13,7 +13,7 @@ import com.example.jpamaster.flight.domain.entity.AirScheduleSeatType;
 import com.example.jpamaster.flight.domain.entity.Airline;
 import com.example.jpamaster.flight.domain.entity.Airplane;
 import com.example.jpamaster.flight.domain.entity.Airport;
-import com.example.jpamaster.flight.domain.entity.FlightTicketTokenBucket;
+import com.example.jpamaster.flight.domain.entity.AirScheduleReservationBucket;
 import com.example.jpamaster.flight.domain.repository.airschedule.AirScheduleRepository;
 import com.example.jpamaster.flight.fixture.Fixture;
 import com.example.jpamaster.flight.web.dto.req.AirScheduleRequestDto;
@@ -45,7 +45,7 @@ class AirScheduleCreateServiceTest {
     private SeatService seatService;
 
     @Mock
-    private FlightTicketTokenBucketService flightTicketTokenBucketService;
+    private AirScheduleTokenBucketService airScheduleTokenBucketService;
 
     @Mock
     private AirScheduleRepository airScheduleRepository;
@@ -56,7 +56,7 @@ class AirScheduleCreateServiceTest {
     private Airplane airplane;
     private Set<AirScheduleSeatType> airScheduleSeatTypeSet;
     private AirSchedule airSchedule;
-    private FlightTicketTokenBucket flightTicketTokenBucket;
+    private AirScheduleReservationBucket airScheduleReservationBucket;
     private Airline airline;
 
     private final String takeOffDate = "20230101";
@@ -72,7 +72,7 @@ class AirScheduleCreateServiceTest {
         airline = airplane.getAirline();
         airSchedule = AirSchedule.createAirSchedule(fromAirport, toAirport, airplane, airline,
             takeOffDate, takeOffTime);
-        flightTicketTokenBucket = Fixture.generateFlightTicketTokenBucket();
+        airScheduleReservationBucket = Fixture.generateFlightTicketTokenBucket();
     }
 
     @DisplayName("항공 스케줄을 등록한다.")
@@ -114,7 +114,8 @@ class AirScheduleCreateServiceTest {
         BDDMockito.willDoNothing().given(flightValidationService).takeOffTimeValidation(anyString(), anyString(), anyString());
         BDDMockito.given(seatService.createAirScheduleSeatType(ArgumentMatchers.anySet())).willReturn(airScheduleSeatTypeSet);
 
-        BDDMockito.given(flightTicketTokenBucketService.createDefaultFlightTicketTokenBucket(anyInt(), anyDouble())).willReturn(flightTicketTokenBucket);
+        BDDMockito.given(airScheduleTokenBucketService.createDefaultFlightTicketTokenBucket(anyInt(), anyDouble())).willReturn(
+            airScheduleReservationBucket);
         BDDMockito.given(airScheduleRepository.save(any())).willReturn(airSchedule);
     }
 }

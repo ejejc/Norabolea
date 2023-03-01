@@ -15,16 +15,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Table(name = "flight_ticket_token_bucket")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "air_schedule_reservation_bucket")
 @Getter
 @Entity
-public class FlightTicketTokenBucket extends BaseEntity {
+public class AirScheduleReservationBucket extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long flightTicketTokenBucketSeq;
+    private Long airScheduleReservationBucketSeq;
 
     @Column(name = "bucket_token_type")
     @Enumerated(EnumType.STRING)
@@ -40,13 +43,10 @@ public class FlightTicketTokenBucket extends BaseEntity {
     @JoinColumn(name = "air_schedule_seq")
     private AirSchedule airSchedule;
 
-    protected FlightTicketTokenBucket() {
-    }
-
-    private FlightTicketTokenBucket(Integer totalAvailableSeatCount, double costMultiple) {
+    private AirScheduleReservationBucket(Integer totalAvailableSeatCount, double airlineCostMultipleRate) {
         this.bucketTokenType = BucketTokenType.DEFAULT;
         this.availableTokenCount = totalAvailableSeatCount / 10;
-        sortReference = new BigDecimal(this.bucketTokenType.getCostMultiple() * costMultiple)
+        sortReference = new BigDecimal(this.bucketTokenType.getDefaultCostMultiple() * airlineCostMultipleRate)
             .setScale(3, RoundingMode.HALF_UP)
             .doubleValue();
     }
@@ -55,7 +55,8 @@ public class FlightTicketTokenBucket extends BaseEntity {
         this.airSchedule = airSchedule;
     }
 
-    public static FlightTicketTokenBucket createDefault(Integer totalAvailableSeatCount, double airlineCostMultiple) {
-        return new FlightTicketTokenBucket(totalAvailableSeatCount, airlineCostMultiple);
+    public static AirScheduleReservationBucket createDefault(
+        Integer totalAvailableSeatCount, double airlineCostMultipleRate) {
+        return new AirScheduleReservationBucket(totalAvailableSeatCount, airlineCostMultipleRate);
     }
 }

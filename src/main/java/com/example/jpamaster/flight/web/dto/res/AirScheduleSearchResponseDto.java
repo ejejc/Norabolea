@@ -53,7 +53,7 @@ public class AirScheduleSearchResponseDto {
     private String arrvCityEn;
 
     @JsonIgnore
-    private BucketTokenType bucketTokenType;
+    private double reservationBucketCostMultipleRate;
 
     @JsonIgnore
     private AirlineType airlineType;

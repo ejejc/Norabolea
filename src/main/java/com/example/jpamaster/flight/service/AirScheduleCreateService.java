@@ -20,7 +20,7 @@ public class AirScheduleCreateService {
 
     private final SeatService seatService;
     private final FlightValidationService flightValidationService;
-    private final FlightTicketTokenBucketService flightTicketTokenBucketService;
+    private final AirScheduleTokenBucketService airScheduleTokenBucketService;
 
     private final AirScheduleRepository airScheduleRepository;
 
@@ -44,10 +44,10 @@ public class AirScheduleCreateService {
         seatService.createAirScheduleSeatType(dto.getAirScheduleSeatRequestDtos())
             .forEach(airScheduleSeatType -> airScheduleSeatType.registerAirSchedule(airSchedule));
 
-        airSchedule.mappingTokenBucket(
-            flightTicketTokenBucketService.createDefaultFlightTicketTokenBucket(
+        airSchedule.mappingAirScheduleReservationBucket(
+            airScheduleTokenBucketService.createDefaultFlightTicketTokenBucket(
                 airSchedule.getTotalAvailableSeatCount(),
-                airline.getAirlineType().getCostMultiple()
+                airline.getAirlineType().getAirlineCostMultipleRate()
             )
         );
 

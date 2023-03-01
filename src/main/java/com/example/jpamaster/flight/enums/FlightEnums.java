@@ -53,7 +53,7 @@ public class FlightEnums {
         DOMESTIC(1.0),
         INTERNATIONAL(1.2),
         ;
-        private final double costMultiple;
+        private final double airlineCostMultipleRate;
 
         public static AirlineType randomType() {
             return values()[((int) (Math.random() * 8)) % values().length];
@@ -75,6 +75,6 @@ public class FlightEnums {
         ST9(1.89),
         ;
 
-        private final double costMultiple;
+        private final double defaultCostMultiple;
     }
 }
