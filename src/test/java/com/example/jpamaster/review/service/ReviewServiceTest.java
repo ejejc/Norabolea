@@ -20,14 +20,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ReviewServiceTest {
 
-    @Mock
-    RoomService roomService;
     @Mock
     ReviewRepository reviewRepository;
     @Mock
@@ -68,23 +67,30 @@ public class ReviewServiceTest {
         // given
         when(roomReposittory.findByAccommodationSeq(anyLong())).thenReturn(Collections.emptyList());
         when(reviewRepository.findAllReviewByRoomListToBest(anyList())).thenReturn(reviewList);
-        when(reviewRepository.findById(anyLong())).thenReturn(reviewList.stream().filter(vo->!vo.isBestYn()).findFirst());
+        Review review = reviewList.stream().filter(vo->!vo.isBestYn()).findFirst().orElse(null);
+        when(reviewRepository.findById(anyLong())).thenReturn(Optional.ofNullable(review));
         // when
         ReviewDto.BestReq reviewDto = new ReviewDto.BestReq();
         reviewDto.ofTestSeq(1L, 2L);
         reviewService.addBestReview(reviewDto);
         // then
-        Review result = new Review();
-        for (Review review : reviewList ) {
-            if (review.getContent().equals("리뷰1")) {
-                result = review;
-                break;
-            }
-        }
-        Assertions.assertThat(result.isBestYn()).isTrue();
+        Assertions.assertThat(review.isBestYn()).isTrue();
     }
 
     @Test
     @DisplayName("베스트 리뷰가 3개일 때, 가장 마지막은 삭제되고 새로운 리뷰가 베스트 리뷰가 되는지 확인")
-    public void addBestReviewMaxThreeCntTest() {}
+    public void addBestReviewMaxThreeCntTest() {
+        // given
+        reviewList = ReviewFixture.generateBestReviewList();
+        when(roomReposittory.findByAccommodationSeq(anyLong())).thenReturn(Collections.emptyList());
+        when(reviewRepository.findAllReviewByRoomListToBest(anyList())).thenReturn(reviewList);
+        when(reviewRepository.findById(anyLong())).thenReturn(Optional.ofNullable(reviewList.get(0)));
+        // when
+        ReviewDto.BestReq reviewDto = new ReviewDto.BestReq();
+        reviewDto.ofTestSeq(1L, 2L);
+        reviewService.addBestReview(reviewDto);
+
+        System.out.println(reviewList.get(0).isBestYn());
+
+    }
 }

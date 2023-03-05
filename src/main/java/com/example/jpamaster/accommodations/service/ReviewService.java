@@ -65,7 +65,7 @@ public class ReviewService {
 
     @Transactional // TODO: transactional을 해줘야지만 update 쿼리가 날아가는 이유 공부하기 : 트랜잭션 안에 있어야 트랜잭션 commit 후 flush가 발생되기 때문
     public void addBestReview(ReviewDto.BestReq bestReq) {
-        // 특정 숙소에 해당하는 review List 가져오기
+        // 특정 숙소에 해당하는 review List 가져오기 - TODO: 리팩토링 - 테스트 코드가 안짜짐 .. 이건 로직 문제 리팩토링 !!
         List<Review> reviewList = this.searchReviewListForAccommodation(bestReq.getAccommodationSeq());
 
         if (reviewList.size() >= 3) {
