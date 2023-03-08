@@ -1,14 +1,21 @@
 package com.example.jpamaster.users.domain;
 
+import com.example.jpamaster.common.domain.BaseEntity;
+import com.example.jpamaster.users.enums.UserEnums.Role;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
-@Entity
-@NoArgsConstructor
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
-public class User {
+@Entity
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userSeq;
@@ -16,24 +23,26 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "birth")
-    private String birth;
+    @Column(name = "email")
+    private String email;
 
-    @Column(name = "id")
-    private String id;
+    @Column(name = "picture")
+    private String picture;
 
-    @Column(name = "phone_number")
-    private String phoneNo;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
 
-    @Column(name = "gender")
-    private int gender; // TODO: enum으로 뺄까?
+    @Builder
+    public User(String name, String email, String picture, Role role) {
+        this.name = name;
+        this.email = email;
+        this.picture = picture;
+        this.role = role;
+    }
 
-    @Column(name = "user_status")
-    private int status; // TODO: enum으로 뺄까?
-
-    @Column(name = "reg_date")
-    private Date regDate;
-
-    @Column(name = "update_date")
-    private Date updateDate;
+    public void update(String name, String picture) {
+        this.name = name;
+        this.picture = picture;
+    }
 }

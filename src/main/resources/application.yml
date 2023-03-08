@@ -35,12 +35,25 @@ spring:
     host: localhost
     port: 6379
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 1096783064519-id8vfrvj8vlupsubevm59nvglf9n5n5c.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+
 logging:
   level:
     org:
       springframework:
         web:
           client: DEBUG
+        security:
+          oauth2: DEBUG
 
 open-api:
   airline:
