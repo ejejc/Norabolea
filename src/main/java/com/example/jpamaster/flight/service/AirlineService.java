@@ -5,14 +5,13 @@ import com.example.jpamaster.flight.domain.repository.AirlineRepository;
 import com.example.jpamaster.flight.web.dto.req.AirlineUpdateRequestDto;
 import com.example.jpamaster.flight.web.dto.req.KeywordSearchConditionDto;
 import com.example.jpamaster.flight.web.dto.res.AirlineDto;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service

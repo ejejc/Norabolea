@@ -1,14 +1,28 @@
 package com.example.jpamaster.flight.domain.entity;
 
 import com.example.jpamaster.common.domain.BaseEntity;
-import lombok.*;
+import com.example.jpamaster.flight.enums.FlightEnums.AirlineType;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Where;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @EqualsAndHashCode(of = "airlineSeq", callSuper = false)
 @Getter
@@ -47,12 +61,18 @@ public class Airline extends BaseEntity {
     @Column(name = "airline_iaco")
     private String airlineIcao;
 
+    @Comment("항공사 종류")
+    @Column(name = "airline_type")
+    @Enumerated(EnumType.STRING)
+    private AirlineType airlineType;
+
     @Comment("삭제 여부")
     @Column(name = "deleted")
     private boolean deleted;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "airline", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AvailableAirline> availableAirline;
+
 
     @Builder
     public Airline(String airlineImage, String airlineName, String airlineTel, String airlineIcTel, String airlineIata, String airlineIcao) {
@@ -64,6 +84,7 @@ public class Airline extends BaseEntity {
         this.airlineIcao = airlineIcao;
         this.deleted = false;
         this.availableAirline = new ArrayList<>();
+        this.airlineType = AirlineType.randomType();
     }
 
     public void updateAirlineInfo(String airlineName, String airlineTel, String airlineIcTel) {

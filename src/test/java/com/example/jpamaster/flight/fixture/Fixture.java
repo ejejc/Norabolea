@@ -6,9 +6,12 @@ import com.example.jpamaster.flight.domain.entity.Airline;
 import com.example.jpamaster.flight.domain.entity.Airplane;
 import com.example.jpamaster.flight.domain.entity.AirplaneSeatType;
 import com.example.jpamaster.flight.domain.entity.Airport;
+import com.example.jpamaster.flight.domain.entity.AirScheduleReservationBucket;
+import com.example.jpamaster.flight.enums.FlightEnums.AirlineType;
 import com.example.jpamaster.flight.enums.FlightEnums.DisplayType;
 import com.example.jpamaster.flight.enums.FlightEnums.FoodType;
 import com.example.jpamaster.flight.enums.FlightEnums.SeatType;
+import com.example.jpamaster.flight.web.dto.res.AirlineDto;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -66,6 +69,19 @@ public class Fixture {
             .build();
     }
 
+    public static AirlineDto generateAirlineDto() {
+        Airline airline = generateAirline();
+        return new AirlineDto(
+            airline.getAirlineSeq(),
+            airline.getAirlineImage(),
+            airline.getAirlineName(),
+            airline.getAirlineTel(),
+            airline.getAirlineIcTel(),
+            airline.getAirlineIata(),
+            airline.getAirlineIcao()
+        );
+    }
+
     public static Set<AirplaneSeatType> generateAirplaneSeatTypes() {
         return Arrays.stream(SeatType.values())
             .map(seatType -> AirplaneSeatType.builder()
@@ -99,5 +115,9 @@ public class Fixture {
                 .availableChildSeatCount(20)
                 .build())
             .collect(Collectors.toUnmodifiableSet());
+    }
+
+    public static AirScheduleReservationBucket generateFlightTicketTokenBucket() {
+        return AirScheduleReservationBucket.createDefault(400, AirlineType.randomType().getAirlineCostMultipleRate());
     }
 }

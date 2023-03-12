@@ -9,16 +9,19 @@ import com.example.jpamaster.flight.web.dto.res.AirScheduleSearchResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RestController("/v1/air-schedule")
+@RequestMapping("/v1/air-schedule")
+@RestController
 public class AirScheduleUserController {
 
     private final AriScheduleService airScheduleService;
 
     @GetMapping
-    public ApiResponse<Slice<AirScheduleSearchResponseDto>> searchAirScheduleByCondition(
+    public ApiResponse<Slice<AirScheduleSearchResponseDto>> searchAirScheduleByLowerCost(
         AirScheduleSearchRequestDto dto) {
 
         if (!dto.personCountValidation()) {
