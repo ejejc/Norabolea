@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping("/v1/air-schedule")
+@RequestMapping("/air-schedule")
 @RestController
 public class AirScheduleUserController {
 

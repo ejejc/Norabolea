@@ -64,3 +64,7 @@ open-api:
     api-key: "eMnMvGML1ccLs2K4gEVX5m8Ld8HkzUBHdgw2Kzo9tt5J8F8rHhikcX6aUWTvn0FXcOCnWdLpqXv8ZVRVd8G1/w=="
   kakao:
     request-uri: "https://dapi.kakao.com/v2/local/search/address.json"
+
+
+jwt:
+  key: aSBsb3ZlIHlvdSBlamVqYw==

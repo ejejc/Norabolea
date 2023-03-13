@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/v1/admin/air-schedule")
+@RequestMapping("/admin/air-schedule")
 @RestController
 public class AirScheduleAdminController {
 
