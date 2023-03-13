@@ -6,7 +6,7 @@ import com.example.jpamaster.flight.web.dto.req.AirplaneRegisterRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/v1/admin/{airlineSeq}/airplane")
+@RequestMapping("/admin/{airlineSeq}/airplane")
 @RequiredArgsConstructor
 @RestController
 public class AirplaneController {

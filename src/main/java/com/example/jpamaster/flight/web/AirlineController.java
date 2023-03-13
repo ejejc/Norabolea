@@ -8,10 +8,12 @@ import com.example.jpamaster.flight.web.dto.res.AirlineDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@RequestMapping("/v1/admin/airline")
+@RequestMapping("/admin/airline")
 @RequiredArgsConstructor
 @RestController
 public class AirlineController {

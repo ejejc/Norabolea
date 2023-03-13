@@ -1,16 +1,19 @@
 package com.example.jpamaster.flight.web;
 
 import com.example.jpamaster.common.ApiResponse;
+import com.example.jpamaster.common.security.AuthenticatedPrincipal;
+import com.example.jpamaster.common.security.oauth2.CustomUserPrincipal;
 import com.example.jpamaster.flight.service.AirportService;
 import com.example.jpamaster.flight.web.dto.req.KeywordSearchConditionDto;
 import com.example.jpamaster.flight.web.dto.req.RegisterAvailableAirlineRequestDto;
 import com.example.jpamaster.flight.web.dto.res.AirportDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/v1/airport")
+@RequestMapping("/airport")
 @RequiredArgsConstructor
 @RestController
 public class AirportController {
@@ -19,6 +22,7 @@ public class AirportController {
 
     @GetMapping
     public ApiResponse<List<AirportDto>> getAirportBySearchCondition(
+        @AuthenticatedPrincipal CustomUserPrincipal customUserPrincipal,
             KeywordSearchConditionDto airportSearchConditionDto
     ) {
         return ApiResponse.createOk(airportService.getAirportBySearchCondition(airportSearchConditionDto));
