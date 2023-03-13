@@ -1,10 +1,7 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
 import com.example.jpamaster.common.domain.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,6 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Table(name = "popular_facility")
 public class PopularFacility extends BaseEntity {
     @Id
