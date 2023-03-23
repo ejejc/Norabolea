@@ -19,7 +19,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
-@Component
 public class JwtProvider {
 
     public static final int JWT_TOKEN_TIME = 1 * 60 * 1000;

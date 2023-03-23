@@ -16,6 +16,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -28,7 +29,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @WebMvcTest(
     controllers = AirlineController.class,
-    excludeAutoConfiguration = {SecurityAutoConfiguration.class}
+    excludeAutoConfiguration = {SecurityAutoConfiguration.class, OAuth2ClientAutoConfiguration.class}
 )
 @AutoConfigureMockMvc
 class AirlineControllerTest {
@@ -50,7 +51,7 @@ class AirlineControllerTest {
 
         // when
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.get("/v1/admin/airline")
+                MockMvcRequestBuilders.get("/admin/airline")
                     .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpectAll(
@@ -82,7 +83,7 @@ class AirlineControllerTest {
 
         // when
         MvcResult mvcResult = mockMvc.perform(
-                MockMvcRequestBuilders.put("/v1/admin/airline/{airlineSeq}", airlineSeq)
+                MockMvcRequestBuilders.put("/admin/airline/{airlineSeq}", airlineSeq)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(airlineUpdateRequestDto)))
             .andDo(print())

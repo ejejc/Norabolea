@@ -19,7 +19,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
-@Component
 public class JwtAuthenticationProvider {
     private final JWSVerifier jwsVerifier;
 

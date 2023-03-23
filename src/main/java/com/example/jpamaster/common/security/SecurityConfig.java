@@ -1,19 +1,20 @@
 package com.example.jpamaster.common.security;
 
 import com.example.jpamaster.common.security.jwt.CustomJwtAuthenticationFilter;
+import com.example.jpamaster.common.security.jwt.JwtProvider;
 import com.example.jpamaster.common.security.oauth2.CustomOAuth2UserService;
 import com.example.jpamaster.common.security.oauth2.OAuth2LoginFailureHandler;
 import com.example.jpamaster.common.security.oauth2.OAuth2LoginSuccessHandler;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.header.writers.ContentSecurityPolicyHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -22,43 +23,33 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final JwtProvider jwtProvider;
     private final CustomOAuth2UserService oAuth2UserService;
-    private final OAuth2LoginSuccessHandler successHandler;
-    private final OAuth2LoginFailureHandler failureHandler;
     private final CustomJwtAuthenticationFilter customJwtAuthenticationFilter;
 
 
     public static final String[] whiteList = {
         "/h2-console/**",
-        "/health",
-        "/unhealth",
+        "/health/**",
+        "/unhealth/**",
         "/oauth2/**",
         "/auth/**"
     };
 
     @Bean
-    public WebSecurityCustomizer configure() {
-        return (web) -> {
-
-            web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-        };
-    }
-
-    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
             .authorizeRequests(auth ->
-                auth
-                    .antMatchers(whiteList).permitAll()
+                auth.antMatchers(whiteList).permitAll()
                     .antMatchers("/v1/admin/**").hasRole("ADMIN")
-                    .antMatchers("/**").authenticated())
-
+                    .anyRequest().authenticated()
+            )
             .oauth2Login()
             .userInfoEndpoint()
             .userService(oAuth2UserService)
             .and()
-            .successHandler(successHandler)
-            .failureHandler(failureHandler)
+            .successHandler(authenticationSuccessHandler())
+            .failureHandler(authenticationFailureHandler())
             .and()
             .httpBasic().disable()
             .formLogin().disable()
@@ -96,5 +87,15 @@ public class SecurityConfig {
             .and()
             .addFilterBefore(customJwtAuthenticationFilter, OAuth2LoginAuthenticationFilter.class)
             .build();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new OAuth2LoginSuccessHandler(jwtProvider);
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new OAuth2LoginFailureHandler();
     }
 }

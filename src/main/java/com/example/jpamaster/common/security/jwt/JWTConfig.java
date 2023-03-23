@@ -27,4 +27,18 @@ public class JWTConfig {
         return new RSASSAVerifier(rsaJwk().toPublicJWK());
     }
 
+    @Bean
+    public JwtProvider jwtProvider() throws JOSEException {
+        return new JwtProvider(rsaJwk());
+    }
+
+    @Bean
+    public JwtAuthenticationProvider jwtAuthenticationProvider() throws JOSEException {
+        return new JwtAuthenticationProvider(jwsVerifier());
+    }
+
+    @Bean
+    public CustomJwtAuthenticationFilter customJwtAuthenticationFilter() throws JOSEException {
+        return new CustomJwtAuthenticationFilter(jwtAuthenticationProvider());
+    }
 }
