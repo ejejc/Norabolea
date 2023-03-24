@@ -5,8 +5,10 @@ import com.example.jpamaster.common.security.jwt.JwtProvider;
 import com.example.jpamaster.common.security.oauth2.CustomOAuth2UserService;
 import com.example.jpamaster.common.security.oauth2.OAuth2LoginFailureHandler;
 import com.example.jpamaster.common.security.oauth2.OAuth2LoginSuccessHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -39,11 +41,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-            .authorizeRequests(auth ->
-                auth.antMatchers(whiteList).permitAll()
-                    .antMatchers("/v1/admin/**").hasRole("ADMIN")
-                    .anyRequest().authenticated()
-            )
+            .authorizeHttpRequests(authorize -> {
+                authorize
+                    .mvcMatchers(whiteList).permitAll()
+                    .mvcMatchers("/admin/**").hasRole("ADMIN")
+                    .anyRequest().authenticated();
+            })
             .oauth2Login()
             .userInfoEndpoint()
             .userService(oAuth2UserService)
@@ -86,6 +89,7 @@ public class SecurityConfig {
             })
             .and()
             .addFilterBefore(customJwtAuthenticationFilter, OAuth2LoginAuthenticationFilter.class)
+            .addFilterBefore(customExceptionHandlingFilter(), CustomJwtAuthenticationFilter.class)
             .build();
     }
 
@@ -97,5 +101,10 @@ public class SecurityConfig {
     @Bean
     public AuthenticationFailureHandler authenticationFailureHandler() {
         return new OAuth2LoginFailureHandler();
+    }
+
+    @Bean
+    public CustomExceptionHandlingFilter customExceptionHandlingFilter() {
+        return new CustomExceptionHandlingFilter(new ObjectMapper());
     }
 }

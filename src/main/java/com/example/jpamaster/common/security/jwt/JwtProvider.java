@@ -16,7 +16,6 @@ import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 public class JwtProvider {
@@ -37,12 +36,12 @@ public class JwtProvider {
         CustomUserPrincipal principal = (CustomUserPrincipal) oAuth2User;
         Date date = new Date();
 
-        String role = oAuth2User.getAuthorities().stream()
+        String role = principal.getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .collect(Collectors.joining(","));
 
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-            .subject(principal.getUsername())
+            .subject(principal.getName())
             .issuer(principal.getRegistrationId())
             .audience(String.valueOf(principal.getUserSeq()))
             .jwtID(UUID.randomUUID().toString())

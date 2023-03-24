@@ -2,6 +2,7 @@ package com.example.jpamaster.common.security.jwt;
 
 import static com.example.jpamaster.common.security.SecurityConfig.whiteList;
 
+import com.example.jpamaster.common.enums.HttpStatusCode;
 import com.example.jpamaster.common.security.oauth2.OAuth2AuthenticationProcessingException;
 import com.nimbusds.jose.JOSEException;
 import java.io.IOException;
@@ -15,8 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 
@@ -24,33 +23,40 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
 
+    public static final String AUTHORIZATION = "Authorization";
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
         throws ServletException, IOException {
 
-        String requestSerializedToken = request.getHeader("Authorization");
+        String requestSerializedToken = request.getHeader(AUTHORIZATION);
 
-        if (StringUtils.hasText(requestSerializedToken)) {
-            Authentication authentication;
+        if (requestSerializedToken == null || !requestSerializedToken.startsWith("Bearer ")) {
 
-            try {
-                authentication = jwtAuthenticationProvider.getAuthentication(requestSerializedToken.split(" ")[1]);
-                if (authentication != null) {
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                    log.debug("SecurityContextHolder에 '{}' 인증 정보를 저장했습니다, uri: {}",
-                        authentication.getName(),
-                        request.getRequestURI());
-                } else {
-                    throw new OAuth2AuthenticationProcessingException("인증 정보를 찾을 수 없습니다.");
-                }
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-            } catch (ParseException | JOSEException | OAuth2AuthenticationProcessingException e) {
-                log.error("SecurityContextHolder에 인증 정보를 저장하지 못했습니다, uri: {}, message: {}",
-                    request.getRequestURI(), e.getMessage(), e);
-            }
+        Authentication authentication;
+        String token = requestSerializedToken.split(" ")[1].trim();
 
+        try {
+            authentication = jwtAuthenticationProvider.getAuthentication(token);
+        } catch (ParseException | JOSEException e) {
+            log.error("principal 정보 변환에 실패했습니다. requestUri : {}, token : {}, message : {}",
+                request.getRequestURI(), token, e.getMessage(), e);
+            throw new OAuth2AuthenticationProcessingException("유효하지 않은 토큰입니다.", HttpStatusCode.BAD_REQUEST);
+        }
+
+        if (authentication != null) {
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.debug("SecurityContextHolder 에 '{}' 인증 정보를 저장했습니다, uri: {}",
+                authentication.getPrincipal(),
+                request.getRequestURI());
+        } else {
+            log.error("[Token Expired] JWT expired : {}", token);
+            throw new OAuth2AuthenticationProcessingException("토큰이 만료되었습니다.", HttpStatusCode.UNAUTHORIZED);
         }
 
         filterChain.doFilter(request, response);
