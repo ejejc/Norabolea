@@ -1,4 +1,4 @@
-package com.example.jpamaster.flight.config;
+package com.example.jpamaster.common.config;
 
 import com.example.jpamaster.flight.domain.repository.airschedule.AirScheduleCustomRepositoryImpl;
 import com.querydsl.jpa.impl.JPAQueryFactory;

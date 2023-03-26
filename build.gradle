@@ -30,7 +30,6 @@ dependencies {
     implementation 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.modelmapper:modelmapper:3.1.0'
     // swagger 설정
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
@@ -48,6 +47,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'com.nimbusds:nimbus-jose-jwt:9.30.1'
 
+    // test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 // feign client 사용을 위해 spring
 dependencyManagement {

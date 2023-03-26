@@ -31,7 +31,7 @@ public class FlightInitializer {
 
 
     @Transactional
-//    @EventListener(value = ApplicationReadyEvent.class)
+    @EventListener(value = ApplicationReadyEvent.class)
     public void airlineInitializeEvent () {
         AirlineInfoVo airlineInfo = airlineFeignClient.fetchAirline(serviceKey, "json");
         if (airlineInfo != null) {
@@ -42,7 +42,7 @@ public class FlightInitializer {
     }
 
     @Transactional
-//    @EventListener(value = ApplicationReadyEvent.class)
+    @EventListener(value = ApplicationReadyEvent.class)
     public void airportInitializeEvent () {
         String filePath = "static/airport/airport_info.csv";
         ClassPathResource classPathResource = new ClassPathResource(filePath);

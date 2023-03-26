@@ -1,6 +1,6 @@
 package com.example.jpamaster.common.annotations;
 
-import com.example.jpamaster.flight.config.TestConfig;
+import com.example.jpamaster.common.config.TestConfig;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

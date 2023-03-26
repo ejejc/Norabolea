@@ -1,15 +1,15 @@
 package com.example.jpamaster.common.security.oauth2;
 
+import com.example.jpamaster.common.enums.HttpStatusCode;
+import lombok.Getter;
+
+@Getter
 public class OAuth2AuthenticationProcessingException extends RuntimeException {
-    public OAuth2AuthenticationProcessingException(String msg, Throwable t) {
-        super(msg, t);
-    }
 
-    public OAuth2AuthenticationProcessingException(String msg) {
+    private final HttpStatusCode httpStatusCode;
+
+    public OAuth2AuthenticationProcessingException(final String msg, final HttpStatusCode httpStatusCode) {
         super(msg);
-    }
-
-    public OAuth2AuthenticationProcessingException() {
-        super();
+        this.httpStatusCode = httpStatusCode;
     }
 }

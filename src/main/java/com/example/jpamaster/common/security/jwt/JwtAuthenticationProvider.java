@@ -19,7 +19,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
-@Component
 public class JwtAuthenticationProvider {
     private final JWSVerifier jwsVerifier;
 
@@ -28,7 +27,6 @@ public class JwtAuthenticationProvider {
 
         if (parsedJwt.verify(jwsVerifier)) {
             JWTClaimsSet jwtClaimsSet = parsedJwt.getJWTClaimsSet();
-            jwtClaimsSet.getSubject();
 
             Set<? extends GrantedAuthority> authorities =
                 Arrays.stream(jwtClaimsSet.getClaim(JWT_CLAIM_ROLE_KEY).toString().split(","))

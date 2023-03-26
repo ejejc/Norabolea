@@ -1,6 +1,7 @@
 package com.example.jpamaster.common.security.oauth2;
 
 
+import com.example.jpamaster.common.enums.HttpStatusCode;
 import com.example.jpamaster.users.domain.User;
 import com.example.jpamaster.users.enums.UserEnums.AuthProvider;
 import com.example.jpamaster.users.enums.UserEnums.Role;
@@ -32,7 +33,10 @@ public class OAuthAttributes {
         } else if ("google".equalsIgnoreCase(registrationId)) {
             return ofGoogle(userNameAttributeName, registrationId, attributes);
         }
-        throw new OAuth2AuthenticationProcessingException("OAuth2 provider not supported : " + registrationId);
+        throw new OAuth2AuthenticationProcessingException(
+            String.format("OAuth2 provider not supported : %s", registrationId),
+            HttpStatusCode.BAD_REQUEST
+        );
     }
 
     private static OAuthAttributes ofNaver(String userNameAttributeName, String registrationId, Map<String, Object> attributes) {
@@ -43,6 +47,7 @@ public class OAuthAttributes {
                 .email((String) response.get("email"))
                 .picture((String) response.get("profile_image"))
                 .nameAttributeKey(userNameAttributeName)
+                .registrationId(registrationId)
                 .build();
     }
 

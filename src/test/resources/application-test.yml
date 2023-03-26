@@ -38,8 +38,7 @@ logging:
   level:
     org:
       springframework:
-        web:
-          client: DEBUG
+        web: DEBUG
 
 open-api:
   airline:
