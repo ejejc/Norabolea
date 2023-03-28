@@ -14,4 +14,13 @@ public class AirScheduleRequestDto {
     private String expectedTakeoffTime;
 
     private Set<AirScheduleSeatRequestDto> airScheduleSeatRequestDtos = new HashSet<>();
+
+    public AirScheduleRequestDto(Long airplaneSeq, Long fromAirportSeq, Long toAirportSeq,
+        String expectedTakeoffDate, String expectedTakeoffTime) {
+        this.airplaneSeq = airplaneSeq;
+        this.fromAirportSeq = fromAirportSeq;
+        this.toAirportSeq = toAirportSeq;
+        this.expectedTakeoffDate = expectedTakeoffDate;
+        this.expectedTakeoffTime = expectedTakeoffTime;
+    }
 }

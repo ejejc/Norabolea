@@ -3,6 +3,7 @@ package com.example.jpamaster.flight.domain.entity;
 import com.example.jpamaster.flight.enums.FlightEnums;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "airplane_seat_type")
 @AttributeOverride(
     name = "seq",

@@ -53,7 +53,7 @@ public class FlightValidationService {
         return optionalAirplane.get();
     }
 
-    void airplaneSeatValidation(List<AirplaneSeatType> airplaneSeatTypes,
+    void airplaneSeatValidation(Set<AirplaneSeatType> airplaneSeatTypes,
         Set<AirScheduleSeatRequestDto> airScheduleSeatRequestDtos) {
         for (AirScheduleSeatRequestDto dto : airScheduleSeatRequestDtos) {
             AirplaneSeatType seatType = airplaneSeatTypes.stream()

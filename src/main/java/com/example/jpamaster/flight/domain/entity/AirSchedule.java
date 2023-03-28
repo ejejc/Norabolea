@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -46,6 +47,10 @@ public class AirSchedule extends BaseEntity {
     private Boolean deleted;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "airline_seq")
+    private Airline airline;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "airplane_seq")
     private Airplane airplane;
 
@@ -60,18 +65,27 @@ public class AirSchedule extends BaseEntity {
     @OneToMany(mappedBy = "airSchedule", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private final Set<AirScheduleSeatType> airScheduleSeatTypes = new HashSet<>();
 
-    private AirSchedule(Airport deptAirport, Airport arrAirport, Airplane airplane) {
+    @OneToOne(mappedBy = "airSchedule", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private AirScheduleReservationBucket airScheduleReservationBucket;
+
+    private Integer totalAvailableSeatCount = 0;
+
+    private AirSchedule(Airport deptAirport, Airport arrAirport, Airplane airplane, Airline airline) {
         this.deptAirport = deptAirport;
         this.arrAirport = arrAirport;
         this.airplane = airplane;
+        this.airline = airline;
         this.deleted = false;
     }
 
-    public static AirSchedule createAirSchedule(Airport fromAirport, Airport toAirport, Airplane airplane) {
-        return new AirSchedule(fromAirport, toAirport, airplane);
+    public static AirSchedule createAirSchedule(Airport fromAirport, Airport toAirport, Airplane airplane,
+        Airline airline, String expectedTakeoffDate, String expectedTakeoffTime) {
+        AirSchedule airSchedule = new AirSchedule(fromAirport, toAirport, airplane, airline);
+        airSchedule.calculateAirSchedule(expectedTakeoffDate, expectedTakeoffTime);
+        return airSchedule;
     }
 
-    public void calculateAirSchedule(String expectedTakeoffDate, String expectedTakeoffTime) {
+    private AirSchedule calculateAirSchedule(String expectedTakeoffDate, String expectedTakeoffTime) {
         LocalDateTime depart = FlightUtils.toLocalDateTime(expectedTakeoffDate, expectedTakeoffTime);
 
         int distance = FlightUtils.getDistanceAsKm(
@@ -93,6 +107,13 @@ public class AirSchedule extends BaseEntity {
         this.estimatedHourSpent = hour;
         this.estimatedMinuteSpent = min;
         this.flightDistanceKm = distance;
+
+        return this;
+    }
+
+    public void mappingToAirScheduleSeatType(AirScheduleSeatType airScheduleSeatType) {
+        this.airScheduleSeatTypes.add(airScheduleSeatType);
+        this.totalAvailableSeatCount += airScheduleSeatType.getAvailableSeatCount();
     }
 
     public void updateAirSchedule(Airport fromAirport, Airport toAirport, String expectedTakeoffDate, String expectedTakeoffTime) {
@@ -102,5 +123,10 @@ public class AirSchedule extends BaseEntity {
 
             this.calculateAirSchedule(expectedTakeoffDate, expectedTakeoffTime);
         }
+    }
+
+    public void mappingAirScheduleReservationBucket(AirScheduleReservationBucket airScheduleReservationBucket) {
+        this.airScheduleReservationBucket = airScheduleReservationBucket;
+        airScheduleReservationBucket.mappingAirSchedule(this);
     }
 }

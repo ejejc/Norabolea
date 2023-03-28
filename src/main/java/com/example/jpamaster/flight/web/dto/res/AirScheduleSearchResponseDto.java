@@ -1,8 +1,11 @@
 package com.example.jpamaster.flight.web.dto.res;
 
 import com.example.jpamaster.flight.enums.FlightEnums;
+import com.example.jpamaster.flight.enums.FlightEnums.AirlineType;
+import com.example.jpamaster.flight.enums.FlightEnums.BucketTokenType;
 import com.example.jpamaster.flight.enums.FlightEnums.DisplayType;
 import com.example.jpamaster.flight.enums.FlightEnums.FoodType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,4 +51,16 @@ public class AirScheduleSearchResponseDto {
     private String arrvCountryEn;
     private String arrvCountryKr;
     private String arrvCityEn;
+
+    @JsonIgnore
+    private double reservationBucketCostMultipleRate;
+
+    @JsonIgnore
+    private AirlineType airlineType;
+
+    private int priceForSchedule;
+
+    public void setPriceForSchedule(int priceForSchedule) {
+        this.priceForSchedule = priceForSchedule;
+    }
 }

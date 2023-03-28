@@ -95,7 +95,7 @@ public class AirScheduleSeatType extends SeatType {
 
     public void registerAirSchedule(AirSchedule airSchedule) {
         this.airSchedule = airSchedule;
-        airSchedule.getAirScheduleSeatTypes().add(this);
+        airSchedule.mappingToAirScheduleSeatType(this);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.example.jpamaster.flight.domain.entity;
 
 import com.example.jpamaster.common.domain.BaseEntity;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,7 +47,7 @@ public class Airplane extends BaseEntity {
     private Airport currentAirport;
 
     @OneToMany(mappedBy = "airplane", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AirplaneSeatType> airplaneSeatTypes = new ArrayList<>();
+    private Set<AirplaneSeatType> airplaneSeatTypes = new HashSet<>();
 
     @Column(name = "available")
     private Boolean available;
@@ -58,5 +60,6 @@ public class Airplane extends BaseEntity {
         this.airline = airline;
         this.currentAirport = currentAirport;
         this.available = true;
+        this.airplaneSeatTypes = new HashSet<>();
     }
 }
