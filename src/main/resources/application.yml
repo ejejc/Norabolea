@@ -2,9 +2,23 @@ server:
   port: 8080
   servlet:
     application-display-name: jpa-master
-    context-path: /api  # 전역 api path 설정
+
 
 spring:
+  security:
+    user:
+      name: user
+      password: 1111
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 1096783064519-id8vfrvj8vlupsubevm59nvglf9n5n5c.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+
   application:
     name: jpa-master
   mvc:
@@ -34,20 +48,6 @@ spring:
   redis:
     host: localhost
     port: 6379
-
-  security:
-    user:
-      name: user
-      password: 1111
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: 1096783064519-id8vfrvj8vlupsubevm59nvglf9n5n5c.apps.googleusercontent.com
-            client-secret: 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
-            scope:
-              - email
-              - profile
 
 logging:
   level:
