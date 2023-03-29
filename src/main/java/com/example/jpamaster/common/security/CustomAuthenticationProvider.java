@@ -4,6 +4,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String password = authentication.getCredentials().toString();
 
         // TODO: db에 값 비교해서 인증되면 반환하도록 구현
+
         return new UsernamePasswordAuthenticationToken(name, password, new ArrayList<>());
     }
 

@@ -13,10 +13,9 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 
-@Slf4j
-@RequiredArgsConstructor
-public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
+public class OAuth2LoginSuccessHandler  {
+/*
     private final JwtProvider jwtProvider;
 
     @Override
@@ -34,5 +33,5 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             response.setHeader("Authorization", serializedToken);
             response.sendRedirect("/api/health");
         }
-    }
+    }*/
 }

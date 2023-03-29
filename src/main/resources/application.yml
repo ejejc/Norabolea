@@ -2,6 +2,7 @@ server:
   port: 8080
   servlet:
     application-display-name: jpa-master
+    context-path: /api
 
 
 spring:

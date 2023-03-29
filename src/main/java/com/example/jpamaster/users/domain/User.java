@@ -21,12 +21,18 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userSeq;
 
+    @Column(name = "userId")
+    private String id;
+
+    @Column(name = "password")
+    private String pwd;
+
+    @Column(name = "birth")
+    private String birth;
     @Column(name = "name")
     private String name;
-
     @Column(name = "email")
     private String email;
-
     @Column(name = "picture")
     private String picture;
 
@@ -39,15 +45,19 @@ public class User extends BaseEntity {
     private AuthProvider authProvider;
 
 
-
     @Builder
-    public User(String name, String email, String picture, Role role, AuthProvider authProvider) {
+    public User(String name, String email, String picture, Role role, AuthProvider authProvider
+            , String id, String pwd, String birth) {
         this.name = name;
+        this.id = id;
+        this.pwd = pwd;
+        this.birth = birth;
         this.email = email;
         this.picture = picture;
         this.role = role;
         this.authProvider = authProvider;
     }
+
 
     public void update(String name, String picture) {
         this.name = name;

@@ -6,36 +6,28 @@ import com.example.jpamaster.common.security.oauth2.CustomOAuth2UserService;
 import com.example.jpamaster.common.security.oauth2.OAuth2LoginFailureHandler;
 import com.example.jpamaster.common.security.oauth2.OAuth2LoginSuccessHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.header.writers.ContentSecurityPolicyHeaderWriter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 
-@RequiredArgsConstructor
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+
 @EnableWebSecurity
+@Configuration
 public class SecurityConfig {
-
-    private final JwtProvider jwtProvider;
-    private final CustomOAuth2UserService oAuth2UserService;
-    private final CustomJwtAuthenticationFilter customJwtAuthenticationFilter;
-
 
     public static final String[] whiteList = {
         "/h2-console/**",
@@ -46,24 +38,41 @@ public class SecurityConfig {
     };
 
     @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().antMatchers("/h2-console/**");
+    }
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-            .anyRequest().authenticated();
+        http.csrf().disable();
+        http.authorizeRequests()
+                .mvcMatchers("/user/create").permitAll()
+                .anyRequest().authenticated();
+
+
+
+        /*http
+                .addFilterBefore(new CustomFilter(), UsernamePasswordAuthenticationFilter.class);*/
+
         http.formLogin()
-            .usernameParameter("userId")
-            .passwordParameter("password")
-            .failureHandler(
-                new AuthenticationFailureHandler() {
-                    @Override
-                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-                        System.out.println("exception = " + exception.getMessage());
-                    }
-                }
-            )
-            .permitAll()
-            .and()
-            .addFilterBefore(new CustomFilter(), UsernamePasswordAuthenticationFilter.class);
+                .usernameParameter("userId")
+                .passwordParameter("password")
+                .failureHandler(
+                        new AuthenticationFailureHandler() {
+                            @Override
+                            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+                                System.out.println("exception = " + exception.getMessage());
+                            }
+                        }
+                )
+                .successHandler((req, res, auth) -> {
+
+                    /*CustomUserDetails principal = (CustomUserDetails) auth.getPrincipal();
+
+                    String token = jwt.encoding(principal.getUser().getBirth(), principal.getUser().getPhoneNo());
+                    res.addCookie(new Cookie("token", token));*/
+
+                });
+
 
         return http.build();
 //
@@ -120,7 +129,7 @@ public class SecurityConfig {
 //            .build();
     }
 
-    @Bean
+   /* @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return new OAuth2LoginSuccessHandler(jwtProvider);
     }
@@ -132,15 +141,15 @@ public class SecurityConfig {
 
     @Bean
     public CustomExceptionHandlingFilter customExceptionHandlingFilter() {
-        return new CustomExceptionHandlingFilter(new ObjectMapper());
+        return new CustomExceptionHandlingFilter(new ObjectMapper());*/
     }
 
-    @Bean
+    /*@Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
     @Bean
     public AuthenticationProvider authenticationProvider() {
         return new CustomAuthenticationProvider();
-    }
-}
+    }*/
+
