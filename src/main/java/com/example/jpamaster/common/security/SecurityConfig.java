@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,11 +33,11 @@ import java.io.IOException;
 public class SecurityConfig {
 
     public static final String[] whiteList = {
-        "/h2-console/**",
-        "/health/**",
-        "/unhealth/**",
-        "/oauth2/**",
-        "/auth/**"
+            "/h2-console/**",
+            "/health/**",
+            "/unhealth/**",
+            "/oauth2/**",
+            "/auth/**"
     };
 
     @Bean
@@ -59,20 +62,15 @@ public class SecurityConfig {
                 .failureHandler(
                         new AuthenticationFailureHandler() {
                             @Override
-                            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+                            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
+                                    throws IOException, ServletException {
                                 System.out.println("exception = " + exception.getMessage());
                             }
                         }
                 )
                 .successHandler((req, res, auth) -> {
-
-                    /*CustomUserDetails principal = (CustomUserDetails) auth.getPrincipal();
-
-                    String token = jwt.encoding(principal.getUser().getBirth(), principal.getUser().getPhoneNo());
-                    res.addCookie(new Cookie("token", token));*/
-
+                    System.out.println("성공했습니다.");
                 });
-
 
         return http.build();
 //
@@ -141,15 +139,17 @@ public class SecurityConfig {
 
     @Bean
     public CustomExceptionHandlingFilter customExceptionHandlingFilter() {
-        return new CustomExceptionHandlingFilter(new ObjectMapper());*/
-    }
+        return new CustomExceptionHandlingFilter(new ObjectMapper());
+    }*/
 
-    /*@Bean
+    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         return new CustomAuthenticationProvider();
-    }*/
+    }
+}
 

@@ -2,6 +2,7 @@ package com.example.jpamaster.common.security;
 
 import com.example.jpamaster.users.domain.User;
 import com.example.jpamaster.users.repository.UserRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,12 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findById(1L).get();
-
-        //CustomUserDetails customUserDetails = new CustomUserDetails(user);
-
-
-        //return customUserDetails;
-        return null;
+        User user = userRepository.findById(username).orElse(null);
+        return new CustomUserDetails(user, List.of(user.getRole()));
     }
 }
