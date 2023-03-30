@@ -1,11 +1,10 @@
 package com.example.jpamaster.common.security;
 
-import com.example.jpamaster.common.security.jwt.CustomJwtAuthenticationFilter;
-import com.example.jpamaster.common.security.jwt.JwtProvider;
-import com.example.jpamaster.common.security.oauth2.CustomOAuth2UserService;
-import com.example.jpamaster.common.security.oauth2.OAuth2LoginFailureHandler;
-import com.example.jpamaster.common.security.oauth2.OAuth2LoginSuccessHandler;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Jwts;
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,25 +12,19 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 
 @EnableWebSecurity
+@RequiredArgsConstructor
 @Configuration
 public class SecurityConfig {
 
+    private final JwtTokenProvider jwtTokenProvider;
     public static final String[] whiteList = {
             "/h2-console/**",
             "/health/**",
@@ -69,6 +62,20 @@ public class SecurityConfig {
                         }
                 )
                 .successHandler((req, res, auth) -> {
+                    /**
+                     * 인증 전 : principal - 로그인 시도 아이디, credentials - 로그인 시도 비밀번호
+                     * 인증 후 :
+                     * principal
+                     *  - 인증이 완료된 사용자 객체(UserDetails의 구현체)
+                     * credentials
+                     *  - 인증 완료 후 유출 가능성을 줄이기 위해 삭제
+                     * authorities
+                     *  - 인증된 사용자가 가지는 권한 목록
+                     * authenticated
+                     *  - 인증 여부 (true)
+                     */
+                    String token = jwtTokenProvider.createToken((CustomUserDetails)auth.getPrincipal());
+                    // auth로 jwt 생성해서 헤더에 심어준다.
                     System.out.println("성공했습니다.");
                 });
 
