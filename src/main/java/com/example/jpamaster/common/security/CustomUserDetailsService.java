@@ -19,4 +19,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findById(username).orElse(null);
         return new CustomUserDetails(user, List.of(user.getRole()));
     }
+    public UserDetails loadUserByUserSeq(Long userSeq) {
+        User user = userRepository.findById(userSeq).orElse(null);
+        return new CustomUserDetails(user, List.of(user.getRole()));
+    }
 }

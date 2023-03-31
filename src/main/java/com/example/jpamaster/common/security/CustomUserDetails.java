@@ -3,6 +3,8 @@ package com.example.jpamaster.common.security;
 import com.example.jpamaster.users.domain.User;
 import com.example.jpamaster.users.enums.UserEnums;
 import java.util.stream.Collectors;
+
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
 public class CustomUserDetails implements UserDetails {
 
     private User user;

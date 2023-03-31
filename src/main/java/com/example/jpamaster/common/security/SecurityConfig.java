@@ -1,6 +1,5 @@
 package com.example.jpamaster.common.security;
 
-import io.jsonwebtoken.Jwts;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @EnableWebSecurity
@@ -25,6 +25,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     public static final String[] whiteList = {
             "/h2-console/**",
             "/health/**",
@@ -42,12 +43,9 @@ public class SecurityConfig {
         http.csrf().disable();
         http.authorizeRequests()
                 .mvcMatchers("/user/create").permitAll()
-                .anyRequest().authenticated();
-
-
-
-        /*http
-                .addFilterBefore(new CustomFilter(), UsernamePasswordAuthenticationFilter.class);*/
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.formLogin()
                 .usernameParameter("userId")
@@ -75,8 +73,9 @@ public class SecurityConfig {
                      *  - 인증 여부 (true)
                      */
                     String token = jwtTokenProvider.createToken((CustomUserDetails)auth.getPrincipal());
-                    // auth로 jwt 생성해서 헤더에 심어준다.
-                    System.out.println("성공했습니다.");
+                    res.setHeader("Authorization", token);
+                    res.sendRedirect("/api/health");
+
                 });
 
         return http.build();
