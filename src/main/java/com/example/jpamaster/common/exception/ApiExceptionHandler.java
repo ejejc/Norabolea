@@ -48,4 +48,13 @@ public class ApiExceptionHandler {
                 HttpStatusCode.INTERNAL_SERVER_ERROR, e.getMessage()
         );
     }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler
+    public ApiResponse<Void> NoAuthenticationException(NoAuthenticationException e) {
+        log.error(e.getMessage(), e);
+        return ApiResponse.createError(
+                e.getHttpStatusCode(), e.getMessage()
+        );
+    }
 }

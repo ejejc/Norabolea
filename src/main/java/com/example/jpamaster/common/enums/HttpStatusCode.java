@@ -16,6 +16,7 @@ public enum HttpStatusCode {
     // 4xx
     BAD_REQUEST(400, "CL000", "Bad Request"),
     UNAUTHORIZED(401, "CL001", "Unauthorized"),
+    FORBIDDEN(403, "CL003", "No Atuthentification"),
     INVALID_PARAMETER(422, "CL022", "invalid parameter"),
     NOT_FOUND(404, "CL004", "Not Found"),
 
