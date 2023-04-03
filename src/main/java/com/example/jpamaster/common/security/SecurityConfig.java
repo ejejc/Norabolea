@@ -45,7 +45,11 @@ public class SecurityConfig {
         http.csrf().disable();
         http.authorizeRequests()
                 .mvcMatchers("/user/create").permitAll()
-                .mvcMatchers(/*HttpMethod.POST,*/"/accommodation").hasRole("ADMIN")
+                .mvcMatchers(HttpMethod.POST,"/accommodation").hasRole("ADMIN")
+                .mvcMatchers(HttpMethod.POST, "/answer").hasRole("ADMIN")
+                .mvcMatchers(HttpMethod.POST, "/features").hasRole("ADMIN")
+                .mvcMatchers(HttpMethod.POST, "/facility").hasRole("ADMIN")
+                .mvcMatchers("/review/best/add").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
@@ -60,7 +64,8 @@ public class SecurityConfig {
                             @Override
                             public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
                                     throws IOException, ServletException {
-                                System.out.println("exception = " + exception.getMessage());
+                                // 역활이 무엇일까 ..?
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage());
                             }
                         }
                 )
@@ -78,6 +83,7 @@ public class SecurityConfig {
                      *  - 인증 여부 (true)
                      */
                     String token = jwtTokenProvider.createToken((CustomUserDetails)auth.getPrincipal());
+                    System.out.println("token = " + token);
                     res.setHeader("Authorization", token);
                     res.sendRedirect("/api/health");
 
@@ -167,5 +173,6 @@ public class SecurityConfig {
     public AccessDeniedHandler accessDeniedHandler(){
         return new CustomAccessDeniedHandler();
     }
+
 }
 

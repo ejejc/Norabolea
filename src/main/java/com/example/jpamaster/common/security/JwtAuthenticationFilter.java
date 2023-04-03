@@ -23,6 +23,8 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+        // 토큰이 없어도 securitycontext에 존재해서 인증이 넘어간다 .. 이게 맞는걸까 ?
+        Authentication authentication1 = SecurityContextHolder.getContext().getAuthentication();
         if (!ObjectUtils.isEmpty(token) && jwtTokenProvider.valid(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);

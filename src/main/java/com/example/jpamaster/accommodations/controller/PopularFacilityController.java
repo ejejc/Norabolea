@@ -19,7 +19,7 @@ public class PopularFacilityController {
 
     private final PopularFacilityService popularFacilityService;
 
-    @PostMapping("/add")
+    @PostMapping()
     @ApiOperation(value = "인기 시설 등록 API")
     public ApiResponse<Void> add(@RequestBody FacilittyDto facilittyDto) {
         popularFacilityService.saveFacility(facilittyDto.toEntity());

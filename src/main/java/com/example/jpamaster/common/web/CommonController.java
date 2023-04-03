@@ -14,7 +14,6 @@ public class CommonController {
 
     @GetMapping("/health")
     public ResponseEntity<String> healthy(HttpServletRequest request) {
-        //String token = request.getHeader("Authorization");
         return ResponseEntity.ok("OK");
     }
 

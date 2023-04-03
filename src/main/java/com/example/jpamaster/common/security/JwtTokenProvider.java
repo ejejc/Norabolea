@@ -9,8 +9,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +52,7 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String token) {
         Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
         UserDetails userDetails = userDetailsService.loadUserByUserSeq(Long.valueOf(String.valueOf(claims.getBody().get(USER_SEQ_KEY))));
+        if (ObjectUtils.isEmpty(userDetails)) throw new InvalidParameterException("유효하지 않는 토큰입니다.");
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }
