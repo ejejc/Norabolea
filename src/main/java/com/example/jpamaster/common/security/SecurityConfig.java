@@ -64,7 +64,7 @@ public class SecurityConfig {
                             @Override
                             public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
                                     throws IOException, ServletException {
-                                // 역활이 무엇일까 ..?
+                                // TODO: response.sendError가 해당 response code에 맞는 에러 페이지를 보여준다고 했는데 왜 에러페이지가 안보일까 ?
                                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage());
                             }
                         }
@@ -84,9 +84,9 @@ public class SecurityConfig {
                      */
                     String token = jwtTokenProvider.createToken((CustomUserDetails)auth.getPrincipal());
                     System.out.println("token = " + token);
-                    res.setHeader("Authorization", token);
+                    res.setHeader("Authorization", token); // header에 넣어줘도 소용 없는 것 같은데 .. ?
+                    // 단순히 /health 엔드포인트로 redirect 하지 않고 token을 뿌려주는건 어떨까 ?
                     res.sendRedirect("/api/health");
-
                 });
 
         return http.build();
