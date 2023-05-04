@@ -66,6 +66,9 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.PERSIST)
     private List<RoomFeaturesInfo> roomFeaturesInfoList;
 
+    @OneToMany(mappedBy = "room")
+    private List<Orders> ordersList;
+
     @Builder
     public Room(Long roomPrice, int standardPerson, int maxPerson, String checkInTime, String checkOutTime, boolean useYn, BorrowRoom borrowRoom, String roomName) {
         this.roomPrice = roomPrice;

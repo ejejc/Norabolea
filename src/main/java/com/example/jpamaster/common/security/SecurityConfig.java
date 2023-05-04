@@ -2,6 +2,7 @@ package com.example.jpamaster.common.security;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -84,7 +85,7 @@ public class SecurityConfig {
                      */
                     String token = jwtTokenProvider.createToken((CustomUserDetails)auth.getPrincipal());
                     System.out.println("token = " + token);
-                    res.setHeader("Authorization", token); // header에 넣어줘도 소용 없는 것 같은데 .. ?
+                    res.addCookie(new Cookie("jpaMasterToken", token)); // header에 넣어줘도 소용 없는 것 같은데 .. ?
                     // 단순히 /health 엔드포인트로 redirect 하지 않고 token을 뿌려주는건 어떨까 ?
                     res.sendRedirect("/api/health");
                 });
