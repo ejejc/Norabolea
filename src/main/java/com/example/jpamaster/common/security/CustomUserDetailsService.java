@@ -18,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findById(username).orElse(null); // TODO: 비밀번호 체크
+        User user = userRepository.findById(username).orElse(null);
         if (ObjectUtils.isEmpty(user)) {
             throw new InternalAuthenticationServiceException("유저 정보가 존재하지 않습니다.");
         }

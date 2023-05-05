@@ -1,12 +1,20 @@
 package com.example.jpamaster.accommodations.domain.entity;
 
 import com.example.jpamaster.common.domain.BaseEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 import static com.example.jpamaster.accommodations.enums.OrdersEnum.*;
 
 @Entity(name = "coupon")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class Coupon extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)

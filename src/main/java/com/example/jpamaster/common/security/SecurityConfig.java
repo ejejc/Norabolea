@@ -50,6 +50,7 @@ public class SecurityConfig {
                 .mvcMatchers(HttpMethod.POST, "/answer").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.POST, "/features").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.POST, "/facility").hasRole("ADMIN")
+                .mvcMatchers(HttpMethod.POST,"/coupon").hasRole("ADMIN")
                 .mvcMatchers("/review/best/add").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
