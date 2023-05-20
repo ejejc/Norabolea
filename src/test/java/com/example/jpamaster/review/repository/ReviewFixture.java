@@ -4,7 +4,7 @@ import com.example.jpamaster.accommodations.domain.entity.Review;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//ddd
 public class ReviewFixture {
     public static Review generateReview() {
         Review review = Review.builder()
